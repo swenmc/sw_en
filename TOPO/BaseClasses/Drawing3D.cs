@@ -259,17 +259,17 @@ namespace BaseClasses
                     //translate transform to model center
                     ((Model3D)gr).Transform = centerModelTransGr;
 
-                    sDisplayOptions.SameScaleForViews = true;  //tu som dal option co si chcel Mato - same Scale
-                    if (!sDisplayOptions.SameScaleForViews) maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                    sDisplayOptions.CO_SameScaleForViews = true;  //tu som dal option co si chcel Mato - same Scale
+                    if (!sDisplayOptions.CO_SameScaleForViews) maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
                     Point3D cameraPosition = new Point3D(0, 0, maxLen * 2.1);  //to bola 2 - Task 493 - To Mato mozno aj toto by sme mohli dat niekde do GUI ako nastavenie, resp. v DisplayOptions by to mohlo asi byt
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
 
-                    if (sDisplayOptions.bUseOrtographicCamera)
+                    if (sDisplayOptions.CO_bUseOrtographicCamera)
                     {
                         SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z, maxLen);
-                        OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
+                        OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.CO_OrtographicCameraWidth);
                         ort_camera.FarPlaneDistance = double.PositiveInfinity;
                         ort_camera.NearPlaneDistance = double.NegativeInfinity;
                         _trackport.ViewPort.Camera = ort_camera;
@@ -367,21 +367,21 @@ namespace BaseClasses
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
 
-                if (sDisplayOptions.RotateModelX != 0)
+                if (sDisplayOptions.CO_RotateModelX != 0)
                 {
-                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.CO_RotateModelX);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 }
-                if (sDisplayOptions.RotateModelY != 0)
+                if (sDisplayOptions.CO_RotateModelY != 0)
                 {
-                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
+                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.CO_RotateModelY += 180;
 
-                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
+                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.CO_RotateModelY);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
                 }
-                if (sDisplayOptions.RotateModelZ != 0)
+                if (sDisplayOptions.CO_RotateModelZ != 0)
                 {
-                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
+                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.CO_RotateModelZ);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
 
@@ -523,21 +523,21 @@ namespace BaseClasses
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
 
-                if (sDisplayOptions.RotateModelX != 0)
+                if (sDisplayOptions.CO_RotateModelX != 0)
                 {
-                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.CO_RotateModelX);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 }
-                if (sDisplayOptions.RotateModelY != 0)
+                if (sDisplayOptions.CO_RotateModelY != 0)
                 {
-                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
+                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.CO_RotateModelY += 180;
 
-                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
+                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.CO_RotateModelY);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
                 }
-                if (sDisplayOptions.RotateModelZ != 0)
+                if (sDisplayOptions.CO_RotateModelZ != 0)
                 {
-                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
+                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.CO_RotateModelZ);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
 
@@ -658,7 +658,7 @@ namespace BaseClasses
             Model3DGroup gridlines3DGroup = null;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, sDisplayOptions.GUIGridlinesSize, sDisplayOptions);
+            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, sDisplayOptions.GridlinesSize, sDisplayOptions);
 
             // Create gridlines
             List<CGridLine> listOfGridlines = new List<CGridLine>();
@@ -666,7 +666,7 @@ namespace BaseClasses
             // Labels - Y-direction (edge and main frames)
             List<string> labelsY = null;
 
-            if (sDisplayOptions.bCreateHorizontalGridlines)
+            if (sDisplayOptions.CO_bCreateHorizontalGridlines)
             {
                 float fOffset = maxModelLength * 0.08f; //  0.8f; // Nastavit tak, aby sa znacky neprekryvali s horizontalnymi kotami
                 float fOffsetBehind = maxModelLength * 0.03f; // 0.3f;
@@ -721,7 +721,7 @@ namespace BaseClasses
             //TO Mato - tento parameter sa asi nemusi scalovat podla velkosti modelu, ci? Aspon tak som to spravil.
             float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
-            if (sDisplayOptions.bCreateVerticalGridlinesFront)
+            if (sDisplayOptions.CO_bCreateVerticalGridlinesFront)
             {
                 List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
                 membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
@@ -739,7 +739,7 @@ namespace BaseClasses
                 }
             }
 
-            if (sDisplayOptions.bCreateVerticalGridlinesBack)
+            if (sDisplayOptions.CO_bCreateVerticalGridlinesBack)
             {
                 List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
                 membersBaseNodes_BackSide = GetMemberBaseNodesBackSide(model);
@@ -757,7 +757,7 @@ namespace BaseClasses
                 }
             }
 
-            if (sDisplayOptions.bCreateVerticalGridlinesLeft)
+            if (sDisplayOptions.CO_bCreateVerticalGridlinesLeft)
             {
                 List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
                 membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
@@ -777,7 +777,7 @@ namespace BaseClasses
                 }
             }
 
-            if (sDisplayOptions.bCreateVerticalGridlinesRight)
+            if (sDisplayOptions.CO_bCreateVerticalGridlinesRight)
             {
                 List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
                 membersBaseNodes_RightSide = GetMemberBaseNodesRightSide(model);
@@ -966,10 +966,10 @@ namespace BaseClasses
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
 
             //vsetko sa nastavuje podla max rozmeru modelu a ten upravime podla velkosti strany v PDF
-            float fSymbolLineLength_basic = GetSizeIn3D(MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z), sDisplayOptions.GUISectionSymbolsSize, sDisplayOptions);
+            float fSymbolLineLength_basic = GetSizeIn3D(MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z), sDisplayOptions.SectionSymbolsSize, sDisplayOptions);
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float textSize = GetSizeIn3D(maxModelLength, sDisplayOptions.GUISectionSymbolLabelSize, sDisplayOptions);
+            float textSize = GetSizeIn3D(maxModelLength, sDisplayOptions.SectionSymbolLabelSize, sDisplayOptions);
 
             //    ——  ▪▪▪▪ ▪ ▪▪▪▪       ○      ○       ▪▪▪▪ ▪ ▪▪▪▪
             // D |    /|\                                     /|\
@@ -1206,7 +1206,7 @@ namespace BaseClasses
             if (model.m_arrConnectionJoints == null) return detailSymbols;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, opts.GUIDetailSymbolSize, opts);
+            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, opts.DetailSymbolSize, opts);
 
             float fOffsetLineLength = fMarkCircleDiameter / 3; //0.2f;
 
@@ -1246,7 +1246,7 @@ namespace BaseClasses
             {
                 if (symbolsPoints[i] == null) continue;
 
-                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], vector, (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS, (EModelViews)opts.ModelView));
+                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], vector, (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS, (EModelViews)opts.CO_ModelView));
             }
             return detailSymbols;
         }
@@ -2020,7 +2020,7 @@ namespace BaseClasses
                     {
                         if (selectedLoadCase.NodeLoadsList[i] != null && selectedLoadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.DisplayIn3DRatio)); // Add to the model group
+                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.CO_DisplayIn3DRatio)); // Add to the model group
 
                             // Set load for all assigned nodes
 
@@ -2047,7 +2047,7 @@ namespace BaseClasses
                                ))
                             {
                                 Model3DGroup model_gr = new Model3DGroup();
-                                model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.DisplayIn3DRatio);
+                                model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.CO_DisplayIn3DRatio);
                                 // Transform modelgroup from LCS to GCS
                                 model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member, selectedLoadCase.MemberLoadsList[i].ELoadCS == ELoadCoordSystem.eLCS);
 
@@ -2067,7 +2067,7 @@ namespace BaseClasses
                         if (selectedLoadCase.SurfaceLoadsList[i] != null && selectedLoadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.DisplayIn3DRatio);
+                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.CO_DisplayIn3DRatio);
 
                             model3D_group.Children.Add(model_gr); // Add surface load to the model group
                         }
@@ -2524,7 +2524,7 @@ namespace BaseClasses
 
             foreach (CDetailSymbol detailSymbol in detailSymbols)
             {
-                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor, true, (EModelViews)displayOptions.ModelView));
+                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor, true, (EModelViews)displayOptions.CO_ModelView));
             }
 
             return gr;
@@ -3322,7 +3322,7 @@ namespace BaseClasses
 
         public static void DrawLinesToViewport(Viewport3D viewPort, DisplayOptions sDisplayOptions, float fZoomFactor, Color color, float thickness, List<Point3D> points, ref Model3DGroup cylinders)
         {
-            if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
+            if (sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D)
             {
                 if (cylinders == null) cylinders = new Model3DGroup();
 
@@ -3349,7 +3349,7 @@ namespace BaseClasses
 
         public static void DrawLineToViewport(Viewport3D viewPort, DisplayOptions sDisplayOptions, float fZoomFactor, Color color, float thickness, Point3D p1, Point3D p2, ref Model3DGroup cylinders)
         {
-            if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
+            if (sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D)
             {
                 if (cylinders == null) cylinders = new Model3DGroup();
 
@@ -3440,8 +3440,8 @@ namespace BaseClasses
         // TO Ondrej - pokus kreslit text do LCS a potom ho presunut do GCS s tym ze vektrory pre smerovanie textu sa nastavia podla pohladu
         public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            double descriptionTextWidthScaleFactor = displayOptions.GUIDescriptionTextWidthScaleFactor;
-            //if (displayOptions.IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
+            double descriptionTextWidthScaleFactor = displayOptions.DescriptionTextWidthScaleFactor;
+            //if (displayOptions.CO_IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
 
             // Members
             if (model.m_arrMembers != null)
@@ -3452,7 +3452,7 @@ namespace BaseClasses
                 //GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIMembersDescriptionSize, displayOptions);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.MembersDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3462,31 +3462,31 @@ namespace BaseClasses
                 Vector3D viewHorizontalVector;
                 Vector3D viewVerticalVector;
 
-                if (displayOptions.ModelView == (int)EModelViews.BACK)
+                if (displayOptions.CO_ModelView == (int)EModelViews.BACK)
                 {
                     viewVector = new Vector3D(0, -1, 0);
                     viewHorizontalVector = new Vector3D(-1, 0, 0);
                     viewVerticalVector = new Vector3D(0, 0, 1);
                 }
-                else if (displayOptions.ModelView == (int)EModelViews.LEFT)
+                else if (displayOptions.CO_ModelView == (int)EModelViews.LEFT)
                 {
                     viewVector = new Vector3D(1, 0, 0);
                     viewHorizontalVector = new Vector3D(0, -1, 0);
                     viewVerticalVector = new Vector3D(0, 0, 1);
                 }
-                else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
+                else if (displayOptions.CO_ModelView == (int)EModelViews.RIGHT)
                 {
                     viewVector = new Vector3D(-1, 0, 0);
                     viewHorizontalVector = new Vector3D(0, 1, 0);
                     viewVerticalVector = new Vector3D(0, 0, 1);
                 }
-                else if (displayOptions.ModelView == (int)EModelViews.TOP)
+                else if (displayOptions.CO_ModelView == (int)EModelViews.TOP)
                 {
                     viewVector = new Vector3D(0, 0, -1);
                     viewHorizontalVector = new Vector3D(0, 1, 0);
                     viewVerticalVector = new Vector3D(-1, 0, 0);
                 }
-                else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
+                else //if (displayOptions.CO_ModelView == (int)EModelViews.FRONT) // Front or default view
                 {
                     viewVector = new Vector3D(0, 1, 0);
                     viewHorizontalVector = new Vector3D(1, 0, 0);
@@ -3785,7 +3785,7 @@ namespace BaseClasses
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.NodesDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3838,7 +3838,7 @@ namespace BaseClasses
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.NodesDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3888,7 +3888,7 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 0.5f;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIGridLineLabelSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GridLineLabelSize, displayOptions);
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -4071,7 +4071,7 @@ namespace BaseClasses
         public static void DrawSectionSymbolLabelText3D(CSectionSymbol sectionSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.SectionSymbolLabelSize, displayOptions);
 
             Vector3D over = new Vector3D(1f * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
             Vector3D up = new Vector3D(0, 1f * sectionSymbol.iVectorUpFactor_LCS, 0);
@@ -4083,7 +4083,7 @@ namespace BaseClasses
         public static void DrawDetailSymbolLabelText3D(CDetailSymbol detailSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDetailSymbolLabelSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.DetailSymbolLabelSize, displayOptions);
 
             Vector3D over = new Vector3D(1f, 0, 0);
             Vector3D up = new Vector3D(0, 0, 1f);
@@ -4097,7 +4097,7 @@ namespace BaseClasses
         public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISawCutTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.SawCutTextSize, displayOptions);
             sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;  //toto vyzera ze sa pouziva kvoli TextPoint
 
             Vector3D over = new Vector3D(1f * sawcut.iVectorOverFactor_LCS, 0, 0);
@@ -4110,7 +4110,7 @@ namespace BaseClasses
         public static void DrawControlJointText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.ControlJointTextSize, displayOptions);
             controlJoint.OffsetFromLine = fTextBlockVerticalSize / 2;
 
             Vector3D over = new Vector3D(1f * controlJoint.iVectorOverFactor_LCS, 0, 0);
@@ -4123,7 +4123,7 @@ namespace BaseClasses
         public static void DrawFoundationText3D(CFoundation foundation, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.FoundationTextSize, displayOptions);
             foundation.SetTextPoint(fTextBlockVerticalSize);
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, 1f, 0);
@@ -4137,7 +4137,7 @@ namespace BaseClasses
         public static void DrawFloorSlabText3D(CSlab slab, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.FloorSlabTextSize, displayOptions);
 
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, 1f, 0);
@@ -4193,19 +4193,19 @@ namespace BaseClasses
                     //tu este view ma asi ine velkosti treba pozriet kde sa nastavuje ViewPageSize
                     if (s.IsFibreglass)
                     {
-                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions);
+                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.FibreglassDescriptionSize, displayOptions);
                         widthScaleFactor = displayOptions.bDisplayFibreglassLengthWidth ? 0.4 : 0.6;
                     }
                     else
                     {
-                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions);
+                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.CladdingDescriptionSize, displayOptions);
                         widthScaleFactor = displayOptions.bDisplayCladdingLengthWidth ? 0.4 : 0.6;
                     }
 
                     float fTextBlockVerticalSizeFactor = 1f;
                     float fTextBlockHorizontalSizeFactor = 1f;
 
-                    Color textColor = s.IsFibreglass ? displayOptions.FibreglassTextColor : displayOptions.CladdingTextColor;                    
+                    Color textColor = s.IsFibreglass ? displayOptions.FibreglassTextColor : displayOptions.CladdingTextColor;
                     // Nastavujeme pre GCS (rovina XZ - text v smere X)
                     Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0); // smer X
                     Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor); // smer Z
@@ -4240,7 +4240,7 @@ namespace BaseClasses
             int maxRowLength = 0;
             string text = Drawing3DHelper.GetDoorDisplayText(displayOptions, door, out rowsCount, out maxRowLength);
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDoorDescriptionSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.DoorDescriptionSize, displayOptions);
             
             // Nastavujeme pre GCS (rovina XZ - text v smere X)
             Vector3D over = new Vector3D(1f, 0, 0);
@@ -4257,7 +4257,7 @@ namespace BaseClasses
             int maxRowLength = 0;
             string text = Drawing3DHelper.GetWindowDisplayText(displayOptions, window, out rowsCount, out maxRowLength);
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIWindowDescriptionSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.WindowDescriptionSize, displayOptions);
 
             // Nastavujeme pre GCS (rovina XZ - text v smere X)
             Vector3D over = new Vector3D(1f, 0, 0);
@@ -4365,21 +4365,21 @@ namespace BaseClasses
         private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
         {
             Transform3DGroup transGr = new Transform3DGroup();
-            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
+            if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -70);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -20);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_LEFT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_FRONT_LEFT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -70);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 20);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_RIGHT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_BACK_RIGHT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 80);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
@@ -4388,7 +4388,7 @@ namespace BaseClasses
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 20);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_LEFT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_BACK_LEFT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 80);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
@@ -4397,12 +4397,12 @@ namespace BaseClasses
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -20);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.FRONT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.BACK)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
@@ -4410,7 +4410,7 @@ namespace BaseClasses
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
             }
             /*
-            else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.BOTTOM)
             {
                 //takto pokial zachovavame Left/Right
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 180);
@@ -4422,21 +4422,21 @@ namespace BaseClasses
                 //AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 180);
                 //transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }*/
-            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.LEFT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.RIGHT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.TOP)
             {
                 AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
@@ -4447,62 +4447,62 @@ namespace BaseClasses
         //omg a toto je co? Naco to je, co to robi. :-)
         private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z, float maxLen)
         {
-            if (sDisplayOptions.SameScaleForViews)
+            if (sDisplayOptions.CO_SameScaleForViews)
             {
-                if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
+                if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
                 }
-                if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_LEFT)
+                if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_FRONT_LEFT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
                 }
-                if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_RIGHT)
+                if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_BACK_RIGHT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
                 }
-                else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_LEFT)
+                else if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_BACK_LEFT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
                 }
-                else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+                else if (sDisplayOptions.CO_ModelView == (int)EModelViews.FRONT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.2;
                 }
-                else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+                else if (sDisplayOptions.CO_ModelView == (int)EModelViews.BACK)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.2;
                 }
-                /*else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+                /*else if (sDisplayOptions.CO_ModelView == (int)EModelViews.BOTTOM)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
                 }*/
-                else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+                else if (sDisplayOptions.CO_ModelView == (int)EModelViews.LEFT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.2;
                 }
-                else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+                else if (sDisplayOptions.CO_ModelView == (int)EModelViews.RIGHT)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.2;
                 }
-                else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+                else if (sDisplayOptions.CO_ModelView == (int)EModelViews.TOP)
                 {
-                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
-                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                    sDisplayOptions.CO_OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                    sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
                 }
             }
             else
             {
-                sDisplayOptions.OrtographicCameraWidth = maxLen;
+                sDisplayOptions.CO_OrtographicCameraWidth = maxLen;
             }
         }
         //  Lights
@@ -4807,7 +4807,7 @@ namespace BaseClasses
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             Model3DGroup model_gr = new Model3DGroup();
-            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.DisplayIn3DRatio);
+            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.CO_DisplayIn3DRatio);
 
             Model3D loadLine = model_gr.Children.Last();
             GeometryModel3D model3D = null;
@@ -4883,7 +4883,7 @@ namespace BaseClasses
                 //Pokial by boli vsetky loads rovnako vykreslene a vyuzili by sa SurfacePoints_h s nejakym odsadenim...
                 //tak by sa cisla zobrazili mimo kvadra a bolo by to asi podstatne krajsie
                 //show in load center
-                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform, displayOptions.DisplayIn3DRatio); // Positions in global coordinate system GCS
+                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform, displayOptions.CO_DisplayIn3DRatio); // Positions in global coordinate system GCS
                                                                                                                 //show on bottom
                                                                                                                 //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints(l, groupTransform);
                                                                                                                 //show on top
@@ -5166,7 +5166,7 @@ namespace BaseClasses
 
         public static Point3D GetNodalLoadCoordinates_GCS(CNLoad load, DisplayOptions options)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load(options.DisplayIn3DRatio);
+            Model3DGroup gr = load.CreateM_3D_G_Load(options.CO_DisplayIn3DRatio);
             if (gr.Children.Count < 1) return new Point3D();
 
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
@@ -5693,54 +5693,54 @@ namespace BaseClasses
             _model.fBottomGirtPosition = model.fBottomGirtPosition;
             _model.iOneRafterPurlinNo = model.iOneRafterPurlinNo;
 
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
                 return model;
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 _model.m_arrMembers = ModelHelper.GetBackViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetBackViewNodes(model);
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 _model.m_arrMembers = ModelHelper.GetLeftViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetLeftViewNodes(model);
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 _model.m_arrMembers = ModelHelper.GetRightViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetRightViewNodes(model);
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 _model.m_arrMembers = ModelHelper.GetRoofViewMembers(model).ToArray();
                 //_model.m_arrNodes = ModelHelper.GetRoofViewNodes(model).ToArray();
                 _model.m_arrNodes = ModelHelper.GetNodesFromMembers(_model.m_arrMembers).ToArray();
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
                 _model.m_arrMembers = ModelHelper.GetMiddleFrameMembers(model);
                 _model.m_arrNodes = ModelHelper.GetMiddleFrameNodes(model);
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
                 _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
                 // Ak vyberiem filter pre foundations, chcem aby sa automaticky nastavilo v display options zobrazenie foundations
                 sDisplayOptions.bDisplayFoundations = true;
@@ -5753,7 +5753,7 @@ namespace BaseClasses
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
                 _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 // Ak vyberiem filter pre floor slabs, chcem aby sa automaticky nastavilo v display options zobrazenie slabs
                 sDisplayOptions.bDisplayFloorSlab = true;
@@ -5774,35 +5774,35 @@ namespace BaseClasses
                 //_model.m_arrControlJoints = model.m_arrControlJoints;
             }
 
-            if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_FRONT)
+            if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_FRONT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsFrontWall = ModelHelper.GetCladdingSheets_Front(model);
                 cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
-            else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
+            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsBackWall = ModelHelper.GetCladdingSheets_Back(model);
                 cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
-            else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
+            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsLeftWall = ModelHelper.GetCladdingSheets_Left(model);
                 cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
-            else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
+            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsRightWall = ModelHelper.GetCladdingSheets_Right(model);
                 cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
-            else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
+            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsRoofRight = ModelHelper.GetCladdingSheets_Roof_Right(model);
@@ -5838,9 +5838,9 @@ namespace BaseClasses
 
         public static bool IngnoreCanopiesInView(DisplayOptions sDisplayOptions)
         {
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS ||
-                sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS ||
-                sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS ||
+                sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS ||
+                sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 return true;
             }
@@ -5850,40 +5850,40 @@ namespace BaseClasses
         public static Vector3D GetDetailsSymbolVectorAccordingToView(DisplayOptions sDisplayOptions)
         {
             Vector3D vector = new Vector3D(0, 0, -1);
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
                 vector = new Vector3D(0, 0, -1);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 vector = new Vector3D(0, 0, -1);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 vector = new Vector3D(-1, 0, 1);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 vector = new Vector3D(0, -1, 1);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 vector = new Vector3D(0, 1, 1);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 vector = new Vector3D(1, 0, 0);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 vector = new Vector3D(-1, 0, 0); // ??? TO Ondrej, nema to byt Z = -1, jec spravne ze pre niektore filtre je to nenastavene o zostava tam default???
             }
@@ -5895,41 +5895,41 @@ namespace BaseClasses
             over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
             up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
 
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
 
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
 
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
                 over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
                 over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
@@ -5941,30 +5941,30 @@ namespace BaseClasses
             over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
             up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
-            if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            if (sDisplayOptions.CO_ModelView == (int)EModelViews.FRONT)
             {
                 //over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
                 //up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.BACK)
             {
                 over = new Vector3D(-fTextBlockHorizontalSizeFactor, 0, 0);
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.LEFT)
             {
                 over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.RIGHT)
             {
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.TOP)
             {
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
                 up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
             }
             /*
-            else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.BOTTOM)
             {
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
                 up = new Vector3D(fTextBlockVerticalSizeFactor, 0, 0);
@@ -6077,7 +6077,7 @@ namespace BaseClasses
         public static float GetSizeIn3D(float maxModelLength, float sizeFactorGUI, float sizeFactorExport, DisplayOptions displayOptions)
         {
             float value = 0;
-            if (displayOptions.IsExport)
+            if (displayOptions.CO_IsExport)
             {
                 value = maxModelLength * sizeFactorExport;
                 value = GetSizeBasedOnPageSize(displayOptions, value);
@@ -6092,7 +6092,7 @@ namespace BaseClasses
         public static float GetSizeIn3D(float maxModelLength, float sizeFactor, DisplayOptions displayOptions)
         {
             float value = 0;
-            if (displayOptions.IsExport)
+            if (displayOptions.CO_IsExport)
             {
                 value = maxModelLength * sizeFactor;
                 value = GetSizeBasedOnPageSize(displayOptions, value);
@@ -6106,9 +6106,9 @@ namespace BaseClasses
 
         public static float GetSizeBasedOnPageSize(DisplayOptions displayOptions, float value)
         {
-            if (displayOptions.ViewsPageSize == EPageSizes.A2) return value / PageSizeRatio;
-            else if (displayOptions.ViewsPageSize == EPageSizes.A1) return value / PageSizeRatio / PageSizeRatio;
-            else if (displayOptions.ViewsPageSize == EPageSizes.A0) return value / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+            if (displayOptions.LY_ViewsPageSize == EPageSizes.A2) return value / PageSizeRatio;
+            else if (displayOptions.LY_ViewsPageSize == EPageSizes.A1) return value / PageSizeRatio / PageSizeRatio;
+            else if (displayOptions.LY_ViewsPageSize == EPageSizes.A0) return value / PageSizeRatio / PageSizeRatio / PageSizeRatio;
             else return value;
         }
 

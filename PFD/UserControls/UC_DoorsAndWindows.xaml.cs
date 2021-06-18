@@ -150,7 +150,7 @@ namespace PFD
                 if (!dg.IsMouseOver) return;
                 if (dg.SelectedIndex == previewDoorIndex) return;
                 else previewDoorIndex = dg.SelectedIndex;
-            }            
+            }
             RedrawDoorPreview();
         }
         private void RedrawDoorPreview()
@@ -167,10 +167,12 @@ namespace PFD
             if (doorModel == null) doorModel = new CModel();
 
             DisplayOptions displayOptions = _pfdVM.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
+            //Here is the place to overwrite displayOptions from Main 
+
+            // TODO 701
             displayOptions.bDisplayGlobalAxis = false;
-            displayOptions.RotateModelX = -90;
-            displayOptions.RotateModelY = 20;
+            displayOptions.CO_RotateModelX = -90;
+            displayOptions.CO_RotateModelY = 20;
             displayOptions.bDisplayMembers = true;
             displayOptions.bDisplaySolidModel = true;
             //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
@@ -195,7 +197,7 @@ namespace PFD
             RedrawWindowPreview();
         }
         private void RedrawWindowPreview()
-        {            
+        {
             CModel_PFD modelPFD = _pfdVM.Model as CModel_PFD;
             if (modelPFD.WindowsModels == null) return;
 
@@ -205,11 +207,12 @@ namespace PFD
             if (model == null) model = modelPFD.WindowsModels.FirstOrDefault();
             if (model == null) model = new CModel();
 
+            // TODO 701
             DisplayOptions displayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             displayOptions.bDisplayGlobalAxis = false;
-            displayOptions.RotateModelX = -90;
-            displayOptions.RotateModelY = 20;
+            displayOptions.CO_RotateModelX = -90;
+            displayOptions.CO_RotateModelY = 20;
             displayOptions.bDisplayMembers = true;
             displayOptions.bDisplaySolidModel = true;
             //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);

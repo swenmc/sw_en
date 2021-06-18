@@ -125,31 +125,18 @@ namespace BaseClasses
         public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
 
-        public bool bTransformScreenLines3DToCylinders3D;
-
-        public float DisplayIn3DRatio;
-
         public bool bColorsAccordingToMembersPrefix;
         public bool bColorsAccordingToMembersPosition;
         public bool bColorsAccordingToMembers;
         public bool bColorsAccordingToSections;
         public bool bColoredCenterlines;
 
-        public int RotateModelX;
-        public int RotateModelY;
-        public int RotateModelZ;
-        public int ModelView;
-        public int ViewModelMembers;
-        public int ViewCladding;
-        public bool bUseOrtographicCamera;
-        public double OrtographicCameraWidth;
+        public Color backgroundColor;
 
-        public System.Windows.Media.Color backgroundColor;
-
-        public System.Windows.Media.Color wireFrameColor;
+        public Color wireFrameColor;
         public float fWireFrameLineThickness;
 
-        public System.Windows.Media.Color memberCenterlineColor;
+        public Color memberCenterlineColor;
         public float fmemberCenterlineThickness;
 
         public int fNodeDescriptionTextFontSize;
@@ -163,58 +150,58 @@ namespace BaseClasses
         public int fFoundationTextFontSize;
         public int fFloorSlabTextFontSize;
 
-        public System.Windows.Media.Color NodeColor;
-        public System.Windows.Media.Color NodeDescriptionTextColor;
-        public System.Windows.Media.Color MemberDescriptionTextColor;
-        public System.Windows.Media.Color DimensionTextColor;
-        public System.Windows.Media.Color DimensionLineColor;
-        public System.Windows.Media.Color GridLineLabelTextColor;
-        public System.Windows.Media.Color GridLineColor;
+        public Color NodeColor;
+        public Color NodeDescriptionTextColor;
+        public Color MemberDescriptionTextColor;
+        public Color DimensionTextColor;
+        public Color DimensionLineColor;
+        public Color GridLineLabelTextColor;
+        public Color GridLineColor;
         public ELinePatternType GridLinePatternType;
 
-        public System.Windows.Media.Color SectionSymbolLabelTextColor;
-        public System.Windows.Media.Color SectionSymbolColor;
+        public Color SectionSymbolLabelTextColor;
+        public Color SectionSymbolColor;
         //public ELinePatternType SectionSymbolPatternType;
 
-        public System.Windows.Media.Color DetailSymbolLabelTextColor;
-        public System.Windows.Media.Color? DetailSymbolLabelBackColor;
-        public System.Windows.Media.Color DetailSymbolColor;
+        public Color DetailSymbolLabelTextColor;
+        public Color? DetailSymbolLabelBackColor;
+        public Color DetailSymbolColor;
         
         //public ELinePatternType DetailSymbolPatternType;
 
-        public System.Windows.Media.Color SawCutTextColor;
-        public System.Windows.Media.Color SawCutLineColor;
+        public Color SawCutTextColor;
+        public Color SawCutLineColor;
         public ELinePatternType SawCutLinePatternType;
 
-        public System.Windows.Media.Color ControlJointTextColor;
-        public System.Windows.Media.Color ControlJointLineColor;
+        public Color ControlJointTextColor;
+        public Color ControlJointLineColor;
         public ELinePatternType ControlJointLinePatternType;
 
-        public System.Windows.Media.Color FoundationTextColor;
-        public System.Windows.Media.Color FloorSlabTextColor;
+        public Color FoundationTextColor;
+        public Color FloorSlabTextColor;
 
-        public System.Windows.Media.Color FoundationColor;
-        public System.Windows.Media.Color FloorSlabColor;
-        public System.Windows.Media.Color SlabRebateColor;
+        public Color FoundationColor;
+        public Color FloorSlabColor;
+        public Color SlabRebateColor;
 
-        public System.Windows.Media.Color CladdingTextColor;
-        public System.Windows.Media.Color FibreglassTextColor;
-        public System.Windows.Media.Color DoorTextColor;
-        public System.Windows.Media.Color WindowTextColor;
+        public Color CladdingTextColor;
+        public Color FibreglassTextColor;
+        public Color DoorTextColor;
+        public Color WindowTextColor;
 
-        public System.Windows.Media.Color ReinforcementBarColor_Top_x;
-        public System.Windows.Media.Color ReinforcementBarColor_Top_y;
-        public System.Windows.Media.Color ReinforcementBarColor_Bottom_x;
-        public System.Windows.Media.Color ReinforcementBarColor_Bottom_y;
+        public Color ReinforcementBarColor_Top_x;
+        public Color ReinforcementBarColor_Top_y;
+        public Color ReinforcementBarColor_Bottom_x;
+        public Color ReinforcementBarColor_Bottom_y;
 
-        public System.Windows.Media.Color PlateColor;
-        public System.Windows.Media.Color ScrewColor;
-        public System.Windows.Media.Color AnchorColor;
-        public System.Windows.Media.Color WasherColor;
-        public System.Windows.Media.Color NutColor;
+        public Color PlateColor;
+        public Color ScrewColor;
+        public Color AnchorColor;
+        public Color WasherColor;
+        public Color NutColor;
 
-        public System.Windows.Media.Color CladdingSheetNoOverlapColor;
-        public System.Windows.Media.Color FibreglassSheetNoOverlapColor;
+        public Color CladdingSheetNoOverlapColor;
+        public Color FibreglassSheetNoOverlapColor;
 
         public bool bCladdingSheetColoursByID;
         public bool bUseTextures;
@@ -240,60 +227,51 @@ namespace BaseClasses
         public float fWindowPanelOpacity;
         public float fFibreglassOpacity;
 
-        public bool bCreateHorizontalGridlines;
-        public bool bCreateVerticalGridlinesFront;
-        public bool bCreateVerticalGridlinesBack;
-        public bool bCreateVerticalGridlinesLeft;
-        public bool bCreateVerticalGridlinesRight;
+        public float FloorSlabTextSize;
+        public float GridlinesSize;
+        public float SectionSymbolsSize;
+        public float SectionSymbolLabelSize;
+        public float DetailSymbolSize;
+        public float DetailSymbolLabelSize;
+        public float MembersDescriptionSize;
+        public float NodesDescriptionSize;
+        public float GridLineLabelSize;
+        public float SawCutTextSize;
+        public float ControlJointTextSize;
+        public float FoundationTextSize;
+        public float DimensionsTextSize;
+        public float DimensionsLineRadius;
+        public float DimensionsScale;
+        public float DescriptionTextWidthScaleFactor;
+        public float CladdingDescriptionSize;
+        public float FibreglassDescriptionSize;
+        public float DoorDescriptionSize;
+        public float WindowDescriptionSize;
 
-        public EPageSizes ViewsPageSize;
-        public EImagesQuality ExportImagesQuality;
-        //public DisplayOptionsFootingPad2D footingPadDisplayOptions;
+        // Properties defined only for export - layouts (LY - layout)
+        public EPageSizes LY_ViewsPageSize;
+        public EImagesQuality LY_ExportImagesQuality;
 
-        public bool IsExport;
-        //public float ExportFloorSlabTextSize;
-        //public float ExportGridlinesSize;
-        //public float ExportSectionSymbolsSize;
-        //public float ExportSectionSymbolLabelSize;
-        //public float ExportDetailSymbolSize;
-        //public float ExportDetailSymbolLabelSize;
-        //public float ExportMembersDescriptionSize;
-        //public float ExportNodesDescriptionSize;
-        //public float ExportGridLineLabelSize;
-        //public float ExportSawCutTextSize;
-        //public float ExportControlJointTextSize;
-        //public float ExportFoundationTextSize;
-        //public float ExportDimensionsTextSize;
-        //public float ExportDimensionsLineRadius;
-        //public float ExportDimensionsScale;
-        //public float ExportDescriptionTextWidthScaleFactor;
-        //public float ExportCladdingDescriptionSize;
-        //public float ExportFibreglassDescriptionSize;
-        //public float ExportDoorDescriptionSize;
-        //public float ExportWindowDescriptionSize;
+        // Properties defined only in source code (CO - code only)
+        public bool CO_IsExport;
+        public bool CO_SameScaleForViews;
 
-        public float GUIFloorSlabTextSize;
-        public float GUIGridlinesSize;
-        public float GUISectionSymbolsSize;
-        public float GUISectionSymbolLabelSize;
-        public float GUIDetailSymbolSize;
-        public float GUIDetailSymbolLabelSize;
-        public float GUIMembersDescriptionSize;
-        public float GUINodesDescriptionSize;
-        public float GUIGridLineLabelSize;
-        public float GUISawCutTextSize;
-        public float GUIControlJointTextSize;
-        public float GUIFoundationTextSize;
-        public float GUIDimensionsTextSize;
-        public float GUIDimensionsLineRadius;
-        public float GUIDimensionsScale;
-        public float GUIDescriptionTextWidthScaleFactor;
-        public float GUICladdingDescriptionSize;
-        public float GUIFibreglassDescriptionSize;
-        public float GUIDoorDescriptionSize;
-        public float GUIWindowDescriptionSize;
+        public bool CO_bTransformScreenLines3DToCylinders3D;
+        public float CO_DisplayIn3DRatio;
+        public int CO_RotateModelX;
+        public int CO_RotateModelY;
+        public int CO_RotateModelZ;
+        public int CO_ModelView;
+        public int CO_ViewModelMembers;
+        public int CO_ViewCladding;
+        public bool CO_bUseOrtographicCamera;
+        public double CO_OrtographicCameraWidth;
 
-        public bool SameScaleForViews;
+        public bool CO_bCreateHorizontalGridlines;
+        public bool CO_bCreateVerticalGridlinesFront;
+        public bool CO_bCreateVerticalGridlinesBack;
+        public bool CO_bCreateVerticalGridlinesLeft;
+        public bool CO_bCreateVerticalGridlinesRight;
     }
 
     public struct DisplayOptionsFootingPad2D

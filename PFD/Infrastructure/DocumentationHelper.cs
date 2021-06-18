@@ -78,6 +78,7 @@ namespace PFD
 
         public static void SavePlatesDXF_3D(List<CPlate> plates, string parent_folder)
         {
+            // TODO 701
             DisplayOptions sDisplayOptions = new DisplayOptions();
             // Create 3D window
             sDisplayOptions.bDisplayGlobalAxis = false;
@@ -86,8 +87,8 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayWireFrameModel = true;
 
-            sDisplayOptions.NodeColor = Colors.Red;            
-            sDisplayOptions.GUINodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
+            sDisplayOptions.NodeColor = Colors.Red;
+            sDisplayOptions.NodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
             sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
 
             foreach (CPlate plate in plates)

@@ -1110,7 +1110,7 @@ namespace sw_en_GUI
             sDisplayOptions.bDisplayMemberLoads_Purlins = true;
             sDisplayOptions.bDisplayMemberLoads_EavePurlins = true;
 
-            sDisplayOptions.DisplayIn3DRatio = 0.001f;
+            sDisplayOptions.CO_DisplayIn3DRatio = 0.001f;
 
             sDisplayOptions.bDisplayLoadsLabels = true;
 
@@ -1123,6 +1123,8 @@ namespace sw_en_GUI
         private void menuItemExample3D_903_ML_Click(object sender, RoutedEventArgs e)
         {
             model = new CExample_3D_903_ML();
+
+            // TODO 701
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bUseDiffuseMaterial = true;
@@ -1139,7 +1141,7 @@ namespace sw_en_GUI
             sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             sDisplayOptions.bDisplayLoads = true;
-            sDisplayOptions.DisplayIn3DRatio = 0.001f; // Default
+            sDisplayOptions.CO_DisplayIn3DRatio = 0.001f; // Default
 
             Window2 win = new Window2(model, sDisplayOptions, model.m_arrLoadCases[0], m_bDebugging);
             list_trackports.Add(win._trackport);

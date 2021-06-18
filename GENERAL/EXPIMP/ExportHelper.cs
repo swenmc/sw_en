@@ -1592,23 +1592,23 @@ namespace EXPIMP
         }
 
         public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data,
-            bool bCenterLinesMemberModelAndIDs = false,
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
+            // TODO 701
             DisplayOptions opts = data.DisplayOptions;
-            opts.IsExport = true;
-            opts.bUseOrtographicCamera = false;
+            opts.CO_IsExport = true;
+            opts.CO_bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
             opts.bDisplayMemberDescription = false;
-            opts.ModelView = (int)view;
-            opts.ViewModelMembers = (int)filter;
+            opts.CO_ModelView = (int)view;
+            opts.CO_ViewModelMembers = (int)filter;
             opts.bDisplaySolidModel = true;
             opts.bDisplayMembersCenterLines = false;
             opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
-            opts.bTransformScreenLines3DToCylinders3D = true;
+            opts.CO_bTransformScreenLines3DToCylinders3D = true;
 
             opts.bDisplayMembers = true;
             opts.bDisplayJoints = true;
@@ -1633,31 +1633,32 @@ namespace EXPIMP
             opts.bDisplayDetailSymbols = false;
             opts.bDisplayDimensions = false; // V zakladnom 3D nezobrazujeme koty
 
-            opts.bCreateHorizontalGridlines = true;
-            opts.bCreateVerticalGridlinesFront = false;
-            opts.bCreateVerticalGridlinesBack = false;
-            opts.bCreateVerticalGridlinesLeft = false;
-            opts.bCreateVerticalGridlinesRight = false;
+            opts.CO_bCreateHorizontalGridlines = true;
+            opts.CO_bCreateVerticalGridlinesFront = false;
+            opts.CO_bCreateVerticalGridlinesBack = false;
+            opts.CO_bCreateVerticalGridlinesLeft = false;
+            opts.CO_bCreateVerticalGridlinesRight = false;
 
-            if (bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
-            {
-                opts.bDisplaySolidModel = false;
-                opts.bDisplayMembersCenterLines = true;
-
-                opts.bDisplayJoints = false;
-                opts.bDisplayPlates = false;
-
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberID = true;
-                opts.bDisplayMemberCrossSectionStartName = false;
-                opts.bDisplayMemberPrefix = false;
-                opts.bDisplayMemberRealLength = false;
-                opts.bDisplayMemberRealLengthInMM = false;
-                opts.bDisplayMemberRealLengthUnit = false;
-
-                opts.MemberDescriptionTextColor = Colors.Black;
-                opts.memberCenterlineColor = Colors.Black;
-            }
+            //if (bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
+            //{
+            //    // Centerline Model
+            //    opts.bDisplaySolidModel = false;
+            //    opts.bDisplayMembersCenterLines = true;
+            //
+            //    opts.bDisplayJoints = false;
+            //    opts.bDisplayPlates = false;
+            //
+            //    opts.bDisplayMemberDescription = true;
+            //    opts.bDisplayMemberID = true;
+            //    opts.bDisplayMemberCrossSectionStartName = false;
+            //    opts.bDisplayMemberPrefix = false;
+            //    opts.bDisplayMemberRealLength = false;
+            //    opts.bDisplayMemberRealLengthInMM = false;
+            //    opts.bDisplayMemberRealLengthUnit = false;
+            //
+            //    opts.MemberDescriptionTextColor = Colors.Black;
+            //    opts.memberCenterlineColor = Colors.Black;
+            //}
 
             return opts;
         }

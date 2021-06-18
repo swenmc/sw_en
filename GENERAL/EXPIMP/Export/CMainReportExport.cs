@@ -299,8 +299,8 @@ namespace EXPIMP
             CModel filteredModel = null;
             Trackport3D trackport = null;
 
-            double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.ExportImagesQuality);
-            double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.ExportImagesQuality);
+            double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.LY_ExportImagesQuality);
+            double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.LY_ExportImagesQuality);
 
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
             viewPort.UpdateLayout();
@@ -381,11 +381,11 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
-            opts.ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
-            opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
-            opts.IsExport = true;
+            opts.LY_ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
+            opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
+            opts.CO_IsExport = true;
 
-            opts.SameScaleForViews = true;
+            opts.CO_SameScaleForViews = true;
 
             List<EViewModelMemberFilters> list_views = GetModelViewsFromExportOptions(exportOpts);
             
@@ -413,11 +413,11 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page,((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)viewMembers).GetFriendlyName() });
 
-                opts.ModelView = GetView(viewMembers);
-                opts.ViewModelMembers = (int)viewMembers;
+                opts.CO_ModelView = GetView(viewMembers);
+                opts.CO_ViewModelMembers = (int)viewMembers;
 
                 // Defaultne hodnoty pre vsetky pohlady
-                opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
+                opts.CO_bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
                 opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
                 // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
 
@@ -436,22 +436,6 @@ namespace EXPIMP
                 COLUMNS = 7,
                 FOUNDATIONS = 8,
                 FLOOR = 9
-                */
-
-                opts.bCreateHorizontalGridlines = true;
-                opts.bCreateVerticalGridlinesFront = false;
-                opts.bCreateVerticalGridlinesBack = false;
-                opts.bCreateVerticalGridlinesLeft = false;
-                opts.bCreateVerticalGridlinesRight = false;
-
-                /*
-                // Bug 477 - Refactoring
-                float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch
-                float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
-                float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
-                float fZoomFactor = 1f;
-
-                float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
                 */
 
                 ChangeDisplayOptionsAcordingToView(viewMembers, ref opts);
@@ -473,8 +457,8 @@ namespace EXPIMP
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
 
                 //int factor = GetCanvasSizeFactorAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
-                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
-                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
+                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.LY_ExportImagesQuality);
+                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.LY_ExportImagesQuality);
 
                 //Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * factor, 1000 * factor);
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
@@ -514,10 +498,10 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
-            opts.ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
-            opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
-            opts.IsExport = true;
-            opts.SameScaleForViews = true;
+            opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
+            opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
+            opts.CO_IsExport = true;
+            opts.CO_SameScaleForViews = true;
 
             List<EViewCladdingFilters> list_views = GetCladdingViewsFromExportOptions(exportOpts, data);
 
@@ -543,19 +527,19 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
-                opts.ModelView = GetView(view);
-                opts.ViewCladding = (int)view;
+                opts.CO_ModelView = GetView(view);
+                opts.CO_ViewCladding = (int)view;
 
                 // Defaultne hodnoty pre vsetky pohlady
-                opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
+                opts.CO_bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
                 opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
 
-                ChangeDisplayOptionsAcordingToView(view, ref opts);
+                ChangeDisplayOptionsAcordingToView(view, opts);
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
-                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.ExportImagesQuality);
-                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.ExportImagesQuality);
+                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.LY_ExportImagesQuality);
+                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.LY_ExportImagesQuality);
 
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
@@ -616,121 +600,14 @@ namespace EXPIMP
 
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)
         {
+            // TODO 701
             DisplayOptions opts = data.DisplayOptions;
-            opts.bUseOrtographicCamera = true;
-            opts.bColorsAccordingToMembers = false;
-            opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplaySolidModel = true;
-            opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bTransformScreenLines3DToCylinders3D = true;
-
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-
-            opts.bDisplayNodes = false;
-            opts.bDisplayNodesDescription = false;
-            opts.bDisplayNodalSupports = false;
-
-            opts.bDisplayMembers = true;
-            //opts.bDisplayJoints = true;
-            //opts.bDisplayPlates = true;
-
-            opts.bDisplaySawCuts = false;
-            opts.bDisplayControlJoints = false;
-            opts.bDisplayGridlines = false;
-            opts.bDisplaySectionSymbols = false;
-            opts.bDisplayDetailSymbols = false;
-
-            opts.bDisplayCladding = false;
-
-            // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
-            // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
-
-            /*
-            07.0 PT     09 PX     2.5 MM     0.60 EM     060 %
-            07.0 PT     10 PX     2.5 MM     0.60 EM     060 %
-            08.0 PT     11 PX     2.8 MM     0.70 EM     070 %
-            09.0 PT     12 PX     3.4 MM     0.80 EM     080 %
-            09.0 PT     13 PX     3.4 MM     0.80 EM     080 %
-            10.0 PT     13 PX     3.4 MM     0.80 EM     080 %
-            10.5 PT     14 PX     3.6 MM     0.85 EM     085 %
-            11.0 PT     15 PX     3.9 MM     0.95 EM     095 %
-            12.0 PT     16 PX     4.2 MM     1.05 EM     105 %
-            12.0 PT     17 PX     4.2 MM     1.05 EM     105 %
-            13.0 PT     17 PX     4.2 MM     1.10 EM     110 %
-            13.0 PT     18 PX     4.8 MM     1.10 EM     110 %
-            14.0 PT     19 PX     5.0 MM     1.20 EM     120 %
-            15.0 PT     20 PX     5.4 MM     1.33 EM     133 %
-            16.0 PT     21 PX     5.8 MM     1.40 EM     140 %
-            16.0 PT     22 PX     5.8 MM     1.40 EM     140 %
-            17.0 PT     23 PX     6.2 MM     1.50 EM     150 %
-            */
-
-            opts.fMemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
-            opts.MemberDescriptionTextColor = System.Windows.Media.Colors.DarkGreen;
-
-            opts.fDimensionTextFontSize = 14;
-            opts.DimensionTextColor = System.Windows.Media.Colors.DarkBlue;
-            opts.DimensionLineColor = System.Windows.Media.Colors.Black;
-
-            opts.fGridLineLabelTextFontSize = 30;
-            opts.GridLineLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.GridLineColor = System.Windows.Media.Colors.Black;
-            opts.GridLinePatternType = ELinePatternType.DASHDOTTED;
-
-            opts.fSawCutTextFontSize = 14;
-            opts.SawCutTextColor = System.Windows.Media.Colors.Black;
-            opts.SawCutLineColor = System.Windows.Media.Colors.Black;
-            opts.SawCutLinePatternType = ELinePatternType.DOTTED;
-
-            opts.fControlJointTextFontSize = 14;
-            opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
-            opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
-            opts.ControlJointLinePatternType = ELinePatternType.DIVIDE;
-
-            opts.fSectionSymbolLabelTextFontSize = 30;
-            opts.SectionSymbolLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.SectionSymbolColor = System.Windows.Media.Colors.Black;
-            //opts.SectionSymbolLinePatternType = ELinePatternType.DASHDOTTED;
-
-            opts.fDetailSymbolLabelTextFontSize = 30;
-            opts.DetailSymbolLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.DetailSymbolLabelBackColor = System.Windows.Media.Colors.White;
-            opts.DetailSymbolColor = System.Windows.Media.Colors.Black;
-            //opts.DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
-
-            opts.fFoundationTextFontSize = 14;
-            opts.FoundationColor = System.Windows.Media.Colors.White;
-            opts.FoundationTextColor = System.Windows.Media.Colors.Black;
-
-            opts.fFloorSlabTextFontSize = 14;
-            opts.FloorSlabColor = System.Windows.Media.Colors.White;
-            opts.FloorSlabTextColor = System.Windows.Media.Colors.Black;
-
-            opts.SlabRebateColor = System.Windows.Media.Colors.White;
-
-            opts.ReinforcementBarColor_Top_x = System.Windows.Media.Colors.Black;
-            opts.ReinforcementBarColor_Top_y = System.Windows.Media.Colors.Black;
-            opts.ReinforcementBarColor_Bottom_x = System.Windows.Media.Colors.Black;
-            opts.ReinforcementBarColor_Bottom_y = System.Windows.Media.Colors.Black;
-
-            //opts.PlateColor = System.Windows.Media.Colors.Gray;
-            //opts.ScrewColor = System.Windows.Media.Colors.Black;
-            //opts.AnchorColor = System.Windows.Media.Colors.Black;
-            //opts.WasherColor = System.Windows.Media.Colors.Gray;
-            //opts.NutColor = System.Windows.Media.Colors.Black;
-
-            opts.fFoundationSolidModelOpacity = 0;
-            opts.fFloorSlabSolidModelOpacity = 0;
-            opts.fSlabRebateSolidModelOpacity = 0;
-            opts.fReinforcementBarSolidModelOpacity = 1;
-
             return opts;
         }
 
         private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
         {
+            // TODO 701
             if (viewMembers == EViewModelMemberFilters.FRONT)
             {
                 opts.bDisplayMemberDescription = true;
@@ -743,8 +620,8 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = true;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = false;
-                opts.bCreateVerticalGridlinesFront = true;
+                opts.CO_bCreateHorizontalGridlines = false;
+                opts.CO_bCreateVerticalGridlinesFront = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.BACK)
@@ -758,8 +635,8 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = true;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = false;
-                opts.bCreateVerticalGridlinesBack = true;
+                opts.CO_bCreateHorizontalGridlines = false;
+                opts.CO_bCreateVerticalGridlinesBack = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.LEFT)
@@ -773,8 +650,8 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = true;
                 opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = false;
-                opts.bCreateVerticalGridlinesLeft = true;
+                opts.CO_bCreateHorizontalGridlines = false;
+                opts.CO_bCreateVerticalGridlinesLeft = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.RIGHT)
@@ -788,8 +665,8 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = true;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = false;
-                opts.bCreateVerticalGridlinesRight = true;
+                opts.CO_bCreateHorizontalGridlines = false;
+                opts.CO_bCreateVerticalGridlinesRight = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.ROOF)
@@ -803,7 +680,7 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = true;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = true;
+                opts.CO_bCreateHorizontalGridlines = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
@@ -822,7 +699,7 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = false;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateVerticalGridlinesFront = true;
+                opts.CO_bCreateVerticalGridlinesFront = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.COLUMNS)
@@ -834,7 +711,7 @@ namespace EXPIMP
                 opts.bDisplayWireFrameModel = true;
                 opts.bDisplayFloorSlabWireFrame = true;
                 opts.bDisplayMembersWireFrame = true;
-                opts.bTransformScreenLines3DToCylinders3D = true;
+                opts.CO_bTransformScreenLines3DToCylinders3D = true;
                 //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                 opts.bDisplayFoundations = false;
@@ -846,7 +723,7 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = false;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = true;
+                opts.CO_bCreateHorizontalGridlines = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
@@ -855,7 +732,7 @@ namespace EXPIMP
                 opts.bDisplayWireFrameModel = true;
                 opts.bDisplayFoundationsWireFrame = true;
                 opts.bDisplayFloorSlabWireFrame = true;
-                opts.bTransformScreenLines3DToCylinders3D = true;
+                opts.CO_bTransformScreenLines3DToCylinders3D = true;
                 //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                 opts.bDisplayFoundations = true;
@@ -869,7 +746,7 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = false;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = true;
+                opts.CO_bCreateHorizontalGridlines = true;
             }
 
             if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -878,7 +755,7 @@ namespace EXPIMP
                 opts.bDisplayWireFrameModel = true;
                 opts.bDisplayFoundationsWireFrame = true;
                 opts.bDisplayFloorSlabWireFrame = true;
-                opts.bTransformScreenLines3DToCylinders3D = true;
+                opts.CO_bTransformScreenLines3DToCylinders3D = true;
                 //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                 opts.bDisplayFoundations = true;
@@ -897,88 +774,13 @@ namespace EXPIMP
                 opts.bDisplayDetailSymbols = false;
                 //opts.bDisplayDimensions = true;
 
-                opts.bCreateHorizontalGridlines = true;
+                opts.CO_bCreateHorizontalGridlines = true;
             }
         }
 
-        private static void ChangeDisplayOptionsAcordingToView(EViewCladdingFilters viewMembers, ref DisplayOptions opts)
+        private static void ChangeDisplayOptionsAcordingToView(EViewCladdingFilters viewMembers, DisplayOptions opts)
         {
-            //spolocne Display Options
-            if (viewMembers == EViewCladdingFilters.CLADDING_FRONT ||
-                viewMembers == EViewCladdingFilters.CLADDING_BACK ||
-                viewMembers == EViewCladdingFilters.CLADDING_LEFT ||
-                viewMembers == EViewCladdingFilters.CLADDING_RIGHT ||
-                viewMembers == EViewCladdingFilters.CLADDING_ROOF)
-            {
-                // Defaultne hodnoty pre vsetky pohlady
-                opts.bTransformScreenLines3DToCylinders3D = true;
-                opts.wireFrameColor = System.Windows.Media.Colors.Red;
-
-                opts.bDisplayMembers = false;
-                opts.bDisplayJoints = false;
-                opts.bDisplayFoundations = false;
-                opts.bDisplayFloorSlab = false;
-
-                opts.bDisplayLocalMembersAxis = false;
-                opts.bDisplayDimensions = false;
-
-                opts.bDisplayCladding = true;
-                opts.bDisplayCladdingLeftWall = true;
-                opts.bDisplayCladdingRightWall = true;
-                opts.bDisplayCladdingFrontWall = true;
-                opts.bDisplayCladdingBackWall = true;
-                opts.bDisplayCladdingRoof = true;
-
-                opts.bDisplayFibreglass = true;
-                opts.bDisplayDoors = true;
-                opts.bDisplayWindows = true;
-
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayCladdingWireFrame = true;
-                opts.bDisplayFibreglassWireFrame = true;
-                opts.bDisplayDoorsWireFrame = true;
-                opts.bDisplayWindowsWireFrame = true;
-
-                opts.bDisplayCladdingDescription = true;
-                opts.bDisplayCladdingID = true;
-                opts.bDisplayCladdingPrefix = true;
-                opts.bDisplayCladdingLengthWidth = true;
-
-                opts.bDisplayFibreglassDescription = true;
-                opts.bDisplayFibreglassID = true;
-                opts.bDisplayFibreglassPrefix = true;
-                opts.bDisplayFibreglassLengthWidth = true;
-
-                opts.bDisplayDoorDescription = true;
-                opts.bDisplayDoorID = true;
-                opts.bDisplayDoorType = true;
-                opts.bDisplayDoorHeightWidth = true;
-
-                opts.bDisplayWindowDescription = true;
-                opts.bDisplayWindowID = true;
-                opts.bDisplayWindowHeightWidth = true;
-            }
-
-            if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
-            {
-                //opts.bDisplayCladdingFrontWall = true;
-            }
-            else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
-            { 
-                //opts.bDisplayCladdingBackWall = true;
-            }
-            else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
-            {
-                //opts.bDisplayCladdingLeftWall = true;
-            }
-            else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
-            {
-                //opts.bDisplayCladdingRightWall = true;
-            }
-            else if (viewMembers == EViewCladdingFilters.CLADDING_ROOF)
-            {
-                //opts.bDisplayCladdingRoof = true;
-            }
+            // TODO 701
         }
 
         private static void DrawJointTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
@@ -987,7 +789,7 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetJointTypesDisplayOptions(data);
-            opts.IsExport = true;
+            opts.CO_IsExport = true;
 
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName(), exportOpts);
@@ -1074,39 +876,8 @@ namespace EXPIMP
 
         private static DisplayOptions GetJointTypesDisplayOptions(CModelData data)
         {
+            // TODO 701
             DisplayOptions opts = data.DisplayOptions;
-            opts.bUseOrtographicCamera = false;
-            opts.bColorsAccordingToMembers = false;
-            opts.bColorsAccordingToSections = true;
-
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplaySolidModel = true;
-            opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-            opts.bDisplayMemberDescription = false;
-
-            opts.bDisplayMembers = true;
-            opts.bDisplayJoints = true;
-            opts.bDisplayPlates = true;
-            opts.bDisplayConnectors = true;
-
-            opts.bDisplayNodes = false;
-            opts.bDisplayNodesDescription = false;
-            opts.bDisplayNodalSupports = false;
-
-            opts.bDisplayGridlines = false;
-            opts.bDisplaySectionSymbols = false;
-            opts.bDisplayDetailSymbols = false;
-
-            // Do dokumentu exporujeme aj s wireframe
-            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.fWireFrameLineThickness = 2;
-            opts.bTransformScreenLines3DToCylinders3D = false;
-            opts.bDisplayMembersWireFrame = true;
-            opts.bDisplayJointsWireFrame = true;
-            opts.bDisplayPlatesWireFrame = true;
-            opts.bDisplayConnectorsWireFrame = true;
-            opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
             return opts;
         }
@@ -1117,7 +888,7 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetFootingTypesDisplayOptions(data);
-            opts.IsExport = true;
+            opts.CO_IsExport = true;
 
             DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefaultForExport();
 
@@ -1213,49 +984,8 @@ namespace EXPIMP
 
         private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
         {
+            // TODO 701
             DisplayOptions opts = data.DisplayOptions;
-            opts.bUseOrtographicCamera = false;
-            opts.bColorsAccordingToMembers = false;
-            opts.bColorsAccordingToSections = true;
-
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplaySolidModel = true;
-            opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-            opts.bDisplayMemberDescription = false;
-
-            opts.bDisplayMembers = true;
-            opts.bDisplayJoints = true;
-            opts.bDisplayPlates = true;
-            opts.bDisplayConnectors = true;
-
-            opts.bDisplayNodes = false;
-            opts.bDisplayNodesDescription = false;
-            opts.bDisplayNodalSupports = false;
-
-            opts.bDisplayGridlines = false;
-            opts.bDisplaySectionSymbols = false;
-            opts.bDisplayDetailSymbols = false;
-
-            // Do dokumentu exporujeme aj s wireframe
-            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.fWireFrameLineThickness = 2;
-            opts.bTransformScreenLines3DToCylinders3D = false;
-            opts.bDisplayMembersWireFrame = true;
-            opts.bDisplayJointsWireFrame = true;
-            opts.bDisplayPlatesWireFrame = true;
-            opts.bDisplayConnectorsWireFrame = true;
-            opts.wireFrameColor = System.Windows.Media.Colors.Black;
-
-            // Foundations
-            opts.bDisplayFoundations = true;
-            opts.bDisplayReinforcementBars = true;
-            opts.bDisplayFoundationsWireFrame = true;
-            opts.bDisplayReinforcementBarsWireFrame = true;
-            opts.RotateModelX = -80;
-            opts.RotateModelY = 45;
-            opts.RotateModelZ = 5;
-
             return opts;
         }
 
@@ -1797,47 +1527,11 @@ namespace EXPIMP
             // Preview isometricky pohlad na konstrukciu
             // Bez kot, bez popisov
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = false;
-            opts.bColorsAccordingToMembers = false;
-            opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplayMemberDescription = false;
-            opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
-            opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
-            opts.bDisplaySolidModel = true;
-            opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
-            opts.bTransformScreenLines3DToCylinders3D = true;
-            opts.fWireFrameLineThickness = 2f;
 
-            opts.bDisplayMembers = true;
-            opts.bDisplayJoints = false;
-            opts.bDisplayPlates = false;
-
-            opts.bDisplayNodes = false;
-            opts.bDisplayNodesDescription = false;
-            opts.bDisplayNodalSupports = false;
-
-            opts.bDisplayFoundations = false;
-            opts.bDisplayFloorSlab = false;
-            opts.bDisplaySawCuts = false;
-            opts.bDisplayControlJoints = false;
-
-            opts.bDisplayFoundationsDescription = false;
-            opts.bDisplayFloorSlabDescription = false;
-            opts.bDisplaySawCutsDescription = false;
-            opts.bDisplayControlJointsDescription = false;
-
-            opts.bDisplayGridlines = false;
-            opts.bDisplaySectionSymbols = false;
-            opts.bDisplayDetailSymbols = false;
-            opts.bDisplayDimensions = false;
-
-            opts.bCreateHorizontalGridlines = true;
-            opts.bCreateVerticalGridlinesFront = false;
-            opts.bCreateVerticalGridlinesBack = false;
-            opts.bCreateVerticalGridlinesLeft = false;
-            opts.bCreateVerticalGridlinesRight = false;
+            // TODO 701
+            opts.CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
+            opts.CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.CO_bTransformScreenLines3DToCylinders3D = true;
 
             CModel filteredModel = null;
             Trackport3D trackport = null;

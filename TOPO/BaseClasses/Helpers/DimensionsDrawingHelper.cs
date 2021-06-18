@@ -26,46 +26,46 @@ namespace BaseClasses.Helpers
             // Kota moze byt jedna alebo niekolko za sebou v linii - retazove kóty
             // Dalej mozu byt dalsie koty pridavane s nejakym odstupom voci prvej kolmo na hlavnu kotovaciu ciaru, tak ziskame niekolko kot pod sebou
             // Ja ich tu mam 1 - 3
-                        
+
             // Defaultne koty - zakladne rozmery
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
                 // Basic dimension - GUI input
                 DrawDimensionsAll(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 DrawDimensionsLEFT(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 DrawDimensionsRIGHT(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 DrawDimensionsFRONT(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 DrawDimensionsBACK(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 DrawDimensionsROOF(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {
                 DrawDimensionsCOLUMNS(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
                 DrawDimensionsMIDDLE(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
                 DrawDimensionsFOUNDATIONS(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 DrawDimensionsFLOOR(_trackport, model, sDisplayOptions, gr);
             }
@@ -1843,8 +1843,8 @@ namespace BaseClasses.Helpers
                 return null;            
 
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
-            float fLineRadius = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsLineRadius, displayOptions);
-            float scale = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsScale, displayOptions);
+            float fLineRadius = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.DimensionsLineRadius, displayOptions);
+            float scale = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.DimensionsScale, displayOptions);
             
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
@@ -1879,7 +1879,7 @@ namespace BaseClasses.Helpers
             tb.FontFamily = new FontFamily("Arial");
 
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
-            float fTextBlockVerticalSize = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsTextSize, displayOptions);
+            float fTextBlockVerticalSize = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.DimensionsTextSize, displayOptions);
             
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
