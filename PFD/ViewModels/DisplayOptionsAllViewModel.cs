@@ -955,7 +955,7 @@ namespace PFD
 
             #endregion ELEVATIONS
             #region ROOF
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations];
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].TransformScreenLines3DToCylinders3D = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue); // Pokus

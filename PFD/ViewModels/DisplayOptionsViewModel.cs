@@ -4130,7 +4130,7 @@ namespace PFD
             }
         }
 
-        
+
 
 
         #endregion Properties
@@ -4140,282 +4140,284 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public DisplayOptionsViewModel(bool bRelease = false)
-        {
-            IsSetFromCode = true;
+        public DisplayOptionsViewModel() { }
 
-            LightDirectional = false;
-            LightPoint = false;
-            LightSpot = false;
-            LightAmbient = true;
-            MaterialDiffuse = true;
-            MaterialEmissive = false;
-            DisplayMembers = true;
-            DisplayJoints = true; // Vypnute v defaulte
-            DisplayPlates = true; // Vypnute v defaulte
-            DisplayConnectors = true; // Vypnute v defaulte
-            DisplayNodes = false;
-            DisplayFoundations = true;
-            DisplayReinforcementBars = false;
-            DisplayFloorSlab = true;
-            DisplaySawCuts = true;
-            DisplayControlJoints = true;
+        //public DisplayOptionsViewModel(bool bRelease = false)
+        //{
+        //    IsSetFromCode = true;
 
-            DisplayMembersWireFrame = false;
-            DisplayJointsWireFrame = false;
-            DisplayPlatesWireFrame = false;
-            DisplayConnectorsWireFrame = false;
-            DisplayNodesWireFrame = false;
-            DisplayFoundationsWireFrame = false;
-            DisplayReinforcementBarsWireFrame = false;
-            DisplayFloorSlabWireFrame = false;
-            DisplayCladdingWireFrame = false;
-            DisplayFibreglassWireFrame = false;
-            DisplayDoorsWireFrame = false;
-            DisplayWindowsWireFrame = false;
+        //    LightDirectional = false;
+        //    LightPoint = false;
+        //    LightSpot = false;
+        //    LightAmbient = true;
+        //    MaterialDiffuse = true;
+        //    MaterialEmissive = false;
+        //    DisplayMembers = true;
+        //    DisplayJoints = true; // Vypnute v defaulte
+        //    DisplayPlates = true; // Vypnute v defaulte
+        //    DisplayConnectors = true; // Vypnute v defaulte
+        //    DisplayNodes = false;
+        //    DisplayFoundations = true;
+        //    DisplayReinforcementBars = false;
+        //    DisplayFloorSlab = true;
+        //    DisplaySawCuts = true;
+        //    DisplayControlJoints = true;
 
-            DoorsSimpleSolidModel = true;
-            DoorsSimpleWireframe = true;
-            WindowOutlineOnly = true;
+        //    DisplayMembersWireFrame = false;
+        //    DisplayJointsWireFrame = false;
+        //    DisplayPlatesWireFrame = false;
+        //    DisplayConnectorsWireFrame = false;
+        //    DisplayNodesWireFrame = false;
+        //    DisplayFoundationsWireFrame = false;
+        //    DisplayReinforcementBarsWireFrame = false;
+        //    DisplayFloorSlabWireFrame = false;
+        //    DisplayCladdingWireFrame = false;
+        //    DisplayFibreglassWireFrame = false;
+        //    DisplayDoorsWireFrame = false;
+        //    DisplayWindowsWireFrame = false;
 
-            DisplayCladding = false;
-            DisplayCladdingLeftWall = false;
-            DisplayCladdingRightWall = false;
-            DisplayCladdingFrontWall = false;
-            DisplayCladdingBackWall = false;
-            DisplayCladdingRoof = false;
-            //DisplayIndividualCladdingSheets = false;
-            DisplayFibreglass = false;
-            DisplayDoors = false;
-            DisplayWindows = false;
+        //    DoorsSimpleSolidModel = true;
+        //    DoorsSimpleWireframe = true;
+        //    WindowOutlineOnly = true;
 
-            DisplayNodalSupports = false;
-            DisplayMembersCenterLines = false;
-            DisplaySolidModel = true;
-            DisplayWireFrameModel = false;
-            DisplayDistinguishedColorMember = false;
-            //DisplayTransparentModelMember = false;
-            ColorsAccordingToMembersPrefix = false;
-            ColorsAccordingToMembersPosition = true;
-            ColorsAccordingToSections = false;
-            ColoredCenterlines = true;
-            CladdingSheetColoursByID = false;
+        //    DisplayCladding = false;
+        //    DisplayCladdingLeftWall = false;
+        //    DisplayCladdingRightWall = false;
+        //    DisplayCladdingFrontWall = false;
+        //    DisplayCladdingBackWall = false;
+        //    DisplayCladdingRoof = false;
+        //    //DisplayIndividualCladdingSheets = false;
+        //    DisplayFibreglass = false;
+        //    DisplayDoors = false;
+        //    DisplayWindows = false;
 
-            ShowNodesDescription = false;
-            ShowMemberDescription = false;
-            ShowMemberID = true;
-            ShowMemberPrefix = true;
-            ShowMemberRealLength = true;
-            ShowMemberRealLengthInMM = true;
-            ShowMemberRealLengthUnit = false;
-            ShowMemberCrossSectionStartName = false;
-            ShowFoundationsDescription = false;
-            ShowSawCutsDescription = false;
-            ShowControlJointsDescription = false;
-            ShowDimensions = true;
-            ShowGridLines = false;
-            ShowSectionSymbols = false;
-            ShowDetailSymbols = false;
-            ShowSlabRebates = true;
+        //    DisplayNodalSupports = false;
+        //    DisplayMembersCenterLines = false;
+        //    DisplaySolidModel = true;
+        //    DisplayWireFrameModel = false;
+        //    DisplayDistinguishedColorMember = false;
+        //    //DisplayTransparentModelMember = false;
+        //    ColorsAccordingToMembersPrefix = false;
+        //    ColorsAccordingToMembersPosition = true;
+        //    ColorsAccordingToSections = false;
+        //    ColoredCenterlines = true;
+        //    CladdingSheetColoursByID = false;
 
-            DisplayCladdingDescription = false;
-            DisplayCladdingID = false;
-            DisplayCladdingPrefix = false;
-            DisplayCladdingLengthWidth = false;
-            DisplayCladdingArea = false;
-            DisplayCladdingUnits = false;
+        //    ShowNodesDescription = false;
+        //    ShowMemberDescription = false;
+        //    ShowMemberID = true;
+        //    ShowMemberPrefix = true;
+        //    ShowMemberRealLength = true;
+        //    ShowMemberRealLengthInMM = true;
+        //    ShowMemberRealLengthUnit = false;
+        //    ShowMemberCrossSectionStartName = false;
+        //    ShowFoundationsDescription = false;
+        //    ShowSawCutsDescription = false;
+        //    ShowControlJointsDescription = false;
+        //    ShowDimensions = true;
+        //    ShowGridLines = false;
+        //    ShowSectionSymbols = false;
+        //    ShowDetailSymbols = false;
+        //    ShowSlabRebates = true;
 
-            DisplayFibreglassDescription = false;
-            DisplayFibreglassID = false;
-            DisplayFibreglassPrefix = false;
-            DisplayFibreglassLengthWidth = false;
-            DisplayFibreglassArea = false;
-            DisplayFibreglassUnits = false;
+        //    DisplayCladdingDescription = false;
+        //    DisplayCladdingID = false;
+        //    DisplayCladdingPrefix = false;
+        //    DisplayCladdingLengthWidth = false;
+        //    DisplayCladdingArea = false;
+        //    DisplayCladdingUnits = false;
 
-            DisplayDoorDescription = false;
-            DisplayDoorID = false;
-            DisplayDoorType = false;
-            DisplayDoorHeightWidth = false;
-            DisplayDoorArea = false;
-            DisplayDoorUnits = false;
+        //    DisplayFibreglassDescription = false;
+        //    DisplayFibreglassID = false;
+        //    DisplayFibreglassPrefix = false;
+        //    DisplayFibreglassLengthWidth = false;
+        //    DisplayFibreglassArea = false;
+        //    DisplayFibreglassUnits = false;
 
-            DisplayWindowDescription = false;
-            DisplayWindowID = false;
-            DisplayWindowHeightWidth = false;
-            DisplayWindowArea = false;
-            DisplayWindowUnits = false;
+        //    DisplayDoorDescription = false;
+        //    DisplayDoorID = false;
+        //    DisplayDoorType = false;
+        //    DisplayDoorHeightWidth = false;
+        //    DisplayDoorArea = false;
+        //    DisplayDoorUnits = false;
 
-            CladdingSheetColoursByID = false;
-            UseTextures = false;
-            UseTexturesMembers = false;
-            UseTexturesPlates = false;
-            UseTexturesCladding = false;
+        //    DisplayWindowDescription = false;
+        //    DisplayWindowID = false;
+        //    DisplayWindowHeightWidth = false;
+        //    DisplayWindowArea = false;
+        //    DisplayWindowUnits = false;
 
-            if (bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
-            {
-                LightAmbient = true;
-                DisplayJoints = false;
-                DisplayPlates = false;
-                DisplayFoundations = false;
-                DisplayFloorSlab = false;
-                DisplaySawCuts = false;
-                DisplayControlJoints = false;
-                DisplayMembersCenterLines = true; // Zobrazujeme
-                DisplaySolidModel = false;
-                ShowSlabRebates = false;
-                ShowMemberDescription = false;
-            }
+        //    CladdingSheetColoursByID = false;
+        //    UseTextures = false;
+        //    UseTexturesMembers = false;
+        //    UseTexturesPlates = false;
+        //    UseTexturesCladding = false;
 
-            ShowLoads = false;
-            ShowLoadsOnMembers = false;
-            ShowLoadsOnGirts = true;
-            ShowLoadsOnPurlins = true;
-            ShowLoadsOnEavePurlins = true;
-            ShowLoadsOnWindPosts = true;
-            ShowLoadsOnFrameMembers = true;
-            ShowNodalLoads = false;
-            ShowSurfaceLoads = false;
-            ShowLoadsLabels = false;
-            ShowLoadsLabelsUnits = false;
-            ShowGlobalAxis = true;
-            ShowLocalMembersAxis = false;
-            ShowSurfaceLoadsAxis = false;
+        //    if (bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
+        //    {
+        //        LightAmbient = true;
+        //        DisplayJoints = false;
+        //        DisplayPlates = false;
+        //        DisplayFoundations = false;
+        //        DisplayFloorSlab = false;
+        //        DisplaySawCuts = false;
+        //        DisplayControlJoints = false;
+        //        DisplayMembersCenterLines = true; // Zobrazujeme
+        //        DisplaySolidModel = false;
+        //        ShowSlabRebates = false;
+        //        ShowMemberDescription = false;
+        //    }
 
-            DisplayIn3DRatio = 0.003f;
+        //    ShowLoads = false;
+        //    ShowLoadsOnMembers = false;
+        //    ShowLoadsOnGirts = true;
+        //    ShowLoadsOnPurlins = true;
+        //    ShowLoadsOnEavePurlins = true;
+        //    ShowLoadsOnWindPosts = true;
+        //    ShowLoadsOnFrameMembers = true;
+        //    ShowNodalLoads = false;
+        //    ShowSurfaceLoads = false;
+        //    ShowLoadsLabels = false;
+        //    ShowLoadsLabelsUnits = false;
+        //    ShowGlobalAxis = true;
+        //    ShowLocalMembersAxis = false;
+        //    ShowSurfaceLoadsAxis = false;
+
+        //    DisplayIn3DRatio = 0.003f;
 
 
-            WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
-            WireFrameLineThickness = 2;
+        //    WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+        //    WireFrameLineThickness = 2;
 
-            MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.WhiteSmoke);
-            MemberCenterlineThickness = 2;
+        //    MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.WhiteSmoke);
+        //    MemberCenterlineThickness = 2;
 
-            NodeDescriptionTextFontSize = 12;
-            MemberDescriptionTextFontSize = 12;
-            DimensionTextFontSize = 12;
-            GridLineLabelTextFontSize = 30;
-            SectionSymbolLabelTextFontSize = 30;
-            DetailSymbolLabelTextFontSize = 30;
+        //    NodeDescriptionTextFontSize = 12;
+        //    MemberDescriptionTextFontSize = 12;
+        //    DimensionTextFontSize = 12;
+        //    GridLineLabelTextFontSize = 30;
+        //    SectionSymbolLabelTextFontSize = 30;
+        //    DetailSymbolLabelTextFontSize = 30;
 
-            SawCutTextFontSize = 12;
-            ControlJointTextFontSize = 12;
+        //    SawCutTextFontSize = 12;
+        //    ControlJointTextFontSize = 12;
 
-            FoundationTextFontSize = 12;
-            FloorSlabTextFontSize = 12;
+        //    FoundationTextFontSize = 12;
+        //    FloorSlabTextFontSize = 12;
 
-            NodeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
-            NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
-            MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Beige);
-            DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
-            DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
+        //    NodeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+        //    NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+        //    MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Beige);
+        //    DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
+        //    DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
 
-            GridLineLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
-            GridLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
-            GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
+        //    GridLineLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+        //    GridLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+        //    GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
 
-            SectionSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
-            SectionSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+        //    SectionSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+        //    SectionSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
 
-            DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
-            DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndexWithTransparent(Colors.White);
-            DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
+        //    DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
+        //    DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndexWithTransparent(Colors.White);
+        //    DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
-            SawCutTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);
-            SawCutLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);
-            SawCutLinePatternType = (int)ELinePatternType.DOTTED;
+        //    SawCutTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);
+        //    SawCutLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);
+        //    SawCutLinePatternType = (int)ELinePatternType.DOTTED;
 
-            ControlJointTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.BlueViolet);
-            ControlJointLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.BlueViolet);
-            ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
+        //    ControlJointTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.BlueViolet);
+        //    ControlJointLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.BlueViolet);
+        //    ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
 
-            FoundationTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.HotPink);
-            FloorSlabTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.HotPink);
+        //    FoundationTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.HotPink);
+        //    FloorSlabTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.HotPink);
 
-            FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGray);
-            FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGray);
-            SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkOrange);
+        //    FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGray);
+        //    FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGray);
+        //    SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkOrange);
 
-            CladdingTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
-            FibreglassTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Indigo);
-            DoorTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
-            WindowTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+        //    CladdingTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
+        //    FibreglassTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Indigo);
+        //    DoorTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+        //    WindowTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
 
-            PlateColorIndex = CComboBoxHelper.GetColorIndex(Colors.Gray);
-            ScrewColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue);
-            AnchorColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGoldenrodYellow);
-            WasherColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
-            NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
+        //    PlateColorIndex = CComboBoxHelper.GetColorIndex(Colors.Gray);
+        //    ScrewColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue);
+        //    AnchorColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGoldenrodYellow);
+        //    WasherColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
+        //    NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
-            CladdingSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Yellow);
-            FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
+        //    CladdingSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Yellow);
+        //    FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
 
-            MemberSolidModelOpacity = 0.8f;
-            PlateSolidModelOpacity = 0.5f;
-            ScrewSolidModelOpacity = 0.9f;
-            AnchorSolidModelOpacity = 0.9f;
-            FoundationSolidModelOpacity = 0.4f;
-            ReinforcementBarSolidModelOpacity = 0.9f;
-            FloorSlabSolidModelOpacity = 0.3f;
-            SlabRebateSolidModelOpacity = 0.3f;
+        //    MemberSolidModelOpacity = 0.8f;
+        //    PlateSolidModelOpacity = 0.5f;
+        //    ScrewSolidModelOpacity = 0.9f;
+        //    AnchorSolidModelOpacity = 0.9f;
+        //    FoundationSolidModelOpacity = 0.4f;
+        //    ReinforcementBarSolidModelOpacity = 0.9f;
+        //    FloorSlabSolidModelOpacity = 0.3f;
+        //    SlabRebateSolidModelOpacity = 0.3f;
 
-            FrontCladdingOpacity = 0.95f;
-            LeftCladdingOpacity = 0.95f;
-            RoofCladdingOpacity = 0.95f;
-            FlashingOpacity = 0.90f;
-            DoorPanelOpacity = 0.95f;
-            WindowPanelOpacity = 0.95f;
-            FibreglassOpacity = 0.70f;
+        //    FrontCladdingOpacity = 0.95f;
+        //    LeftCladdingOpacity = 0.95f;
+        //    RoofCladdingOpacity = 0.95f;
+        //    FlashingOpacity = 0.90f;
+        //    DoorPanelOpacity = 0.95f;
+        //    WindowPanelOpacity = 0.95f;
+        //    FibreglassOpacity = 0.70f;
 
-            BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+        //    BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-            //// Text 7.0 mm
-            //ExportGridlinesSize = 1f / 20f;
-            //ExportGridLineLabelSize = 1f / 40f;
+        //    //// Text 7.0 mm
+        //    //ExportGridlinesSize = 1f / 20f;
+        //    //ExportGridLineLabelSize = 1f / 40f;
 
-            //ExportSectionSymbolsSize = 1f / 20f;
-            //ExportSectionSymbolLabelSize = 1f / 40f;
-            //ExportDetailSymbolSize = 1f / 20f;
-            //ExportDetailSymbolLabelSize = 1 / 40f;
+        //    //ExportSectionSymbolsSize = 1f / 20f;
+        //    //ExportSectionSymbolLabelSize = 1f / 40f;
+        //    //ExportDetailSymbolSize = 1f / 20f;
+        //    //ExportDetailSymbolLabelSize = 1 / 40f;
 
-            //// Text 2.5 - 3.0 mm
-            //ExportFloorSlabTextSize = 1f / 20f; // 4 riadky + 3 medzery
-            //ExportMembersDescriptionSize = 1f / 100f;
-            //ExportNodesDescriptionSize = 1f / 100f;
-            //ExportSawCutTextSize = 1f / 100f;
-            //ExportControlJointTextSize = 1f / 100f;
-            //ExportFoundationTextSize = 1f / 100f;
-            //ExportDimensionsTextSize = 1f / 100f;
-            //ExportDimensionsLineRadius = 1f / 1500f;
-            //ExportDimensionsScale = 1f / 10f;
-            //ExportDescriptionTextWidthScaleFactor = 0.6f;
-            //ExportCladdingDescriptionSize = 1f / 100f;
-            //ExportFibreglassDescriptionSize = 1f / 100f;
-            //ExportDoorDescriptionSize = 1f / 100f;
-            //ExportWindowDescriptionSize = 1f / 100f;
+        //    //// Text 2.5 - 3.0 mm
+        //    //ExportFloorSlabTextSize = 1f / 20f; // 4 riadky + 3 medzery
+        //    //ExportMembersDescriptionSize = 1f / 100f;
+        //    //ExportNodesDescriptionSize = 1f / 100f;
+        //    //ExportSawCutTextSize = 1f / 100f;
+        //    //ExportControlJointTextSize = 1f / 100f;
+        //    //ExportFoundationTextSize = 1f / 100f;
+        //    //ExportDimensionsTextSize = 1f / 100f;
+        //    //ExportDimensionsLineRadius = 1f / 1500f;
+        //    //ExportDimensionsScale = 1f / 10f;
+        //    //ExportDescriptionTextWidthScaleFactor = 0.6f;
+        //    //ExportCladdingDescriptionSize = 1f / 100f;
+        //    //ExportFibreglassDescriptionSize = 1f / 100f;
+        //    //ExportDoorDescriptionSize = 1f / 100f;
+        //    //ExportWindowDescriptionSize = 1f / 100f;
 
-            GridlinesSize = 1f / 20f;
-            GridLineLabelSize = 1f / 40f;
-            SectionSymbolsSize = 1f / 20f;
-            SectionSymbolLabelSize = 1f / 40f;
-            DetailSymbolSize = 1f / 20f;
-            DetailSymbolLabelSize = 1 / 40f;
-            FloorSlabTextSize = 1f / 20f;
-            MembersDescriptionSize = 1f / 100f;
-            NodesDescriptionSize = 1f / 100f;
-            SawCutTextSize = 1f / 100f;
-            ControlJointTextSize = 1f / 100f;
-            FoundationTextSize = 1f / 100f;
-            DimensionsTextSize = 1f / 100f;
-            DimensionsLineRadius = 1f / 1500f;
-            DimensionsScale = 1f / 10f;
-            GUIDescriptionTextWidthScaleFactor = 0.3f;
-            CladdingDescriptionSize = 1f / 100f;
-            FibreglassDescriptionSize = 1f / 100f;
-            DoorDescriptionSize = 1f / 100f;
-            WindowDescriptionSize = 1f / 100f;
+        //    GridlinesSize = 1f / 20f;
+        //    GridLineLabelSize = 1f / 40f;
+        //    SectionSymbolsSize = 1f / 20f;
+        //    SectionSymbolLabelSize = 1f / 40f;
+        //    DetailSymbolSize = 1f / 20f;
+        //    DetailSymbolLabelSize = 1 / 40f;
+        //    FloorSlabTextSize = 1f / 20f;
+        //    MembersDescriptionSize = 1f / 100f;
+        //    NodesDescriptionSize = 1f / 100f;
+        //    SawCutTextSize = 1f / 100f;
+        //    ControlJointTextSize = 1f / 100f;
+        //    FoundationTextSize = 1f / 100f;
+        //    DimensionsTextSize = 1f / 100f;
+        //    DimensionsLineRadius = 1f / 1500f;
+        //    DimensionsScale = 1f / 10f;
+        //    GUIDescriptionTextWidthScaleFactor = 0.3f;
+        //    CladdingDescriptionSize = 1f / 100f;
+        //    FibreglassDescriptionSize = 1f / 100f;
+        //    DoorDescriptionSize = 1f / 100f;
+        //    WindowDescriptionSize = 1f / 100f;
 
-            IsSetFromCode = false;
-        }
+        //    IsSetFromCode = false;
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
