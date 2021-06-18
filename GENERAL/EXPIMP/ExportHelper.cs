@@ -1607,6 +1607,7 @@ namespace EXPIMP
             opts.CO_ViewModelMembers = (int)filter;
             opts.bDisplaySolidModel = true;
             opts.bDisplayMembersCenterLines = false;
+            // TODO 701 - zakazeme to uzivatelovi nastavit v GUI ????
             opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
             opts.CO_bTransformScreenLines3DToCylinders3D = true;
 

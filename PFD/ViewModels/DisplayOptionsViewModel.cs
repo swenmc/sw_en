@@ -356,34 +356,34 @@ namespace PFD
         // TODO 701
 
         // Properties defined only for export - layouts (LY - layout)
-        public EPageSizes LY_ViewsPageSize;
-        public EImagesQuality LY_ExportImagesQuality;
+        private EPageSizes m_LY_ViewsPageSize;
+        private EImagesQuality m_LY_ExportImagesQuality;
 
         // Properties defined only in source code (CO - code only)
-        public bool CO_IsExport;
-        public bool CO_SameScaleForViews;
+        private bool m_CO_IsExport;
+        private bool m_CO_SameScaleForViews;
 
-        public bool CO_bTransformScreenLines3DToCylinders3D;
-        public float CO_DisplayIn3DRatio;
-        public int CO_RotateModelX;
-        public int CO_RotateModelY;
-        public int CO_RotateModelZ;
-        public int CO_ModelView;
-        public int CO_ViewModelMembers;
-        public int CO_ViewCladding;
-        public bool CO_bUseOrtographicCamera;
-        public double CO_OrtographicCameraWidth;
+        private bool m_CO_bTransformScreenLines3DToCylinders3D;
+        private float m_CO_DisplayIn3DRatio;
+        private int m_CO_RotateModelX;
+        private int m_CO_RotateModelY;
+        private int m_CO_RotateModelZ;
+        private int m_CO_ModelView;
+        private int m_CO_ViewModelMembers;
+        private int m_CO_ViewCladding;
+        private bool m_CO_bUseOrtographicCamera;
+        private double m_CO_OrtographicCameraWidth;
 
-        public bool CO_bCreateHorizontalGridlines;
-        public bool CO_bCreateVerticalGridlinesFront;
-        public bool CO_bCreateVerticalGridlinesBack;
-        public bool CO_bCreateVerticalGridlinesLeft;
-        public bool CO_bCreateVerticalGridlinesRight;
+        private bool m_CO_bCreateHorizontalGridlines;
+        private bool m_CO_bCreateVerticalGridlinesFront;
+        private bool m_CO_bCreateVerticalGridlinesBack;
+        private bool m_CO_bCreateVerticalGridlinesLeft;
+        private bool m_CO_bCreateVerticalGridlinesRight;
 
-        public int FO_ReinforcementBarColor_Top_x_Index;
-        public int FO_ReinforcementBarColor_Top_y_Index;
-        public int FO_ReinforcementBarColor_Bottom_x_Index;
-        public int FO_ReinforcementBarColor_Bottom_y_Index;
+        private int m_FO_ReinforcementBarColor_Top_x_Index;
+        private int m_FO_ReinforcementBarColor_Top_y_Index;
+        private int m_FO_ReinforcementBarColor_Bottom_x_Index;
+        private int m_FO_ReinforcementBarColor_Bottom_y_Index;
 
         public bool IsSetFromCode = false;
 
@@ -4140,12 +4140,31 @@ namespace PFD
             }
         }
 
-
-
+        public EPageSizes LY_ViewsPageSize { get => m_LY_ViewsPageSize; set => m_LY_ViewsPageSize = value; }
+        public EImagesQuality LY_ExportImagesQuality { get => m_LY_ExportImagesQuality; set => m_LY_ExportImagesQuality = value; }
+        public bool CO_IsExport { get => m_CO_IsExport; set => m_CO_IsExport = value; }
+        public bool CO_SameScaleForViews { get => m_CO_SameScaleForViews; set => m_CO_SameScaleForViews = value; }
+        public bool CO_TransformScreenLines3DToCylinders3D { get => m_CO_bTransformScreenLines3DToCylinders3D; set => m_CO_bTransformScreenLines3DToCylinders3D = value; }
+        public float CO_DisplayIn3DRatio { get => m_CO_DisplayIn3DRatio; set => m_CO_DisplayIn3DRatio = value; }
+        public int CO_RotateModelX { get => m_CO_RotateModelX; set => m_CO_RotateModelX = value; }
+        public int CO_RotateModelY { get => m_CO_RotateModelY; set => m_CO_RotateModelY = value; }
+        public int CO_RotateModelZ { get => m_CO_RotateModelZ; set => m_CO_RotateModelZ = value; }
+        public int CO_ModelView { get => m_CO_ModelView; set => m_CO_ModelView = value; }
+        public int CO_ViewModelMembers { get => m_CO_ViewModelMembers; set => m_CO_ViewModelMembers = value; }
+        public int CO_ViewCladding { get => m_CO_ViewCladding; set => m_CO_ViewCladding = value; }
+        public bool CO_UseOrtographicCamera { get => m_CO_bUseOrtographicCamera; set => m_CO_bUseOrtographicCamera = value; }
+        public double CO_OrtographicCameraWidth { get => m_CO_OrtographicCameraWidth; set => m_CO_OrtographicCameraWidth = value; }
+        public bool CO_CreateHorizontalGridlines { get => m_CO_bCreateHorizontalGridlines; set => m_CO_bCreateHorizontalGridlines = value; }
+        public bool CO_CreateVerticalGridlinesFront { get => m_CO_bCreateVerticalGridlinesFront; set => m_CO_bCreateVerticalGridlinesFront = value; }
+        public bool CO_CreateVerticalGridlinesBack { get => m_CO_bCreateVerticalGridlinesBack; set => m_CO_bCreateVerticalGridlinesBack = value; }
+        public bool CO_CreateVerticalGridlinesLeft { get => m_CO_bCreateVerticalGridlinesLeft; set => m_CO_bCreateVerticalGridlinesLeft = value; }
+        public bool CO_CreateVerticalGridlinesRight { get => m_CO_bCreateVerticalGridlinesRight; set => m_CO_bCreateVerticalGridlinesRight = value; }
+        public int FO_ReinforcementBarColor_Top_x_Index { get => m_FO_ReinforcementBarColor_Top_x_Index; set => m_FO_ReinforcementBarColor_Top_x_Index = value; }
+        public int FO_ReinforcementBarColor_Top_y_Index { get => m_FO_ReinforcementBarColor_Top_y_Index; set => m_FO_ReinforcementBarColor_Top_y_Index = value; }
+        public int FO_ReinforcementBarColor_Bottom_x_Index { get => m_FO_ReinforcementBarColor_Bottom_x_Index; set => m_FO_ReinforcementBarColor_Bottom_x_Index = value; }
+        public int FO_ReinforcementBarColor_Bottom_y_Index { get => m_FO_ReinforcementBarColor_Bottom_y_Index; set => m_FO_ReinforcementBarColor_Bottom_y_Index = value; }
 
         #endregion Properties
-
-
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -4385,7 +4404,7 @@ namespace PFD
             CO_IsExport = newVM.CO_IsExport;
             CO_SameScaleForViews = newVM.CO_SameScaleForViews;
 
-            CO_bTransformScreenLines3DToCylinders3D = newVM.CO_bTransformScreenLines3DToCylinders3D;
+            CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;
             CO_DisplayIn3DRatio = newVM.CO_DisplayIn3DRatio;
             CO_RotateModelX = newVM.CO_RotateModelX;
             CO_RotateModelY = newVM.CO_RotateModelY;
@@ -4393,14 +4412,14 @@ namespace PFD
             CO_ModelView = newVM.CO_ModelView;
             CO_ViewModelMembers = newVM.CO_ViewModelMembers;
             CO_ViewCladding = newVM.CO_ViewCladding;
-            CO_bUseOrtographicCamera = newVM.CO_bUseOrtographicCamera;
+            CO_UseOrtographicCamera = newVM.CO_UseOrtographicCamera;
             CO_OrtographicCameraWidth = newVM.CO_OrtographicCameraWidth;
 
-            CO_bCreateHorizontalGridlines = newVM.CO_bCreateHorizontalGridlines;
-            CO_bCreateVerticalGridlinesFront = newVM.CO_bCreateVerticalGridlinesFront;
-            CO_bCreateVerticalGridlinesBack = newVM.CO_bCreateVerticalGridlinesBack;
-            CO_bCreateVerticalGridlinesLeft = newVM.CO_bCreateVerticalGridlinesLeft;
-            CO_bCreateVerticalGridlinesRight = newVM.CO_bCreateVerticalGridlinesRight;
+            CO_CreateHorizontalGridlines = newVM.CO_CreateHorizontalGridlines;
+            CO_CreateVerticalGridlinesFront = newVM.CO_CreateVerticalGridlinesFront;
+            CO_CreateVerticalGridlinesBack = newVM.CO_CreateVerticalGridlinesBack;
+            CO_CreateVerticalGridlinesLeft = newVM.CO_CreateVerticalGridlinesLeft;
+            CO_CreateVerticalGridlinesRight = newVM.CO_CreateVerticalGridlinesRight;
 
             // TODO 701 - Presunut nastavenie farieb z Footing Options do Display options
             FO_ReinforcementBarColor_Top_x_Index = newVM.FO_ReinforcementBarColor_Top_x_Index;

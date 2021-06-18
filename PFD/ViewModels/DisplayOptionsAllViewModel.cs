@@ -82,6 +82,32 @@ namespace PFD
 
         private void InitViewModelsDefaults()
         {
+            //-----------------------------------------------------------
+            // TO Ondrej - Mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
+            // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
+
+            /*
+            07.0 PT     09 PX     2.5 MM     0.60 EM     060 %
+            07.0 PT     10 PX     2.5 MM     0.60 EM     060 %
+            08.0 PT     11 PX     2.8 MM     0.70 EM     070 %
+            09.0 PT     12 PX     3.4 MM     0.80 EM     080 %
+            09.0 PT     13 PX     3.4 MM     0.80 EM     080 %
+            10.0 PT     13 PX     3.4 MM     0.80 EM     080 %
+            10.5 PT     14 PX     3.6 MM     0.85 EM     085 %
+            11.0 PT     15 PX     3.9 MM     0.95 EM     095 %
+            12.0 PT     16 PX     4.2 MM     1.05 EM     105 %
+            12.0 PT     17 PX     4.2 MM     1.05 EM     105 %
+            13.0 PT     17 PX     4.2 MM     1.10 EM     110 %
+            13.0 PT     18 PX     4.8 MM     1.10 EM     110 %
+            14.0 PT     19 PX     5.0 MM     1.20 EM     120 %
+            15.0 PT     20 PX     5.4 MM     1.33 EM     133 %
+            16.0 PT     21 PX     5.8 MM     1.40 EM     140 %
+            16.0 PT     22 PX     5.8 MM     1.40 EM     140 %
+            17.0 PT     23 PX     6.2 MM     1.50 EM     150 %
+            */
+
+            //-----------------------------------------------------------
+
             // IN WORK 17.6.2021
             // TODO - 701
 
@@ -114,7 +140,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ShowGlobalAxis = true;
 
-           // 701 DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_DisplayIn3DRatio = 0.003f; // Code Only
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_DisplayIn3DRatio = 0.003f; // Code Only
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WireFrameLineThickness = 2;
@@ -270,10 +296,11 @@ namespace PFD
             #region REPORT
             #region 3D SCENE
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].MembersDescriptionSize = 1f / 60f;  //??? tu je zmena k tasku 701 - zrusene bolo ExportMembersDescriptionSize
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].LY_ViewsPageSize = EPageSizes.A4;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].CO_bUseOrtographicCamera = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].CO_UseOrtographicCamera = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].DisplayMembersCenterLines = true;
 
@@ -299,13 +326,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayNodes = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].ShowNodesDescription = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_bUseOrtographicCamera = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].ShowMemberDescription = false;
 
             // Do dokumentu exporujeme aj s wireframe
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayWireFrameModel = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayJointsWireFrame = true;
@@ -329,13 +356,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayNodes = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].ShowNodesDescription = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].CO_bUseOrtographicCamera = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].ShowMemberDescription = false;
 
             // Do dokumentu exporujeme aj s wireframe
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayWireFrameModel = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayJointsWireFrame = true;
@@ -363,7 +390,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_IsExport = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bUseOrtographicCamera = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ColorsAccordingToMembersPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ColorsAccordingToSections = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowGlobalAxis = false;
@@ -371,7 +398,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplaySolidModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayMembersCenterLines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayMembers = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayJoints = false;
@@ -410,23 +437,23 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].UseTextures = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].UseTexturesCladding = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bCreateHorizontalGridlines = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bCreateVerticalGridlinesFront = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bCreateVerticalGridlinesBack = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bCreateVerticalGridlinesLeft = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_bCreateVerticalGridlinesRight = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesFront = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesBack = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesLeft = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesRight = false;
             #endregion 3D SCENE
             #region FRAME VIEWS
             #region ELEVATIONS
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bUseOrtographicCamera = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_UseOrtographicCamera = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ColorsAccordingToMembersPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ColorsAccordingToSections = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplaySolidModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayMembersCenterLines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
 
@@ -445,29 +472,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayCladding = false;
-
-            // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
-            // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
-
-            /*
-            07.0 PT     09 PX     2.5 MM     0.60 EM     060 %
-            07.0 PT     10 PX     2.5 MM     0.60 EM     060 %
-            08.0 PT     11 PX     2.8 MM     0.70 EM     070 %
-            09.0 PT     12 PX     3.4 MM     0.80 EM     080 %
-            09.0 PT     13 PX     3.4 MM     0.80 EM     080 %
-            10.0 PT     13 PX     3.4 MM     0.80 EM     080 %
-            10.5 PT     14 PX     3.6 MM     0.85 EM     085 %
-            11.0 PT     15 PX     3.9 MM     0.95 EM     095 %
-            12.0 PT     16 PX     4.2 MM     1.05 EM     105 %
-            12.0 PT     17 PX     4.2 MM     1.05 EM     105 %
-            13.0 PT     17 PX     4.2 MM     1.10 EM     110 %
-            13.0 PT     18 PX     4.8 MM     1.10 EM     110 %
-            14.0 PT     19 PX     5.0 MM     1.20 EM     120 %
-            15.0 PT     20 PX     5.4 MM     1.33 EM     133 %
-            16.0 PT     21 PX     5.8 MM     1.40 EM     140 %
-            16.0 PT     22 PX     5.8 MM     1.40 EM     140 %
-            17.0 PT     23 PX     6.2 MM     1.50 EM     150 %
-            */
 
             //-----------------------------------------------------------
             // TODO 701 - Pridane
@@ -559,15 +563,15 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_SameScaleForViews = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateHorizontalGridlines = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesFront = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesBack = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesLeft = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesRight = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesFront = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesBack = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesLeft = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesRight = false;
 
             // FRONT VIEW
 
-            if (true /* TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ViewMembers == EViewModelMemberFilters.FRONT*/)
+            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
@@ -579,11 +583,11 @@ namespace PFD
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
                 //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayDimensions = true;
 
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesFront = true;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesFront = true;
             }
 
-            if (true /* TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ViewMembers == EViewModelMemberFilters.BACK*/)
+            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
@@ -594,11 +598,11 @@ namespace PFD
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
                 //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayDimensions = true;
 
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesBack = true;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesBack = true;
             }
 
-            if (true /* TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ViewMembers == EViewModelMemberFilters.LEFT*/)
+            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
@@ -609,11 +613,11 @@ namespace PFD
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDimensions = true;
 
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesLeft = true;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesLeft = true;
             }
 
-            if (true /* TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ViewMembers == EViewModelMemberFilters.RIGHT*/)
+            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
@@ -624,8 +628,8 @@ namespace PFD
                 DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
                 //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayDimensions = true;
 
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_bCreateVerticalGridlinesRight = true;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
+                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesRight = true;
             }
             #endregion ELEVATIONS
             // TODO Pre nasledujuce options Frame Views treba doplnit vsade to co je pre elevations
@@ -641,7 +645,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowDetailSymbols = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].CO_bCreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].CO_CreateHorizontalGridlines = true;
             #endregion ROOF
             #region FRAMES
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
@@ -653,14 +657,14 @@ namespace PFD
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].DisplayWireFrameModel = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].DisplayMembersWireFrame = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].CO_bTransformScreenLines3DToCylinders3D = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowGridLines = true; // Vertical
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowSectionSymbols = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].CO_bCreateVerticalGridlinesFront = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].CO_CreateVerticalGridlinesFront = true;
             #endregion FRAMES
             #region COLUMNS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
@@ -672,7 +676,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayFloorSlabWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayMembersWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_TransformScreenLines3DToCylinders3D = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayFoundations = false;
@@ -684,7 +688,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_bCreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_CreateHorizontalGridlines = true;
 
             #endregion COLUMNS
             #region FOUNDATIONS
@@ -694,7 +698,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayFoundationsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayFloorSlabWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_TransformScreenLines3DToCylinders3D = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayFoundations = true;
@@ -708,7 +712,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_bCreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_CreateHorizontalGridlines = true;
 
             #endregion FOUNDATIONS
             #region FLOOR
@@ -718,7 +722,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFoundationsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFloorSlabWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_TransformScreenLines3DToCylinders3D = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFoundations = true;
@@ -737,7 +741,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_bCreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;
             #endregion FLOOR
             #endregion FRAME VIEWS
             #region CLADDING VIEWS
@@ -745,7 +749,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Defaultne hodnoty pre vsetky pohlady
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_TransformScreenLines3DToCylinders3D = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Red);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayMembers = false;
@@ -797,7 +801,7 @@ namespace PFD
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].CO_bTransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].CO_TransformScreenLines3DToCylinders3D = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue); // Pokus
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayMembers = false;
@@ -871,7 +875,7 @@ namespace PFD
             #region JOINTS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_bUseOrtographicCamera = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].ColorsAccordingToMembersPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].ColorsAccordingToSections = true;
 
@@ -897,7 +901,7 @@ namespace PFD
             // Do dokumentu exporujeme aj s wireframe
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].WireFrameLineThickness = 2;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_bTransformScreenLines3DToCylinders3D = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_TransformScreenLines3DToCylinders3D = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayPlatesWireFrame = true;
@@ -909,7 +913,7 @@ namespace PFD
             #region FOUNDATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview]);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_bUseOrtographicCamera = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].ColorsAccordingToMembersPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].ColorsAccordingToSections = true;
 
@@ -935,7 +939,7 @@ namespace PFD
             // Do dokumentu exporujeme aj s wireframe
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].WireFrameLineThickness = 2;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_bTransformScreenLines3DToCylinders3D = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_TransformScreenLines3DToCylinders3D = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayPlatesWireFrame = true;
