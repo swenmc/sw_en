@@ -3559,7 +3559,6 @@ namespace PFD
             sDisplayOptions.bDisplayWireFrameModel = do_vm.DisplayWireFrameModel;
 
             sDisplayOptions.bDistinguishedColor = do_vm.DisplayDistinguishedColorMember;
-            //sDisplayOptions.bTransparentMemberModel = _displayOptionsVM.DisplayTransparentModelMember;
 
             sDisplayOptions.bDisplayGlobalAxis = do_vm.ShowGlobalAxis;
             sDisplayOptions.bDisplayLocalMembersAxis = do_vm.ShowLocalMembersAxis;
@@ -3586,25 +3585,11 @@ namespace PFD
             sDisplayOptions.bColorsAccordingToSections = do_vm.ColorsAccordingToSections;
             sDisplayOptions.bColoredCenterlines = do_vm.ColoredCenterlines;
 
-            //sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.wireFrameColor = do_vm.WireframeColor;
             sDisplayOptions.fWireFrameLineThickness = do_vm.WireFrameLineThickness;
 
             sDisplayOptions.memberCenterlineColor = do_vm.MemberCenterlineColor;
             sDisplayOptions.fmemberCenterlineThickness = do_vm.MemberCenterlineThickness;
-
-            //sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fDimensionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fGridLineLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fSectionSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fDetailSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-
-            //sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-
-            //sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            //sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.NodeColor = do_vm.NodeColor;
             sDisplayOptions.NodeDescriptionTextColor = do_vm.NodeDescriptionTextColor;
@@ -3644,6 +3629,7 @@ namespace PFD
             sDisplayOptions.DoorTextColor = do_vm.DoorTextColor;
             sDisplayOptions.WindowTextColor = do_vm.WindowTextColor;
 
+            // TODO 701 - toto presunut do display options aj v ramci GUI
             if (FootingVM != null)
             {
                 sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
