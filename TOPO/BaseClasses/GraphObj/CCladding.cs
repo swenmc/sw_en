@@ -2478,28 +2478,27 @@ namespace BaseClasses.GraphObj
                 return length;
 
             double l;double r;
+            double s; double e;
             for (int i = 0; i < intervals.Count; i++)
             {
                 l = intervals[i].S;
                 r = intervals[i].E;
 
-                for (int j = 0; j < intervals.Count; j++)
+                for (int j = i + 1; j < intervals.Count; j++)
                 {
-                    if (i != j) // Porovnavame kazdy s kazdym okrem pripadu, ked sa porovnava ten isty interval so sebou samym
+                    s = intervals[i].S;
+                    e = intervals[i].E;
+
+                    if (intervals[j].S > r || intervals[j].E < l)
                     {
-                        // BUG 853
-                        // TODO - potrebujeme osetrit pripad ked sa uvazuje napr. index i = 1 a j = 2 a potom znova i = 2 a j = 1, dlzku pre tieto dve moznosti chceme zohladnit len raz
-                        if (intervals[j].S > r || intervals[j].E < l)
-                        {
-                            // No intersection;
-                        }
-                        else
-                        {
-                            l = Math.Max(l, intervals[j].S);
-                            r = Math.Min(r, intervals[j].E);
-                            length += (r - l);
-                        }
+                        // No intersection;
                     }
+                    else
+                    {
+                        s = Math.Max(l, intervals[j].S);
+                        e = Math.Min(r, intervals[j].E);
+                        length += Math.Abs(e - s);
+                    }                    
                 }
             }
             return length;
