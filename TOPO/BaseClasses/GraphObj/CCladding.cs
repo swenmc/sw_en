@@ -2478,7 +2478,6 @@ namespace BaseClasses.GraphObj
                 return length;
 
             double l;double r;
-            double s; double e;
             for (int i = 0; i < intervals.Count; i++)
             {
                 l = intervals[i].S;
@@ -2486,19 +2485,14 @@ namespace BaseClasses.GraphObj
 
                 for (int j = i + 1; j < intervals.Count; j++)
                 {
-                    s = intervals[i].S;
-                    e = intervals[i].E;
-
                     if (intervals[j].S > r || intervals[j].E < l)
                     {
                         // No intersection;
                     }
                     else
                     {
-                        s = Math.Max(l, intervals[j].S);
-                        e = Math.Min(r, intervals[j].E);
-                        length += Math.Abs(e - s);
-                    }                    
+                        length += Math.Abs(Math.Min(r, intervals[j].E) - Math.Max(l, intervals[j].S));
+                    }
                 }
             }
             return length;
