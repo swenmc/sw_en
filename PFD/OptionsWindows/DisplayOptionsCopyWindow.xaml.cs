@@ -20,22 +20,19 @@ namespace PFD
     {
         private CPFDViewModel _pfdVM;
         private string selectedSource;
+        public bool OptionsChanged;
+        public bool GUI3DSceneOptionsChanged;
         public DisplayOptionsCopyWindow(CPFDViewModel pfdVM)
         {
             _pfdVM = pfdVM;
 
-            InitializeComponent();
+            OptionsChanged = false;
+            GUI3DSceneOptionsChanged = false;
 
-            //DisplayOptionsChanged = false;
-            
-            //pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
-            
-            //this.DataContext = pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene];
+            InitializeComponent();
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
-
-        
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
@@ -106,8 +103,6 @@ namespace PFD
             return destIndexes;
         }
 
-
-
         private void BtnCopy_Click(object sender, RoutedEventArgs e)
         {
             int sourceIndex = GetSelectedSourceOptions();
@@ -124,13 +119,16 @@ namespace PFD
             MessageBoxResult result = MessageBox.Show($"Do you really want to copy settings from [{selectedSource}] to the selected items on the right?", "Information", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
+                foreach (DisplayOptionsViewModel destVM in destVMs)
+                {
+                    destVM.SetViewModel(sourceVM);
 
+                    OptionsChanged = true;
+                }
+                if (OptionsChanged && destIndexes.Contains((int)EDisplayOptionsTypes.GUI_3D_Scene)) GUI3DSceneOptionsChanged = true;
+
+                MessageBox.Show("Settings were succesfully copied.");
             }
-            //get all checked destination nodes - view models
-            //warning
-            //copy from source to destination view models
-            //messagebox
-
         }
 
         

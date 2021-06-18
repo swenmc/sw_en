@@ -129,5 +129,12 @@ namespace PFD
             else Loads.Visibility = Visibility.Visible;
         }
 
+        private void BtnCopySettings_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayOptionsCopyWindow copyWindow = new DisplayOptionsCopyWindow(_pfdVM);
+            copyWindow.ShowDialog();
+            if (copyWindow.OptionsChanged) DisplayOptionsChanged = true;
+            if (copyWindow.GUI3DSceneOptionsChanged) { MemberOptionsChanged = true; RecreateModelRequired = true; }
+        }
     }
 }
