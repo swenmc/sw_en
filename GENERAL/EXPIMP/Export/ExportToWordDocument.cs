@@ -23,12 +23,6 @@ namespace EXPIMP
 {
     public static class ExportToWordDocument
     {
-        public enum EViewType3D
-        {
-            MEMBER_CENTERLINES = 0,
-            MEMBER_SOLID = 1,
-        }
-        
         //private const string resourcesFolderPath = "./../../Resources/";
         private static string resourcesFolderPath = ConfigurationManager.AppSettings["ResourcesFolder"];
         private const double fontSizeInTable = 8;
@@ -49,13 +43,20 @@ namespace EXPIMP
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
 
-                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_SOLID);
+                // TODO 701
+                // Solid Model
+                DrawModel3DToDoc(document, modelData, fZoomFactor);
 
-                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.FRONT, EViewModelMemberFilters.FRONT);
-                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.BACK, EViewModelMemberFilters.BACK);
-                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.LEFT, EViewModelMemberFilters.LEFT);
-                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.RIGHT, EViewModelMemberFilters.RIGHT);
-                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.TOP, EViewModelMemberFilters.ROOF);
+                // Centerline Model
+                // TODO 701
+                // Tu postrebujeme dostat samostatnu sadu Display Options z GUI
+                // Je potrebne pridat pre Export to Report aj children pre nastavenie Elevations a Roof
+
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.FRONT, EViewModelMemberFilters.FRONT);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.BACK, EViewModelMemberFilters.BACK);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.LEFT, EViewModelMemberFilters.LEFT);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.RIGHT, EViewModelMemberFilters.RIGHT);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.TOP, EViewModelMemberFilters.ROOF);
 
                 DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
@@ -920,12 +921,11 @@ namespace EXPIMP
         private static void DrawModel3DToDoc(DocX document,
             CModelData data,
             float fZoomFactor,
-            EViewType3D eViewtype,
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             // TODO 701
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, view, filter);
 
             //toto nastavenie by mohlo byt inde, ale zase nechcem to rozbit inde
             //opts.ExportMembersDescriptionSize = 1f / 60f;
@@ -943,7 +943,8 @@ namespace EXPIMP
             string sImageName;
             string sTitle = "";
 
-            if(eViewtype == EViewType3D.MEMBER_CENTERLINES)
+            // TODO 701 - rozdelit pre 3D scene a pre Ortographic camera elevations
+            if(true/*TODO 701 zakomentovane eViewtype == EViewType3D.MEMBER_CENTERLINES*/)
             {
                 if (view == EModelViews.FRONT)
                 {

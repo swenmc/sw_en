@@ -1592,7 +1592,6 @@ namespace EXPIMP
         }
 
         public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data,
-            bool bCenterLinesMemberModelAndIDs = false,
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
@@ -1640,25 +1639,26 @@ namespace EXPIMP
             opts.CO_bCreateVerticalGridlinesLeft = false;
             opts.CO_bCreateVerticalGridlinesRight = false;
 
-            if (bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
-            {
-                opts.bDisplaySolidModel = false;
-                opts.bDisplayMembersCenterLines = true;
-
-                opts.bDisplayJoints = false;
-                opts.bDisplayPlates = false;
-
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberID = true;
-                opts.bDisplayMemberCrossSectionStartName = false;
-                opts.bDisplayMemberPrefix = false;
-                opts.bDisplayMemberRealLength = false;
-                opts.bDisplayMemberRealLengthInMM = false;
-                opts.bDisplayMemberRealLengthUnit = false;
-
-                opts.MemberDescriptionTextColor = Colors.Black;
-                opts.memberCenterlineColor = Colors.Black;
-            }
+            //if (bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
+            //{
+            //    // Centerline Model
+            //    opts.bDisplaySolidModel = false;
+            //    opts.bDisplayMembersCenterLines = true;
+            //
+            //    opts.bDisplayJoints = false;
+            //    opts.bDisplayPlates = false;
+            //
+            //    opts.bDisplayMemberDescription = true;
+            //    opts.bDisplayMemberID = true;
+            //    opts.bDisplayMemberCrossSectionStartName = false;
+            //    opts.bDisplayMemberPrefix = false;
+            //    opts.bDisplayMemberRealLength = false;
+            //    opts.bDisplayMemberRealLengthInMM = false;
+            //    opts.bDisplayMemberRealLengthUnit = false;
+            //
+            //    opts.MemberDescriptionTextColor = Colors.Black;
+            //    opts.memberCenterlineColor = Colors.Black;
+            //}
 
             return opts;
         }
