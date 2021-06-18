@@ -318,9 +318,9 @@ namespace PFD
             sDisplayOptions.bDisplayFoundations = true;
             sDisplayOptions.bDisplayReinforcementBars = true;
 
-            sDisplayOptions.RotateModelX = -80;
-            sDisplayOptions.RotateModelY = 45;
-            sDisplayOptions.RotateModelZ = 5;
+            sDisplayOptions.CO_RotateModelX = -80;
+            sDisplayOptions.CO_RotateModelY = 45;
+            sDisplayOptions.CO_RotateModelZ = 5;
 
             CModel padModel = Drawing3D.GetJointPreviewModel(joint, pad, ref sDisplayOptions);
 

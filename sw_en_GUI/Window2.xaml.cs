@@ -69,11 +69,12 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            sDisplayOptions.bCreateHorizontalGridlines = true;
-            sDisplayOptions.bCreateVerticalGridlinesFront = false;
-            sDisplayOptions.bCreateVerticalGridlinesBack = false;
-            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
-            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+            // TODO 701
+            sDisplayOptions.CO_bCreateHorizontalGridlines = true;
+            sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesRight = false;
             Drawing3D.DrawToTrackPort(_trackport, cmodel, 1f, sDisplayOptions, null);
         }
 
@@ -84,11 +85,12 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            sDisplayOptions.bCreateHorizontalGridlines = true;
-            sDisplayOptions.bCreateVerticalGridlinesFront = false;
-            sDisplayOptions.bCreateVerticalGridlinesBack = false;
-            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
-            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+            // TODO 701
+            sDisplayOptions.CO_bCreateHorizontalGridlines = true;
+            sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesRight = false;
             Drawing3D.DrawToTrackPort(_trackport, cmodel, 1f, sDisplayOptions, loadCaseToDisplay);
         }
     }

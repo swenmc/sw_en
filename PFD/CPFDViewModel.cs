@@ -3578,7 +3578,7 @@ namespace PFD
             sDisplayOptions.bDisplayLoadsLabels = do_vm.ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = do_vm.ShowLoadsLabelsUnits;
 
-            sDisplayOptions.DisplayIn3DRatio = do_vm.DisplayIn3DRatio;
+            sDisplayOptions.CO_DisplayIn3DRatio = do_vm.DisplayIn3DRatio;
             sDisplayOptions.bColorsAccordingToMembersPrefix = do_vm.ColorsAccordingToMembersPrefix;
             sDisplayOptions.bColorsAccordingToMembersPosition = do_vm.ColorsAccordingToMembersPosition;
             sDisplayOptions.bColorsAccordingToMembers = sDisplayOptions.bColorsAccordingToMembersPrefix || sDisplayOptions.bColorsAccordingToMembersPosition;
@@ -3685,53 +3685,33 @@ namespace PFD
             sDisplayOptions.fFibreglassOpacity = do_vm.FibreglassOpacity;
 
             sDisplayOptions.backgroundColor = do_vm.BackgroundColor;
-            sDisplayOptions.ModelView = ViewIndex;
-            sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
+            sDisplayOptions.CO_ModelView = ViewIndex;
+            sDisplayOptions.CO_ViewModelMembers = ViewModelMemberFilterIndex;
 
-            sDisplayOptions.IsExport = false;
-            
-            ////To Mato tu sa daju ponastavovat velkosti relativne podla velkosti modelu
-            //sDisplayOptions.ExportFloorSlabTextSize = do_vm.ExportFloorSlabTextSize;
-            //sDisplayOptions.ExportGridlinesSize = do_vm.ExportGridlinesSize;
-            //sDisplayOptions.ExportGridLineLabelSize = do_vm.ExportGridLineLabelSize;
-            //sDisplayOptions.ExportSectionSymbolsSize = do_vm.ExportSectionSymbolsSize;
-            //sDisplayOptions.ExportSectionSymbolLabelSize = do_vm.ExportSectionSymbolLabelSize;
-            //sDisplayOptions.ExportDetailSymbolSize = do_vm.ExportDetailSymbolSize;
-            //sDisplayOptions.ExportDetailSymbolLabelSize = do_vm.ExportDetailSymbolLabelSize;
-            //sDisplayOptions.ExportMembersDescriptionSize = do_vm.ExportMembersDescriptionSize;
-            //sDisplayOptions.ExportNodesDescriptionSize = do_vm.ExportNodesDescriptionSize;
-            //sDisplayOptions.ExportSawCutTextSize = do_vm.ExportSawCutTextSize;
-            //sDisplayOptions.ExportControlJointTextSize = do_vm.ExportControlJointTextSize;
-            //sDisplayOptions.ExportFoundationTextSize = do_vm.ExportFoundationTextSize;
-            //sDisplayOptions.ExportDimensionsTextSize = do_vm.ExportDimensionsTextSize;
-            //sDisplayOptions.ExportDimensionsLineRadius = do_vm.ExportDimensionsLineRadius;
-            //sDisplayOptions.ExportDimensionsScale = do_vm.ExportDimensionsScale;
-            //sDisplayOptions.ExportDescriptionTextWidthScaleFactor = do_vm.ExportDescriptionTextWidthScaleFactor;
-            //sDisplayOptions.ExportCladdingDescriptionSize = do_vm.ExportCladdingDescriptionSize;
-            //sDisplayOptions.ExportFibreglassDescriptionSize = do_vm.ExportFibreglassDescriptionSize;
-            //sDisplayOptions.ExportDoorDescriptionSize = do_vm.ExportDoorDescriptionSize;
-            //sDisplayOptions.ExportWindowDescriptionSize = do_vm.ExportWindowDescriptionSize;
+            sDisplayOptions.CO_IsExport = false;
 
-            sDisplayOptions.GUIFloorSlabTextSize = do_vm.FloorSlabTextSize;
-            sDisplayOptions.GUIGridlinesSize = do_vm.GridlinesSize;
-            sDisplayOptions.GUIGridLineLabelSize = do_vm.GridLineLabelSize;
-            sDisplayOptions.GUISectionSymbolsSize = do_vm.SectionSymbolsSize;
-            sDisplayOptions.GUISectionSymbolLabelSize = do_vm.SectionSymbolLabelSize;
-            sDisplayOptions.GUIDetailSymbolSize = do_vm.DetailSymbolSize;
-            sDisplayOptions.GUIDetailSymbolLabelSize = do_vm.DetailSymbolLabelSize;
-            sDisplayOptions.GUIMembersDescriptionSize = do_vm.MembersDescriptionSize;
-            sDisplayOptions.GUINodesDescriptionSize = do_vm.NodesDescriptionSize;
-            sDisplayOptions.GUISawCutTextSize = do_vm.SawCutTextSize;
-            sDisplayOptions.GUIControlJointTextSize = do_vm.ControlJointTextSize;
-            sDisplayOptions.GUIFoundationTextSize = do_vm.FoundationTextSize;
-            sDisplayOptions.GUIDimensionsTextSize = do_vm.DimensionsTextSize;
-            sDisplayOptions.GUIDimensionsLineRadius = do_vm.DimensionsLineRadius;
-            sDisplayOptions.GUIDimensionsScale = do_vm.DimensionsScale;
-            sDisplayOptions.GUIDescriptionTextWidthScaleFactor = do_vm.GUIDescriptionTextWidthScaleFactor;
-            sDisplayOptions.GUICladdingDescriptionSize = do_vm.CladdingDescriptionSize;
-            sDisplayOptions.GUIFibreglassDescriptionSize = do_vm.FibreglassDescriptionSize;
-            sDisplayOptions.GUIDoorDescriptionSize = do_vm.DoorDescriptionSize;
-            sDisplayOptions.GUIWindowDescriptionSize = do_vm.WindowDescriptionSize;
+            sDisplayOptions.FloorSlabTextSize = do_vm.FloorSlabTextSize;
+            sDisplayOptions.GridlinesSize = do_vm.GridlinesSize;
+            sDisplayOptions.GridLineLabelSize = do_vm.GridLineLabelSize;
+            sDisplayOptions.SectionSymbolsSize = do_vm.SectionSymbolsSize;
+            sDisplayOptions.SectionSymbolLabelSize = do_vm.SectionSymbolLabelSize;
+            sDisplayOptions.DetailSymbolSize = do_vm.DetailSymbolSize;
+            sDisplayOptions.DetailSymbolLabelSize = do_vm.DetailSymbolLabelSize;
+            sDisplayOptions.MembersDescriptionSize = do_vm.MembersDescriptionSize;
+            sDisplayOptions.NodesDescriptionSize = do_vm.NodesDescriptionSize;
+            sDisplayOptions.SawCutTextSize = do_vm.SawCutTextSize;
+            sDisplayOptions.ControlJointTextSize = do_vm.ControlJointTextSize;
+            sDisplayOptions.FoundationTextSize = do_vm.FoundationTextSize;
+            sDisplayOptions.DimensionsTextSize = do_vm.DimensionsTextSize;
+            sDisplayOptions.DimensionsLineRadius = do_vm.DimensionsLineRadius;
+            sDisplayOptions.DimensionsScale = do_vm.DimensionsScale;
+            sDisplayOptions.DescriptionTextWidthScaleFactor = do_vm.DescriptionTextWidthScaleFactor;
+            sDisplayOptions.CladdingDescriptionSize = do_vm.CladdingDescriptionSize;
+            sDisplayOptions.FibreglassDescriptionSize = do_vm.FibreglassDescriptionSize;
+            sDisplayOptions.DoorDescriptionSize = do_vm.DoorDescriptionSize;
+            sDisplayOptions.WindowDescriptionSize = do_vm.WindowDescriptionSize;
+
+            // TODO 701 - pridat to co nie je v GUI
 
             return sDisplayOptions;
         }

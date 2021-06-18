@@ -924,19 +924,20 @@ namespace EXPIMP
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
+            // TODO 701
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
 
             //toto nastavenie by mohlo byt inde, ale zase nechcem to rozbit inde
             //opts.ExportMembersDescriptionSize = 1f / 60f;
-            opts.GUIMembersDescriptionSize = 1f / 60f;  //??? tu je zmena k tasku 701 - zrusene bolo ExportMembersDescriptionSize
-            opts.ViewsPageSize = EPageSizes.A4;
-            opts.bCreateHorizontalGridlines = false;
-            opts.bCreateVerticalGridlinesFront = false;
-            opts.bCreateVerticalGridlinesBack = false;
-            opts.bCreateVerticalGridlinesLeft = false;
-            opts.bCreateVerticalGridlinesRight = false;
+            opts.MembersDescriptionSize = 1f / 60f;  //??? tu je zmena k tasku 701 - zrusene bolo ExportMembersDescriptionSize
+            opts.LY_ViewsPageSize = EPageSizes.A4;
+            opts.CO_bCreateHorizontalGridlines = false;
+            opts.CO_bCreateVerticalGridlinesFront = false;
+            opts.CO_bCreateVerticalGridlinesBack = false;
+            opts.CO_bCreateVerticalGridlinesLeft = false;
+            opts.CO_bCreateVerticalGridlinesRight = false;
 
-            opts.bUseOrtographicCamera = true;
+            opts.CO_bUseOrtographicCamera = true;
 
             string sParagraphName;
             string sImageName;
@@ -986,7 +987,9 @@ namespace EXPIMP
                 sParagraphName = "[3DModelImage_MemberSolidModel]";
                 sImageName = "ViewPort1.png";
                 sTitle = "";
-                opts.bUseOrtographicCamera = false;
+
+                // TOOD 701
+                opts.CO_bUseOrtographicCamera = false;
             }
 
             CModel filteredModel = null;
@@ -1557,9 +1560,10 @@ namespace EXPIMP
         {
             float fZoomFactor = 1f;//1.5f;
 
+            // TODO 701
             // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
-            sDisplayOptions.IsExport = true;
+            sDisplayOptions.CO_IsExport = true;
             sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
 
@@ -1571,13 +1575,13 @@ namespace EXPIMP
             sDisplayOptions.bDisplayNodes = false;
             sDisplayOptions.bDisplayNodesDescription = false;
 
-            sDisplayOptions.bUseOrtographicCamera = false;
+            sDisplayOptions.CO_bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
 
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+            sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
 
             sDisplayOptions.bDisplayMembersWireFrame = true;
             sDisplayOptions.bDisplayJointsWireFrame = true;
@@ -1671,10 +1675,11 @@ namespace EXPIMP
 
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
+            // TODO 701
             float fZoomFactor = 1f;//3f;
             // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
-            sDisplayOptions.IsExport = true;
+            sDisplayOptions.CO_IsExport = true;
             sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
 
@@ -1686,13 +1691,13 @@ namespace EXPIMP
             sDisplayOptions.bDisplayNodes = false;
             sDisplayOptions.bDisplayNodesDescription = false;
 
-            sDisplayOptions.bUseOrtographicCamera = false;
+            sDisplayOptions.CO_bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
 
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+            sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
 
             sDisplayOptions.bDisplayMembersWireFrame = true;
             sDisplayOptions.bDisplayJointsWireFrame = true;
@@ -1708,9 +1713,9 @@ namespace EXPIMP
             sDisplayOptions.bDisplayFoundationsWireFrame = true;
             sDisplayOptions.bDisplayReinforcementBarsWireFrame = true;
 
-            sDisplayOptions.RotateModelX = -80;
-            sDisplayOptions.RotateModelY = 45;
-            sDisplayOptions.RotateModelZ = 5;
+            sDisplayOptions.CO_RotateModelX = -80;
+            sDisplayOptions.CO_RotateModelY = 45;
+            sDisplayOptions.CO_RotateModelZ = 5;
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
             par.RemoveText(0);

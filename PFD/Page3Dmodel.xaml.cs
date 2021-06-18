@@ -29,35 +29,36 @@ namespace PFD
 
             InitializeComponent();
 
-            sDisplayOptions.bCreateHorizontalGridlines = false;
-            sDisplayOptions.bCreateVerticalGridlinesFront = false;
-            sDisplayOptions.bCreateVerticalGridlinesBack = false;
-            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
-            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+            // TODO 701
+            sDisplayOptions.CO_bCreateHorizontalGridlines = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesRight = false;
 
-            if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            if (sDisplayOptions.CO_ModelView == (int)EModelViews.BACK)
             {
-                sDisplayOptions.bCreateVerticalGridlinesBack = true;
+                sDisplayOptions.CO_bCreateVerticalGridlinesBack = true;
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.LEFT)
             {
-                sDisplayOptions.bCreateVerticalGridlinesLeft = true;
+                sDisplayOptions.CO_bCreateVerticalGridlinesLeft = true;
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.RIGHT)
             {
-                sDisplayOptions.bCreateVerticalGridlinesRight = true;
+                sDisplayOptions.CO_bCreateVerticalGridlinesRight = true;
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.TOP)
             {
-                sDisplayOptions.bCreateHorizontalGridlines = true;
+                sDisplayOptions.CO_bCreateHorizontalGridlines = true;
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT) // Front
+            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.FRONT) // Front
             {
-                sDisplayOptions.bCreateVerticalGridlinesFront = true;
+                sDisplayOptions.CO_bCreateVerticalGridlinesFront = true;
             }
             else
             {
-                sDisplayOptions.bCreateHorizontalGridlines = true;
+                sDisplayOptions.CO_bCreateHorizontalGridlines = true;
             }
 
             //try
@@ -75,11 +76,12 @@ namespace PFD
 
             InitializeComponent();
 
-            sDisplayOptions.bCreateHorizontalGridlines = true;
-            sDisplayOptions.bCreateVerticalGridlinesFront = false;
-            sDisplayOptions.bCreateVerticalGridlinesBack = false;
-            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
-            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+            // TODO 701
+            sDisplayOptions.CO_bCreateHorizontalGridlines = true;
+            sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.CO_bCreateVerticalGridlinesRight = false;
 
             if (modelType == EModelType.eJoint)
                 Drawing3D.DrawJointToTrackPort(_trackport, model, 1f, sDisplayOptions);

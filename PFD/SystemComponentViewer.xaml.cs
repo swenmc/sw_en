@@ -1213,6 +1213,8 @@ namespace PFD
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
 
+            // TODO 701
+
             // Create 3D window
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bUseEmissiveMaterial = true;
@@ -1222,8 +1224,8 @@ namespace PFD
             sDisplayOptions.bDisplayNodesDescription = vm.DrawPoint3DNumbers3D;
             sDisplayOptions.bMirrorPlate3D = vm.MirrorPlate3D;
 
-            sDisplayOptions.NodeColor = Colors.Red;            
-            sDisplayOptions.GUINodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
+            sDisplayOptions.NodeColor = Colors.Red;
+            sDisplayOptions.NodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
             sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
 
             page3D = new Page3Dmodel(plate, sDisplayOptions);
