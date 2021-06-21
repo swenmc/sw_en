@@ -924,8 +924,7 @@ namespace EXPIMP
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
-            // TODO 701
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, view, filter);
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_3DScene]; //TODO 855
 
             //toto nastavenie by mohlo byt inde, ale zase nechcem to rozbit inde
             //opts.ExportMembersDescriptionSize = 1f / 60f;
@@ -1561,35 +1560,34 @@ namespace EXPIMP
         {
             float fZoomFactor = 1f;//1.5f;
 
-            // TODO 701
             // Refaktorovat s FootingDesign
-            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Joints]; //701 ???
-            sDisplayOptions.CO_IsExport = true;
-            sDisplayOptions.bDisplayMembersCenterLines = false;
-            sDisplayOptions.bDisplaySolidModel = true;
+            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Joints];
+            //sDisplayOptions.CO_IsExport = true;
+            //sDisplayOptions.bDisplayMembersCenterLines = false;
+            //sDisplayOptions.bDisplaySolidModel = true;
 
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplayJoints = true;
+            //sDisplayOptions.bDisplayPlates = true;
+            //sDisplayOptions.bDisplayConnectors = true;
 
-            sDisplayOptions.bDisplayNodes = false;
-            sDisplayOptions.bDisplayNodesDescription = false;
+            //sDisplayOptions.bDisplayNodes = false;
+            //sDisplayOptions.bDisplayNodesDescription = false;
 
-            sDisplayOptions.CO_bUseOrtographicCamera = false;
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayMemberDescription = false;
+            //sDisplayOptions.CO_bUseOrtographicCamera = false;
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bDisplayMemberDescription = false;
 
-            // Do dokumentu exporujeme aj s wireframe
-            sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
+            //// Do dokumentu exporujeme aj s wireframe
+            //sDisplayOptions.bDisplayWireFrameModel = true;
+            //sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
 
-            sDisplayOptions.bDisplayMembersWireFrame = true;
-            sDisplayOptions.bDisplayJointsWireFrame = true;
-            sDisplayOptions.bDisplayPlatesWireFrame = true;
-            sDisplayOptions.bDisplayConnectorsWireFrame = false;
+            //sDisplayOptions.bDisplayMembersWireFrame = true;
+            //sDisplayOptions.bDisplayJointsWireFrame = true;
+            //sDisplayOptions.bDisplayPlatesWireFrame = true;
+            //sDisplayOptions.bDisplayConnectorsWireFrame = false;
 
-            sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            //sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[JointDesign]"));
             par.RemoveText(0);
@@ -1676,47 +1674,46 @@ namespace EXPIMP
 
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
-            // TODO 701
             float fZoomFactor = 1f;//3f;
             // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Foundations];
-            sDisplayOptions.CO_IsExport = true;
-            sDisplayOptions.bDisplayMembersCenterLines = false;
-            sDisplayOptions.bDisplaySolidModel = true;
+            //sDisplayOptions.CO_IsExport = true;
+            //sDisplayOptions.bDisplayMembersCenterLines = false;
+            //sDisplayOptions.bDisplaySolidModel = true;
 
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplayJoints = true;
+            //sDisplayOptions.bDisplayPlates = true;
+            //sDisplayOptions.bDisplayConnectors = true;
 
-            sDisplayOptions.bDisplayNodes = false;
-            sDisplayOptions.bDisplayNodesDescription = false;
+            //sDisplayOptions.bDisplayNodes = false;
+            //sDisplayOptions.bDisplayNodesDescription = false;
 
-            sDisplayOptions.CO_bUseOrtographicCamera = false;
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayMemberDescription = false;
+            //sDisplayOptions.CO_bUseOrtographicCamera = false;
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bDisplayMemberDescription = false;
 
-            // Do dokumentu exporujeme aj s wireframe
-            sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
+            //// Do dokumentu exporujeme aj s wireframe
+            //sDisplayOptions.bDisplayWireFrameModel = true;
+            //sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
 
-            sDisplayOptions.bDisplayMembersWireFrame = true;
-            sDisplayOptions.bDisplayJointsWireFrame = true;
-            sDisplayOptions.bDisplayPlatesWireFrame = true;
-            sDisplayOptions.bDisplayConnectorsWireFrame = false;
+            //sDisplayOptions.bDisplayMembersWireFrame = true;
+            //sDisplayOptions.bDisplayJointsWireFrame = true;
+            //sDisplayOptions.bDisplayPlatesWireFrame = true;
+            //sDisplayOptions.bDisplayConnectorsWireFrame = false;
 
-            sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            //sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             // Foundations
-            sDisplayOptions.bDisplayFoundations = true;
-            sDisplayOptions.bDisplayReinforcementBars = true;
+            //sDisplayOptions.bDisplayFoundations = true;
+            //sDisplayOptions.bDisplayReinforcementBars = true;
 
-            sDisplayOptions.bDisplayFoundationsWireFrame = true;
-            sDisplayOptions.bDisplayReinforcementBarsWireFrame = true;
+            //sDisplayOptions.bDisplayFoundationsWireFrame = true;
+            //sDisplayOptions.bDisplayReinforcementBarsWireFrame = true;
 
-            sDisplayOptions.CO_RotateModelX = -80;
-            sDisplayOptions.CO_RotateModelY = 45;
-            sDisplayOptions.CO_RotateModelZ = 5;
+            //sDisplayOptions.CO_RotateModelX = -80;
+            //sDisplayOptions.CO_RotateModelY = 45;
+            //sDisplayOptions.CO_RotateModelZ = 5;
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
             par.RemoveText(0);

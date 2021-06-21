@@ -294,7 +294,7 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_3D_Scene];
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
@@ -599,14 +599,6 @@ namespace EXPIMP
             return list_views;
         }
 
-        //private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)
-        //{
-        //    // TODO 701
-        //    DisplayOptions opts = data.DisplayOptions;
-        //    return opts;
-        //}
-
-        // TODO 701
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data, EDisplayOptionsTypes optionsType)
         {
             return data.DisplayOptionsDict[(int) optionsType];            
