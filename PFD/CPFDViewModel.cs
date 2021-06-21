@@ -2927,7 +2927,6 @@ namespace PFD
             data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
             data.frameModels = frameModels;
 
-
             data.JointsDict = JointsVM.DictJoints;
             data.FootingsDict = FootingVM.DictFootings;
 
@@ -2936,7 +2935,7 @@ namespace PFD
             data.SoilBearingCapacity = FootingVM.SoilBearingCapacity;
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
-            data.DisplayOptions = GetDisplayOptions();
+            data.DisplayOptionsDict = GetDisplayOptionsDict_Report();
 
             data.HasCladding = _modelOptionsVM.EnableCladding && ModelHasPurlinsOrGirts();
             data.HasCladdingBack = _modelOptionsVM.EnableCladding && ModelHasBackWall();
@@ -3453,6 +3452,18 @@ namespace PFD
         {
             DisplayOptionsViewModel do_vm = _displayOptionsVM.DisplayOptionsList.ElementAtOrDefault((int)optionsTypes);
             return GetDisplayOptions(do_vm);
+        }
+
+        public Dictionary<int, DisplayOptions> GetDisplayOptionsDict_Report()
+        {
+            //To mato - tu by sa asi dalo vybrat len tie DisplayOptions co su pre export
+            Dictionary<int, DisplayOptions> dict = new Dictionary<int, DisplayOptions>();
+            
+            for (int i = 4; i < _displayOptionsVM.DisplayOptionsList.Count; i++)
+            {
+                dict.Add(i, GetDisplayOptions(_displayOptionsVM.DisplayOptionsList[i]));
+            }   
+            return dict;
         }
         public DisplayOptions GetDisplayOptions(DisplayOptionsViewModel do_vm)
         {

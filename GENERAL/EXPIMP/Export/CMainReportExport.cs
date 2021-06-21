@@ -380,7 +380,7 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            DisplayOptions opts = GetModelViewsDisplayOptions(data);
+            DisplayOptions opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_FW_Elevations); // 701 ???
             opts.LY_ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
             opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
             opts.CO_IsExport = true;
@@ -497,7 +497,7 @@ namespace EXPIMP
         {
             XGraphics gfx;
             PdfPage page;
-            DisplayOptions opts = GetModelViewsDisplayOptions(data);
+            DisplayOptions opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Elevations); // 701 ???
             opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
             opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
             opts.CO_IsExport = true;
@@ -598,11 +598,17 @@ namespace EXPIMP
             return list_views;
         }
 
-        private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)
+        //private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)
+        //{
+        //    // TODO 701
+        //    DisplayOptions opts = data.DisplayOptions;
+        //    return opts;
+        //}
+
+        // TODO 701
+        private static DisplayOptions GetModelViewsDisplayOptions(CModelData data, EDisplayOptionsTypes optionsType)
         {
-            // TODO 701
-            DisplayOptions opts = data.DisplayOptions;
-            return opts;
+            return data.DisplayOptionsDict[(int) optionsType];            
         }
 
         private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
@@ -877,7 +883,7 @@ namespace EXPIMP
         private static DisplayOptions GetJointTypesDisplayOptions(CModelData data)
         {
             // TODO 701
-            DisplayOptions opts = data.DisplayOptions;
+            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_Joints]; // 701 ???
 
             return opts;
         }
@@ -985,7 +991,7 @@ namespace EXPIMP
         private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
         {
             // TODO 701
-            DisplayOptions opts = data.DisplayOptions;
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_Foundations]; // 701 ???
             return opts;
         }
 
@@ -1526,7 +1532,7 @@ namespace EXPIMP
 
             // Preview isometricky pohlad na konstrukciu
             // Bez kot, bez popisov
-            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene]; //701 ???  // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
 
             // TODO 701
             opts.CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT;

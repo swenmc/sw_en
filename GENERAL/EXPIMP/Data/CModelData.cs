@@ -91,7 +91,8 @@ namespace EXPIMP
         private float m_SoilBearingCapacity;
 
         private CProjectInfo projectInfo;
-        private DisplayOptions sDisplayOptions;
+        //private DisplayOptions sDisplayOptions;
+        private Dictionary<int, DisplayOptions> m_displayOptionsDict;
 
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -1026,18 +1027,18 @@ namespace EXPIMP
             }
         }
 
-        public DisplayOptions DisplayOptions
-        {
-            get
-            {
-                return sDisplayOptions;
-            }
+        //public DisplayOptions DisplayOptions
+        //{
+        //    get
+        //    {
+        //        return f;
+        //    }
 
-            set
-            {
-                sDisplayOptions = value;
-            }
-        }
+        //    set
+        //    {
+        //        sDisplayOptions = value;
+        //    }
+        //}
 
         public bool HasCladdingFront
         {
@@ -1114,6 +1115,19 @@ namespace EXPIMP
             set
             {
                 m_HasCladding = value;
+            }
+        }
+
+        public Dictionary<int, DisplayOptions> DisplayOptionsDict
+        {
+            get
+            {
+                return m_displayOptionsDict;
+            }
+
+            set
+            {
+                m_displayOptionsDict = value;
             }
         }
 

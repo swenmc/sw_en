@@ -1563,7 +1563,7 @@ namespace EXPIMP
 
             // TODO 701
             // Refaktorovat s FootingDesign
-            DisplayOptions sDisplayOptions = data.DisplayOptions;
+            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Joints]; //701 ???
             sDisplayOptions.CO_IsExport = true;
             sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
@@ -1679,7 +1679,7 @@ namespace EXPIMP
             // TODO 701
             float fZoomFactor = 1f;//3f;
             // Refaktorovat s JointDesign
-            DisplayOptions sDisplayOptions = data.DisplayOptions;
+            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Foundations];
             sDisplayOptions.CO_IsExport = true;
             sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;

@@ -1596,7 +1596,8 @@ namespace EXPIMP
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             // TODO 701
-            DisplayOptions opts = data.DisplayOptions;
+            // To Mato - tu chceme ktore nastavenia?
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_3DScene]; // 701 ???
             opts.CO_IsExport = true;
             opts.CO_bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
