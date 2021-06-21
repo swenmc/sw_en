@@ -314,6 +314,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberDescriptionTextColor = Colors.Black;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberCenterlineColor = Colors.Black;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateHorizontalGridlines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesFront = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesBack = false;
@@ -786,7 +788,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].CO_TransformScreenLines3DToCylinders3D = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue); // Pokus
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayMembers = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayJoints = false;
