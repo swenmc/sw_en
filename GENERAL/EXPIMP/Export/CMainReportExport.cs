@@ -497,7 +497,7 @@ namespace EXPIMP
         {
             XGraphics gfx;
             PdfPage page;
-            DisplayOptions opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Elevations); // 701 ???
+            DisplayOptions opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Elevations);
             opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
             opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
             opts.CO_IsExport = true;
@@ -513,6 +513,8 @@ namespace EXPIMP
 
             foreach (EViewCladdingFilters view in list_views)
             {
+                if(view == EViewCladdingFilters.CLADDING_ROOF) opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Roof);
+
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + view.ToString());
                 page = s_document.AddPage();
