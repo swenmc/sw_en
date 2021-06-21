@@ -380,13 +380,7 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            DisplayOptions opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_FW_Elevations); // 701 ???
-            opts.LY_ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
-            opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
-            opts.CO_IsExport = true;
-
-            opts.CO_SameScaleForViews = true;
-
+            
             List<EViewModelMemberFilters> list_views = GetModelViewsFromExportOptions(exportOpts);
             
             int legendImgWidth = 100;
@@ -398,6 +392,11 @@ namespace EXPIMP
 
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
+                DisplayOptions opts = GetModelViewsDisplayOptions(data, viewMembers);
+                opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViews;
+                opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
+                //opts.CO_SameScaleForViews = true;
+
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + viewMembers.ToString());
                 page = s_document.AddPage();
@@ -417,8 +416,8 @@ namespace EXPIMP
                 opts.CO_ViewModelMembers = (int)viewMembers;
 
                 // Defaultne hodnoty pre vsetky pohlady
-                opts.CO_bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
-                opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
+                //opts.CO_bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
+                //opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
                 // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
 
                 // TO Ondrej - tu je trosku problem ze mame jedny 
@@ -612,177 +611,38 @@ namespace EXPIMP
         {
             return data.DisplayOptionsDict[(int) optionsType];            
         }
+        private static DisplayOptions GetModelViewsDisplayOptions(CModelData data, EViewModelMemberFilters view)
+        {
+            if (view == EViewModelMemberFilters.All) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_3D_Scene];
+            else if (view == EViewModelMemberFilters.FRONT) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
+            else if (view == EViewModelMemberFilters.BACK) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
+            else if (view == EViewModelMemberFilters.LEFT) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
+            else if (view == EViewModelMemberFilters.RIGHT) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
+            else if (view == EViewModelMemberFilters.ROOF) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Roof];
+            else if (view == EViewModelMemberFilters.MIDDLE_FRAME) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Frames];
+            else if (view == EViewModelMemberFilters.COLUMNS) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Columns];
+            else if (view == EViewModelMemberFilters.FOUNDATIONS) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Foundations];
+            else if (view == EViewModelMemberFilters.FLOOR) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Floor];
+            else throw new Exception("Unknown EViewModelMemberFilters view");
+        }
 
         private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
         {
-            // TODO 701
             if (viewMembers == EViewModelMemberFilters.FRONT)
             {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-                opts.bDisplayMemberRealLengthInMM = true;
-
-                // opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
-                opts.bDisplayGridlines = true; // Vertical
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = true;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = false;
-                opts.CO_bCreateVerticalGridlinesFront = true;
+                opts.bDisplayDimensions = false;
             }
-
             if (viewMembers == EViewModelMemberFilters.BACK)
             {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-                opts.bDisplayMemberRealLengthInMM = true;
-
-                opts.bDisplayGridlines = true; // Vertical
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = true;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = false;
-                opts.CO_bCreateVerticalGridlinesBack = true;
+                opts.bDisplayDimensions = false;
             }
-
             if (viewMembers == EViewModelMemberFilters.LEFT)
             {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-                opts.bDisplayMemberRealLengthInMM = true;
-
-                opts.bDisplayGridlines = true;// Vertical
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = true;
                 opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = false;
-                opts.CO_bCreateVerticalGridlinesLeft = true;
             }
-
             if (viewMembers == EViewModelMemberFilters.RIGHT)
             {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-                opts.bDisplayMemberRealLengthInMM = true;
-
-                opts.bDisplayGridlines = true; // Vertical
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = true;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = false;
-                opts.CO_bCreateVerticalGridlinesRight = true;
-            }
-
-            if (viewMembers == EViewModelMemberFilters.ROOF)
-            {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-                opts.bDisplayMemberRealLengthInMM = true;
-
-                opts.bDisplayGridlines = true; // Horizontal
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = true;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = true;
-            }
-
-            if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
-            {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-                opts.bDisplayMemberRealLengthInMM = true;
-
-                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                //opts.bDisplayWireFrameModel = true;
-                //opts.bDisplayMembersWireFrame = true;
-                //opts.bTransformScreenLines3DToCylinders3D = true;
-
-                opts.bDisplayGridlines = true; // Vertical
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = false;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateVerticalGridlinesFront = true;
-            }
-
-            if (viewMembers == EViewModelMemberFilters.COLUMNS)
-            {
-                opts.bDisplayMemberDescription = true;
-                opts.bDisplayMemberPrefix = true;
-
-                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayFloorSlabWireFrame = true;
-                opts.bDisplayMembersWireFrame = true;
-                opts.CO_bTransformScreenLines3DToCylinders3D = true;
-                //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-
-                opts.bDisplayFoundations = false;
-                opts.bDisplayReinforcementBars = false;
-                opts.bDisplayFloorSlab = true;
-                opts.bDisplayFloorSlabDescription = false;
-                opts.bDisplayGridlines = true; // Horizontal
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = false;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = true;
-            }
-
-            if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
-            {
-                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayFoundationsWireFrame = true;
-                opts.bDisplayFloorSlabWireFrame = true;
-                opts.CO_bTransformScreenLines3DToCylinders3D = true;
-                //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-
-                opts.bDisplayFoundations = true;
-                opts.bDisplayReinforcementBars = true;
-                opts.bDisplayFloorSlab = true;
-                opts.bDisplayFloorSlabDescription = false;
-                opts.bDisplayFoundationsDescription = true;
-                opts.bDisplayMemberDescription = false;
-                opts.bDisplayGridlines = true; // Horizontal
-                opts.bDisplaySectionSymbols = false;
-                opts.bDisplayDetailSymbols = false;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = true;
-            }
-
-            if (viewMembers == EViewModelMemberFilters.FLOOR)
-            {
-                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayFoundationsWireFrame = true;
-                opts.bDisplayFloorSlabWireFrame = true;
-                opts.CO_bTransformScreenLines3DToCylinders3D = true;
-                //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-
-                opts.bDisplayFoundations = true;
-                opts.bDisplayReinforcementBars = false;
-                opts.bDisplayFloorSlab = true;
-                opts.bDisplayFloorSlabDescription = true;
-                opts.bDisplayFoundationsDescription = false;
-                opts.bDisplayMemberDescription = false;
-
-                opts.bDisplaySawCuts = true;
-                opts.bDisplaySawCutsDescription = true;
-                opts.bDisplayControlJoints = true;
-                opts.bDisplayControlJointsDescription = true;
-                opts.bDisplayGridlines = true; // Horizontal
-                opts.bDisplaySectionSymbols = true;
-                opts.bDisplayDetailSymbols = false;
-                //opts.bDisplayDimensions = true;
-
-                opts.CO_bCreateHorizontalGridlines = true;
+                opts.bDisplayDimensions = false;
             }
         }
 
@@ -796,7 +656,7 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            DisplayOptions opts = GetJointTypesDisplayOptions(data);
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_Joints];
             opts.CO_IsExport = true;
 
             sheetNo++;
@@ -882,20 +742,13 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static DisplayOptions GetJointTypesDisplayOptions(CModelData data)
-        {
-            // TODO 701
-            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_Joints]; // 701 ???
-
-            return opts;
-        }
 
         private static void DrawFootingTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            DisplayOptions opts = GetFootingTypesDisplayOptions(data);
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_Foundations];
             opts.CO_IsExport = true;
 
             DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefaultForExport();
@@ -988,13 +841,6 @@ namespace EXPIMP
             
             gfx.Dispose();
             page.Close();
-        }
-
-        private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
-        {
-            // TODO 701
-            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_Foundations]; // 701 ???
-            return opts;
         }
 
         private static void AddPageToDocument(PdfDocument s_document, CProjectInfo projectInfo, out PdfPage page, out XGraphics gfx, string pageDetails, LayoutsExportOptionsViewModel exportOpts)
@@ -1534,12 +1380,11 @@ namespace EXPIMP
 
             // Preview isometricky pohlad na konstrukciu
             // Bez kot, bez popisov
-            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene]; //701 ???  // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene]; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
 
-            // TODO 701
-            opts.CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
-            opts.CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
-            opts.CO_bTransformScreenLines3DToCylinders3D = true;
+            //opts.CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
+            //opts.CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
+            //opts.CO_bTransformScreenLines3DToCylinders3D = true;
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
