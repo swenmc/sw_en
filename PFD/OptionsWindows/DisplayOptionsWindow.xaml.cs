@@ -98,7 +98,7 @@ namespace PFD
                 case "twiGUI_Joint_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Joint_Preview; Title = "Display Options - GUI - Joint Preview"; break;
                 case "twiGUI_Foundation_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Foundation_Preview; Title = "Display Options - GUI - Foundation Preview"; break;
                 case "twiGUI_Accessories_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Accessories_Preview; Title = "Display Options - GUI Accessories Preview"; break;
-                case "twiReport_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Report_3DScene; Title = "Display Options - Report 3D scene"; break;
+                case "twiReport_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Report_3D_Scene; Title = "Display Options - Report 3D scene"; break;
                 case "twiReport_FW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Report_FW_Elevations; Title = "Display Options - Report - Frame Views - Elevations"; break;
                 case "twiReport_FW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Report_FW_Roof; Title = "Display Options - Report - Frame Views - Roof"; break;
                 case "twiReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; Title = "Display Options - Report - Joints"; break;

@@ -58,7 +58,7 @@ namespace PFD
                 case "twiSourceGUI_Joint_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Joint_Preview; selectedSource = "GUI - Joint Preview"; break;
                 case "twiSourceGUI_Foundation_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Foundation_Preview; selectedSource = "GUI - Foundation Preview"; break;
                 case "twiSourceGUI_Accessories_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Accessories_Preview; selectedSource = "GUI Accessories Preview"; break;
-                case "twiSourceReport_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Report_3DScene; selectedSource = "Report 3D scene"; break;
+                case "twiSourceReport_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Report_3D_Scene; selectedSource = "Report 3D scene"; break;
                 case "twiSourceReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; selectedSource = "Report - Joints"; break;
                 case "twiSourceReport_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Report_Foundations; selectedSource = "Report - Foundations"; break;
                 case "twiSourceLayouts_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_3D_Scene; selectedSource = "Layouts 3D scene"; break;
@@ -85,7 +85,7 @@ namespace PFD
             if (chGUI_Joint_Preview.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.GUI_Joint_Preview);
             if (chGUI_Foundation_Preview.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.GUI_Foundation_Preview);
             if (chGUI_Accessories_Preview.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.GUI_Accessories_Preview);
-            if (chReport_3D_scene.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Report_3DScene);
+            if (chReport_3D_scene.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Report_3D_Scene);
             if (chReport_Joints.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Report_Joints);
             if (chReport_Foundations.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Report_Foundations);
             if (chLayouts_3D_scene.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_3D_Scene);
