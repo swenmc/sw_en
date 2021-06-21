@@ -108,6 +108,8 @@ namespace BaseClasses.GraphObj
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
             Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, DisplayOptions opts)
         {
+            // TODO je tu ako parameter cela struktura DisplayOptions, takze sa mozu odstranit jednotlive samostatne parametre ako opacity, color
+
             ID = iW_ID;
             SegmentNum = iSegmentNum;
             ControlPoint = pControlEdgePoint;

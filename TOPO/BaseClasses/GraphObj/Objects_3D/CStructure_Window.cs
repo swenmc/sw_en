@@ -113,6 +113,7 @@ namespace BaseClasses.GraphObj
             Color windowFlashingColor, Color windowPanelColor, float fFlashingOpacity, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, 
             float fTime, bool leftOrBack, DisplayOptions opts)
         {
+            // TODO je tu ako parameter cela struktura DisplayOptions, takze sa mozu odstranit jednotlive samostatne parametre ako opacity, color
             ID = iW_ID;
             m_eShapeType = iShapeType;
             SegmentNum = iSegmentNum;
