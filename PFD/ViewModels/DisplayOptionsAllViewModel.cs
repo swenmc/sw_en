@@ -263,7 +263,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayConnectors = true;
             #endregion JOINT PREVIEW
             #region FOUNDATION PREVIEW
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayNodes = false;
@@ -312,7 +312,7 @@ namespace PFD
 
             #endregion 3D SCENE
             #region JOINTS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayMembersCenterLines = false;
@@ -386,6 +386,7 @@ namespace PFD
             #endregion REPORT
             #region LAYOUTS
             #region 3D SCENE
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
 
@@ -796,6 +797,22 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowID = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowHeightWidth = true;
 
+            //if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
+            //{
+            //    //opts.bDisplayCladdingFrontWall = true;
+            //}
+            //else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
+            //{
+            //    //opts.bDisplayCladdingBackWall = true;
+            //}
+            //else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
+            //{
+            //    //opts.bDisplayCladdingLeftWall = true;
+            //}
+            //else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
+            //{
+            //    //opts.bDisplayCladdingRightWall = true;
+            //}
 
             #endregion ELEVATIONS
             #region ROOF
@@ -813,21 +830,21 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladding = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLeftWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRightWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingFrontWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingBackWall = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLeftWall = false;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRightWall = false;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingFrontWall = false;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingBackWall = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRoof = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglass = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoors = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindows = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoors = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindows = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglassWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorsWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowsWireFrame = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorsWireFrame = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowsWireFrame = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingID = true;
@@ -839,37 +856,14 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglassPrefix = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglassLengthWidth = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorDescription = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorID = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorType = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorHeightWidth = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorDescription = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorID = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorType = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorHeightWidth = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowDescription = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowID = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowHeightWidth = true;
-
-            //if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
-            //{
-            //    //opts.bDisplayCladdingFrontWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
-            //{
-            //    //opts.bDisplayCladdingBackWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
-            //{
-            //    //opts.bDisplayCladdingLeftWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
-            //{
-            //    //opts.bDisplayCladdingRightWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_ROOF)
-            //{
-            //    //opts.bDisplayCladdingRoof = true;
-            //}
-
-
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowDescription = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowID = true;
+            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowHeightWidth = true;
             #endregion ROOF
             #endregion CLADDING VIEWS
             #region JOINTS
