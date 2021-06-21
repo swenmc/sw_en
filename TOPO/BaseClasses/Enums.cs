@@ -865,20 +865,22 @@ namespace BaseClasses
         GUI_Accessories_Preview = 3,
 
         Report_3DScene = 4,
-        Report_Joints = 5,
-        Report_Foundations = 6,
+        Report_FW_Elevations = 5,
+        Report_FW_Roof = 6,
+        Report_Joints = 7,
+        Report_Foundations = 8,
 
-        Layouts_3D_Scene = 7,
-        Layouts_FW_Elevations = 8,
-        Layouts_FW_Roof = 9,
-        Layouts_FW_Frames = 10,
-        Layouts_FW_Columns = 11,
-        Layouts_FW_Foundations = 12,
-        Layouts_FW_Floor = 13,
-        Layouts_CW_Elevations = 14,
-        Layouts_CW_Roof = 15,
-        Layouts_Joints = 16,
-        Layouts_Foundations = 17
+        Layouts_3D_Scene = 9,
+        Layouts_FW_Elevations = 10,
+        Layouts_FW_Roof = 11,
+        Layouts_FW_Frames = 12,
+        Layouts_FW_Columns = 13,
+        Layouts_FW_Foundations = 14,
+        Layouts_FW_Floor = 15,
+        Layouts_CW_Elevations = 16,
+        Layouts_CW_Roof = 17,
+        Layouts_Joints = 18,
+        Layouts_Foundations = 19
     }
 
 
