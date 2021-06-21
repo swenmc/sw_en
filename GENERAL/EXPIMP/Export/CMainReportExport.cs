@@ -528,14 +528,11 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
+                // TODO 701 ??? Toto je potrebne nastavovat tu?
                 opts.CO_ModelView = GetView(view);
                 opts.CO_ViewCladding = (int)view;
 
-                // Defaultne hodnoty pre vsetky pohlady
-                opts.CO_bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
-                opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
-
-                ChangeDisplayOptionsAcordingToView(view, opts);
+                ChangeDisplayOptionsAcordingToView(view, ref opts);
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
@@ -620,27 +617,51 @@ namespace EXPIMP
 
         private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
         {
+            // Nastavime rozdiel oproti zakladnemu defaultu pre Elevations
+            opts.CO_bCreateHorizontalGridlines = false; // Vypneme pre vsetky elevations
+
             if (viewMembers == EViewModelMemberFilters.FRONT)
             {
-                opts.bDisplayDimensions = false;
+                opts.CO_bCreateVerticalGridlinesFront = true;
+                opts.bDisplayDimensions = true;
             }
             if (viewMembers == EViewModelMemberFilters.BACK)
             {
+                opts.CO_bCreateVerticalGridlinesBack = true;
                 opts.bDisplayDimensions = false;
             }
             if (viewMembers == EViewModelMemberFilters.LEFT)
             {
+                opts.CO_bCreateVerticalGridlinesLeft = true;
                 opts.bDisplayDimensions = true;
             }
             if (viewMembers == EViewModelMemberFilters.RIGHT)
             {
+                opts.CO_bCreateVerticalGridlinesRight = true;
                 opts.bDisplayDimensions = false;
             }
         }
 
-        private static void ChangeDisplayOptionsAcordingToView(EViewCladdingFilters viewMembers, DisplayOptions opts)
+        private static void ChangeDisplayOptionsAcordingToView(EViewCladdingFilters viewMembers, ref DisplayOptions opts)
         {
-            // TODO 701
+            if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
+            {
+                opts.bDisplayCladdingFrontWall = true;
+            }
+            if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
+            {
+                opts.bDisplayCladdingBackWall = true;
+            }
+            if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
+            {
+                opts.bDisplayCladdingLeftWall = true;
+                opts.bDisplayCladdingRoof = true;
+            }
+            if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
+            {
+                opts.bDisplayCladdingRightWall = true;
+                opts.bDisplayCladdingRoof = true;
+            }
         }
 
         private static void DrawJointTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
