@@ -4397,11 +4397,14 @@ namespace PFD
             CladdingSheetColorIndex = newVM.CladdingSheetColorIndex;
             FibreglassSheetColorIndex = newVM.FibreglassSheetColorIndex;
 
-            //To Mato - rozmyslam,ze ci tieto premenne vobec maju sa tu nastavovat, tie su nastavene stale pevne a netreba ich podla mna ani kopirovat medzi sebou, ani nacitavat zo suboru
-            // co ty na to?
-            // ja asi navrhujem riadky co su nizsie zakomentovat
+            IsSetFromCode = false;
+        }
 
-            // TODO 701
+        public void SetViewModel_CODE(DisplayOptionsViewModel newVM)
+        {
+            SetViewModel(newVM);
+
+            // tieto sa nastavia iba takto, ale bezne sa uz bude pouzivat iba SetViewModel metoda
             LY_ViewsPageSize = newVM.LY_ViewsPageSize;
             LY_ExportImagesQuality = newVM.LY_ExportImagesQuality;
 
@@ -4431,7 +4434,7 @@ namespace PFD
             FO_ReinforcementBarColor_Bottom_x_Index = newVM.FO_ReinforcementBarColor_Bottom_x_Index;
             FO_ReinforcementBarColor_Bottom_y_Index = newVM.FO_ReinforcementBarColor_Bottom_y_Index;
 
-            IsSetFromCode = false;
+            
         }
 
         private void SetIsEnabledLocalMembersAxis()
