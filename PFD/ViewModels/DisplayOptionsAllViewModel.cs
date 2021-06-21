@@ -570,83 +570,18 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesLeft = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesRight = false;
 
-            // FRONT VIEW
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLengthInMM = true;
 
-            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
-            {
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLengthInMM = true;
-
-                // DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowGridLines = true; // Vertical
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowSectionSymbols = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
-                //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayDimensions = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesFront = true;
-            }
-
-            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
-            {
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLengthInMM = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowGridLines = true; // Vertical
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowSectionSymbols = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
-                //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayDimensions = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesBack = true;
-            }
-
-            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
-            {
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLengthInMM = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowGridLines = true;// Vertical
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowSectionSymbols = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDimensions = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesLeft = true;
-            }
-
-            if (DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
-            {
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLengthInMM = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowGridLines = true; // Vertical
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowSectionSymbols = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
-                //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayDimensions = true;
-
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateHorizontalGridlines = false;
-                DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_CreateVerticalGridlinesRight = true;
-            }
+            // DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowGridLines = true; // Vertical
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowSectionSymbols = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
             #endregion ELEVATIONS
             // TODO Pre nasledujuce options Frame Views treba doplnit vsade to co je pre elevations
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowMemberDescription = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowMemberPrefix = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowMemberRealLengthInMM = true;
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowGridLines = true; // Horizontal
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowSectionSymbols = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowDetailSymbols = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].DisplayDimensions = true;
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].CO_CreateHorizontalGridlines = true;
             #endregion ROOF
             #region FRAMES
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
@@ -750,8 +685,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Defaultne hodnoty pre vsetky pohlady
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_TransformScreenLines3DToCylinders3D = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Red);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_TransformScreenLines3DToCylinders3D = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayMembers = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayJoints = false;
@@ -762,11 +697,11 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladding = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingLeftWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRightWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingFrontWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingBackWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRoof = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingLeftWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRightWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingFrontWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingBackWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRoof = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFibreglass = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoors = true;
@@ -796,24 +731,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowID = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowHeightWidth = true;
-
-            //if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
-            //{
-            //    //opts.bDisplayCladdingFrontWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
-            //{
-            //    //opts.bDisplayCladdingBackWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
-            //{
-            //    //opts.bDisplayCladdingLeftWall = true;
-            //}
-            //else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
-            //{
-            //    //opts.bDisplayCladdingRightWall = true;
-            //}
-
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
