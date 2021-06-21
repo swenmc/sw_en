@@ -4339,7 +4339,7 @@ namespace BaseClasses
                 if (centerModel) { textlabel.Transform = centerModelTransGr; }
             }
             else
-            {                
+            {
                 textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, p, over, up, rowsCount, maxRowLength, widthScaleFactor);
                 if (centerModel)
                 {
@@ -4352,13 +4352,7 @@ namespace BaseClasses
 
             viewPort.Children.Add(textlabel);
         }
-   
 
-        
-
-        
-
-        
         #endregion
         #endregion
 
@@ -4980,7 +4974,7 @@ namespace BaseClasses
                 mat.Brush = new VisualBrush(label);
             }
             else
-            {                
+            {
                 mat.Brush = new VisualBrush(tb);
             }
 

@@ -924,25 +924,16 @@ namespace EXPIMP
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
-            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_3DScene]; //TODO 855
-
-            //toto nastavenie by mohlo byt inde, ale zase nechcem to rozbit inde
-            //opts.ExportMembersDescriptionSize = 1f / 60f;
-            opts.MembersDescriptionSize = 1f / 60f;  //??? tu je zmena k tasku 701 - zrusene bolo ExportMembersDescriptionSize
+            // TODO 701
+            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_3D_Scene]; //TODO 855
             opts.LY_ViewsPageSize = EPageSizes.A4;
-            opts.CO_bCreateHorizontalGridlines = false;
-            opts.CO_bCreateVerticalGridlinesFront = false;
-            opts.CO_bCreateVerticalGridlinesBack = false;
-            opts.CO_bCreateVerticalGridlinesLeft = false;
-            opts.CO_bCreateVerticalGridlinesRight = false;
-
-            opts.CO_bUseOrtographicCamera = true;
 
             string sParagraphName;
             string sImageName;
             string sTitle = "";
 
             // TODO 701 - rozdelit pre 3D scene a pre Ortographic camera elevations
+            // Report Elevations and Roof (centerline model)
             if(true/*TODO 701 zakomentovane eViewtype == EViewType3D.MEMBER_CENTERLINES*/)
             {
                 if (view == EModelViews.FRONT)
@@ -982,14 +973,11 @@ namespace EXPIMP
                     sImageName = "error_case.png";
                 }
             }
-            else
+            else // 3D Scene Report (solid member model)
             {
                 sParagraphName = "[3DModelImage_MemberSolidModel]";
                 sImageName = "ViewPort1.png";
                 sTitle = "";
-
-                // TOOD 701
-                opts.CO_bUseOrtographicCamera = false;
             }
 
             CModel filteredModel = null;
@@ -1560,34 +1548,7 @@ namespace EXPIMP
         {
             float fZoomFactor = 1f;//1.5f;
 
-            // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Joints];
-            //sDisplayOptions.CO_IsExport = true;
-            //sDisplayOptions.bDisplayMembersCenterLines = false;
-            //sDisplayOptions.bDisplaySolidModel = true;
-
-            //sDisplayOptions.bDisplayMembers = true;
-            //sDisplayOptions.bDisplayJoints = true;
-            //sDisplayOptions.bDisplayPlates = true;
-            //sDisplayOptions.bDisplayConnectors = true;
-
-            //sDisplayOptions.bDisplayNodes = false;
-            //sDisplayOptions.bDisplayNodesDescription = false;
-
-            //sDisplayOptions.CO_bUseOrtographicCamera = false;
-            //sDisplayOptions.bDisplayGlobalAxis = false;
-            //sDisplayOptions.bDisplayMemberDescription = false;
-
-            //// Do dokumentu exporujeme aj s wireframe
-            //sDisplayOptions.bDisplayWireFrameModel = true;
-            //sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
-
-            //sDisplayOptions.bDisplayMembersWireFrame = true;
-            //sDisplayOptions.bDisplayJointsWireFrame = true;
-            //sDisplayOptions.bDisplayPlatesWireFrame = true;
-            //sDisplayOptions.bDisplayConnectorsWireFrame = false;
-
-            //sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[JointDesign]"));
             par.RemoveText(0);
@@ -1613,20 +1574,6 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-
-                    // Bug 477 - Refactoring
-                    /*
-                    float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
-
-                    float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch / obrazkoch
-                    float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
-                    float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
-                    float fZoomFactor = 0.1f;
-
-                    float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
-
-                    sDisplayOptions.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-                    */
 
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, fZoomFactor, out trackport);
@@ -1675,45 +1622,8 @@ namespace EXPIMP
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
             float fZoomFactor = 1f;//3f;
-            // Refaktorovat s JointDesign
+
             DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Foundations];
-            //sDisplayOptions.CO_IsExport = true;
-            //sDisplayOptions.bDisplayMembersCenterLines = false;
-            //sDisplayOptions.bDisplaySolidModel = true;
-
-            //sDisplayOptions.bDisplayMembers = true;
-            //sDisplayOptions.bDisplayJoints = true;
-            //sDisplayOptions.bDisplayPlates = true;
-            //sDisplayOptions.bDisplayConnectors = true;
-
-            //sDisplayOptions.bDisplayNodes = false;
-            //sDisplayOptions.bDisplayNodesDescription = false;
-
-            //sDisplayOptions.CO_bUseOrtographicCamera = false;
-            //sDisplayOptions.bDisplayGlobalAxis = false;
-            //sDisplayOptions.bDisplayMemberDescription = false;
-
-            //// Do dokumentu exporujeme aj s wireframe
-            //sDisplayOptions.bDisplayWireFrameModel = true;
-            //sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = true;
-
-            //sDisplayOptions.bDisplayMembersWireFrame = true;
-            //sDisplayOptions.bDisplayJointsWireFrame = true;
-            //sDisplayOptions.bDisplayPlatesWireFrame = true;
-            //sDisplayOptions.bDisplayConnectorsWireFrame = false;
-
-            //sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
-
-            // Foundations
-            //sDisplayOptions.bDisplayFoundations = true;
-            //sDisplayOptions.bDisplayReinforcementBars = true;
-
-            //sDisplayOptions.bDisplayFoundationsWireFrame = true;
-            //sDisplayOptions.bDisplayReinforcementBarsWireFrame = true;
-
-            //sDisplayOptions.CO_RotateModelX = -80;
-            //sDisplayOptions.CO_RotateModelY = 45;
-            //sDisplayOptions.CO_RotateModelZ = 5;
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
             par.RemoveText(0);
@@ -1725,7 +1635,7 @@ namespace EXPIMP
                     cInfo.MemberTypePosition != EMemberType_FS_Position.WindPostFrontSide &&
                     cInfo.MemberTypePosition != EMemberType_FS_Position.WindPostBackSide) continue;
                 if (!cInfo.Design) continue;
-                
+
                 // Start Joint
                 CCalculJoint calcul = null;
                 data.dictStartJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
@@ -1739,9 +1649,9 @@ namespace EXPIMP
                     if (calcul == null) calcul = calculEnd;
                     else if (calcul.fEta_max_footing < calculEnd.fEta_max_footing) calcul = calculEnd;
                 }
-                
+
                 if (calcul != null)
-                {   
+                {
                     // Display Member type heading
                     par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
                     par.StyleName = "Heading2";
@@ -1750,20 +1660,6 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-
-                    /*
-                    // Bug 477 - Refactoring
-                    float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
-
-                    float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch / obrazkoch
-                    float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
-                    float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
-                    float fZoomFactor = 0.2f;
-
-                    float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
-
-                    sDisplayOptions.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-                    */
 
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, data.Model, fZoomFactor, out trackport);

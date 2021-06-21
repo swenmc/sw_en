@@ -30,6 +30,12 @@ namespace PFD
             InitializeComponent();
 
             // TODO 701
+            // TODO - TO Ondrej, sem asi mozu prichadzat rozne VM pre Display options
+            // EDisplayOptionsTypes.Report_Joints
+            // EDisplayOptionsTypes.GUI_Joint_Preview
+            // EDisplayOptionsTypes.Layouts_Joints
+
+            // Toto treba nastavit do prislusnych VM a odtialto zmazat ???
             sDisplayOptions.CO_bCreateHorizontalGridlines = false;
             sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
             sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
@@ -77,6 +83,8 @@ namespace PFD
             InitializeComponent();
 
             // TODO 701
+            // TODO - TO Ondrej, sem asi mozu prichadzat rozne VM pre Display options
+            // Toto treba nastavit do prislusnych VM a odtialto zmazat ???
             sDisplayOptions.CO_bCreateHorizontalGridlines = true;
             sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
             sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;

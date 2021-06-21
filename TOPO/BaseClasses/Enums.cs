@@ -864,7 +864,7 @@ namespace BaseClasses
         GUI_Foundation_Preview = 2,
         GUI_Accessories_Preview = 3,
 
-        Report_3DScene = 4,
+        Report_3D_Scene = 4,
         Report_FW_Elevations = 5,
         Report_FW_Roof = 6,
         Report_Joints = 7,

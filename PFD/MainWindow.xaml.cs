@@ -999,8 +999,6 @@ namespace PFD
             //UpdateDisplayOptions();
             sDisplayOptions = vm.GetDisplayOptions();
 
-            // TODO 701
-            sDisplayOptions.CO_IsExport = false;
             //System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
 
             Page3Dmodel page1;

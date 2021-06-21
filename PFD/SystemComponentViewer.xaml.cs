@@ -1214,6 +1214,7 @@ namespace PFD
             Frame2D.Content = page2D;
 
             // TODO 701
+            // TODO - TO Ondrej urobit samostatne nastavenia Display Options pre SCV???
 
             // Create 3D window
             sDisplayOptions.bDisplayGlobalAxis = false;

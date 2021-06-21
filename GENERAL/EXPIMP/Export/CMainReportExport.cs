@@ -280,10 +280,9 @@ namespace EXPIMP
 
         /// <summary>
         /// Draw scaled 3Model to PDF
-        /// </summary>        
+        /// </summary>
         private static void DrawModel3D(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
-            // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
             XGraphics gfx;
             PdfPage page;
             page = s_document.AddPage();
@@ -346,7 +345,7 @@ namespace EXPIMP
 
         //    DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
 
-        //    CModel filteredModel = null;            
+        //    CModel filteredModel = null;
 
         //    Viewport3D viewPort = ExportHelper.GetBaseModelViewPortAsync(opts, data, 1f, trackport, out filteredModel);
         //    viewPort.UpdateLayout();
@@ -385,7 +384,6 @@ namespace EXPIMP
             
             int legendImgWidth = 100;
             int legendTextWidth = 70;
-            //float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);  //toto nic nerobi, tak som zakomentoval
 
             DateTime start = DateTime.Now;
             System.Diagnostics.Trace.WriteLine("DrawModelViews Beginning: " + (DateTime.Now - start).TotalMilliseconds);
@@ -395,7 +393,6 @@ namespace EXPIMP
                 DisplayOptions opts = GetModelViewsDisplayOptions(data, viewMembers);
                 opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViews;
                 opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
-                //opts.CO_SameScaleForViews = true;
 
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + viewMembers.ToString());
@@ -414,29 +411,6 @@ namespace EXPIMP
 
                 opts.CO_ModelView = GetView(viewMembers);
                 opts.CO_ViewModelMembers = (int)viewMembers;
-
-                // Defaultne hodnoty pre vsetky pohlady
-                //opts.CO_bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
-                //opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
-                // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
-
-                // TO Ondrej - tu je trosku problem ze mame jedny 
-                // DisplayOptions opts pre vsetky pohlady a podorysy (mame to nazvane a pouzivame to ako filters), takze ked nieco zobrazim v jednom pohlade a nechcem to v inych ,tak to musim vsade inde povypinat
-                // To moze byt dost komplikovane na spravu, mozno by bolo lepsie mat pre export - pre kazdy pohlad/podorys/elevation/floor plan/layout samostatne display options
-                // a zapnut v nich na true len to co chcem vidiet v danom pohlade nezavisle na ostatnych pohladoch
-                /*
-                All = 0,
-                FRONT = 1,
-                BACK = 2,
-                LEFT = 3,
-                RIGHT = 4,
-                ROOF = 5,
-                MIDDLE_FRAME = 6,
-                COLUMNS = 7,
-                FOUNDATIONS = 8,
-                FLOOR = 9
-                */
-
                 ChangeDisplayOptionsAcordingToView(viewMembers, ref opts);
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
@@ -499,8 +473,6 @@ namespace EXPIMP
             DisplayOptions opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Elevations);
             opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
             opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
-            opts.CO_IsExport = true;
-            opts.CO_SameScaleForViews = true;
 
             List<EViewCladdingFilters> list_views = GetCladdingViewsFromExportOptions(exportOpts, data);
 
@@ -598,7 +570,7 @@ namespace EXPIMP
 
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data, EDisplayOptionsTypes optionsType)
         {
-            return data.DisplayOptionsDict[(int) optionsType];            
+            return data.DisplayOptionsDict[(int) optionsType];
         }
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data, EViewModelMemberFilters view)
         {
@@ -670,7 +642,6 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_Joints];
-            opts.CO_IsExport = true;
 
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName(), exportOpts);
@@ -762,8 +733,6 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_Foundations];
-            opts.CO_IsExport = true;
-
             DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefaultForExport();
 
             sheetNo++;
@@ -1391,13 +1360,8 @@ namespace EXPIMP
             gfx.DrawString("Project Part: ", fontProjectInfo, XBrushes.Black, 30, 90);
             if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectPart, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 90);
 
-            // Preview isometricky pohlad na konstrukciu
-            // Bez kot, bez popisov
+            // Preview - izometricky pohlad na konstrukciu
             DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene]; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-
-            //opts.CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
-            //opts.CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
-            //opts.CO_bTransformScreenLines3DToCylinders3D = true;
 
             CModel filteredModel = null;
             Trackport3D trackport = null;

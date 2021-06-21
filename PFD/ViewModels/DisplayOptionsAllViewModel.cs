@@ -247,6 +247,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DoorDescriptionSize = 1f / 100f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WindowDescriptionSize = 1f / 100f;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_IsExport = false;
+
             #endregion 3D SCENE
             #region JOINT PREVIEW
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
@@ -296,21 +298,69 @@ namespace PFD
             #region REPORT
             #region 3D SCENE
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].MembersDescriptionSize = 1f / 60f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].LY_ViewsPageSize = EPageSizes.A4;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MembersDescriptionSize = 1f / 60f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].LY_ViewsPageSize = EPageSizes.A4;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].CO_UseOrtographicCamera = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_UseOrtographicCamera = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].DisplayMembersCenterLines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_IsExport = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplayMembersCenterLines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplaySolidModel = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].ShowMemberDescription = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].ShowMemberID = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].MemberDescriptionTextColor = Colors.Black;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3DScene].MemberCenterlineColor = Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberDescriptionTextColor = Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberCenterlineColor = Colors.Black;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateHorizontalGridlines = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesFront = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesBack = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesLeft = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesRight = false;
             #endregion 3D SCENE
+            #region FRAME VIEWS
+            #region ELEVATIONS
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 60f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].LY_ViewsPageSize = EPageSizes.A4;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].CO_UseOrtographicCamera = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].CO_IsExport = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DisplayMembersCenterLines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplaySolidModel = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowMemberDescription = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowMemberID = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberDescriptionTextColor = Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberCenterlineColor = Colors.Black;
+
+            #endregion ELEVATIONS
+            #region ROOF
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 60f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].LY_ViewsPageSize = EPageSizes.A4;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].CO_UseOrtographicCamera = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].CO_IsExport = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DisplayMembersCenterLines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplaySolidModel = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowMemberDescription = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowMemberID = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberDescriptionTextColor = Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberCenterlineColor = Colors.Black;
+
+            #endregion ROOF
+
+            #endregion FRAME VIEWS
             #region JOINTS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
 
@@ -438,7 +488,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].UseTextures = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].UseTexturesCladding = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateHorizontalGridlines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesFront = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesBack = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesLeft = false;
@@ -819,7 +869,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayConnectorsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_IsExport = true;
             #endregion JOINTS
             #region FOUNDATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview]);
@@ -865,6 +915,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_RotateModelX = -80;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_RotateModelY = 45;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_RotateModelZ = 5;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_IsExport = true;
             #endregion FOUNDATIONS
             #endregion LAYOUTS
         }

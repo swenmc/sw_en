@@ -169,7 +169,7 @@ namespace PFD
             DisplayOptions displayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main 
 
-            // TODO 701
+            // TODO 701 - toto treba asi presunut do EDisplayOptionsTypes.GUI_Accessories_Preview
             displayOptions.bDisplayGlobalAxis = false;
             displayOptions.CO_RotateModelX = -90;
             displayOptions.CO_RotateModelY = 20;
@@ -208,6 +208,7 @@ namespace PFD
             if (model == null) model = new CModel();
 
             // TODO 701
+            // Toto treba asi presunut do EDisplayOptionsTypes.GUI_Accessories_Preview
             DisplayOptions displayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             displayOptions.bDisplayGlobalAxis = false;

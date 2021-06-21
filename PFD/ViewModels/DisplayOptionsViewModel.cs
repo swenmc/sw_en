@@ -4433,8 +4433,6 @@ namespace PFD
             FO_ReinforcementBarColor_Top_y_Index = newVM.FO_ReinforcementBarColor_Top_y_Index;
             FO_ReinforcementBarColor_Bottom_x_Index = newVM.FO_ReinforcementBarColor_Bottom_x_Index;
             FO_ReinforcementBarColor_Bottom_y_Index = newVM.FO_ReinforcementBarColor_Bottom_y_Index;
-
-            
         }
 
         private void SetIsEnabledLocalMembersAxis()
