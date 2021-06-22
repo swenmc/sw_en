@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options Copying" Height="450" Width="500" Loaded="Window_Loaded">
+        Title="Display Options Copying" Height="500" Width="500" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -23,7 +23,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <TreeView Name="TreeViewSource"  Grid.Column="0">
+        <TreeView Name="TreeViewSource"  Grid.Column="0" SelectedItemChanged="TreeViewSource_SelectedItemChanged">
             <TreeViewItem Header="GUI" IsExpanded="True">
                 <TreeViewItem Name="twiSourceGUI_3D_scene" Header="3D scene" IsSelected="True"></TreeViewItem>
                 <TreeViewItem Name="twiSourceGUI_Joint_Preview" Header="Joint Preview"></TreeViewItem>
@@ -32,6 +32,10 @@
             </TreeViewItem>
             <TreeViewItem Header="Report" IsExpanded="True">
                 <TreeViewItem Name="twiSourceReport_3D_scene" Header="3D scene"></TreeViewItem>
+                <TreeViewItem Header="Frame Views" IsExpanded="True">
+                    <TreeViewItem Name="twiSourceReport_FW_Elevations" Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceReport_FW_Roof" Header="Roof"></TreeViewItem>
+                </TreeViewItem>
                 <TreeViewItem Name="twiSourceReport_Joints" Header="Joints"></TreeViewItem>
                 <TreeViewItem Name="twiSourceReport_Foundations" Header="Foundations"></TreeViewItem>
             </TreeViewItem>
@@ -84,6 +88,18 @@
                     <TreeViewItem.Header>
                         <CheckBox Name="chReport_3D_scene" Content="3D scene"></CheckBox>
                     </TreeViewItem.Header>
+                </TreeViewItem>                
+                <TreeViewItem Header="Frame Views" IsExpanded="True">                    
+                    <TreeViewItem Name="twiDestReport_FW_Elevations">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chReport_FW_Elevations" Content="Elevations"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestReport_FW_Roof">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chReport_FW_Roof" Content="Roof"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>                    
                 </TreeViewItem>
                 <TreeViewItem Name="twiDestReport_Joints">
                     <TreeViewItem.Header>
