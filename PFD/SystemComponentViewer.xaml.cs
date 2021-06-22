@@ -104,9 +104,10 @@ namespace PFD
 
         public SystemComponentViewer()
         {
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayWireFrameModel = true;
+            InitDisplaOptions();
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplaySolidModel = true;
+            //sDisplayOptions.bDisplayWireFrameModel = true;
 
             InitializeComponent();
 
@@ -119,6 +120,32 @@ namespace PFD
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
             vm.ComponentIndex = 1;
+        }
+
+        private void InitDisplaOptions()
+        {
+            sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayWireFrameModel = true;
+
+            // Create 3D window
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bUseLightAmbient = true;            
+
+            sDisplayOptions.NodeColor = Colors.Red;
+            sDisplayOptions.NodesDescriptionSize = 1f / 5;
+            sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
+
+        }
+
+        private void ChangeDisplaOptionsAccordingToViewModel(SystemComponentViewerViewModel vm)
+        {   
+            sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
+            sDisplayOptions.bDisplayNodes = vm.DrawPoints3D;
+            sDisplayOptions.bDisplayNodesDescription = vm.DrawPoint3DNumbers3D;
+            sDisplayOptions.bMirrorPlate3D = vm.MirrorPlate3D;
         }
 
         protected void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
@@ -1213,21 +1240,20 @@ namespace PFD
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
 
-            // TODO 701
-            // TODO - TO Ondrej urobit samostatne nastavenia Display Options pre SCV???
+            //// Create 3D window
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bUseEmissiveMaterial = true;
+            //sDisplayOptions.bUseLightAmbient = true;
+            //sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
+            //sDisplayOptions.bDisplayNodes = vm.DrawPoints3D;
+            //sDisplayOptions.bDisplayNodesDescription = vm.DrawPoint3DNumbers3D;
+            //sDisplayOptions.bMirrorPlate3D = vm.MirrorPlate3D;
 
-            // Create 3D window
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bUseEmissiveMaterial = true;
-            sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
-            sDisplayOptions.bDisplayNodes = vm.DrawPoints3D;
-            sDisplayOptions.bDisplayNodesDescription = vm.DrawPoint3DNumbers3D;
-            sDisplayOptions.bMirrorPlate3D = vm.MirrorPlate3D;
+            //sDisplayOptions.NodeColor = Colors.Red;
+            //sDisplayOptions.NodesDescriptionSize = 1f / 5;  
+            //sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
 
-            sDisplayOptions.NodeColor = Colors.Red;
-            sDisplayOptions.NodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
-            sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
+            ChangeDisplaOptionsAccordingToViewModel(vm);
 
             page3D = new Page3Dmodel(plate, sDisplayOptions);
 

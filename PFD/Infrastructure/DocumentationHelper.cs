@@ -78,8 +78,6 @@ namespace PFD
 
         public static void SavePlatesDXF_3D(List<CPlate> plates, string parent_folder)
         {
-            // TODO 701
-            // TODO - TO Ondrej urobit samostatne nastavenia Display Options pre SCV???
             DisplayOptions sDisplayOptions = new DisplayOptions();
             // Create 3D window
             sDisplayOptions.bDisplayGlobalAxis = false;
