@@ -69,7 +69,6 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            // TODO 701
             sDisplayOptions.CO_bCreateHorizontalGridlines = true;
             sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
             sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;

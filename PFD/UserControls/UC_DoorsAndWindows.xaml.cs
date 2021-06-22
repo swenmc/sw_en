@@ -166,15 +166,8 @@ namespace PFD
             if (doorModel == null) doorModel = modelPFD.DoorsModels.FirstOrDefault();
             if (doorModel == null) doorModel = new CModel();
 
-            DisplayOptions displayOptions = _pfdVM.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main 
-
-            // TODO 701 - toto treba asi presunut do EDisplayOptionsTypes.GUI_Accessories_Preview
-            displayOptions.bDisplayGlobalAxis = false;
-            displayOptions.CO_RotateModelX = -90;
-            displayOptions.CO_RotateModelY = 20;
-            displayOptions.bDisplayMembers = true;
-            displayOptions.bDisplaySolidModel = true;
+            DisplayOptions displayOptions = _pfdVM.GetDisplayOptions(EDisplayOptionsTypes.GUI_Accessories_Preview);
+            
             //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
             Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, EModelType.eJoint);
 
@@ -207,15 +200,8 @@ namespace PFD
             if (model == null) model = modelPFD.WindowsModels.FirstOrDefault();
             if (model == null) model = new CModel();
 
-            // TODO 701
-            // Toto treba asi presunut do EDisplayOptionsTypes.GUI_Accessories_Preview
-            DisplayOptions displayOptions = _pfdVM.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
-            displayOptions.bDisplayGlobalAxis = false;
-            displayOptions.CO_RotateModelX = -90;
-            displayOptions.CO_RotateModelY = 20;
-            displayOptions.bDisplayMembers = true;
-            displayOptions.bDisplaySolidModel = true;
+            DisplayOptions displayOptions = _pfdVM.GetDisplayOptions(EDisplayOptionsTypes.GUI_Accessories_Preview);
+            
             //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
             Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, EModelType.eJoint);
 
