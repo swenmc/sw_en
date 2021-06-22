@@ -450,7 +450,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplaySolidModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayMembersCenterLines = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception // TODO 701 - ako osetrime ak nechceme uzivatelovi povolit nastavit nejaku property v GUI ???
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayWireFrameModel = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayMembers = true;

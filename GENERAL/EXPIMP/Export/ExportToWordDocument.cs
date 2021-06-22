@@ -104,7 +104,7 @@ namespace EXPIMP
                 document.ReplaceText("[Width]", data.Width_Overall.ToString(sStringFormat_Length));
                 document.ReplaceText("[WallHeight]", data.WallHeight_Overall.ToString(sStringFormat_Length));
                 document.ReplaceText("[ApexHeight_H2]", data.ApexHeight_H2_Overall.ToString(sStringFormat_Length));
-                                
+
                 if (data.KitSetTypeIndex == 0) //Monopitch
                 {
                     document.ReplaceText("[lblWallH1]", "Wall Height 1");
@@ -149,10 +149,10 @@ namespace EXPIMP
                 document.ReplaceText("[Location]", data.Location);
                 document.ReplaceText("[WindRegion]", data.WindRegion);
 
-                if(data.NumberOfRollerDoors > 0) document.ReplaceText("[numberRollerDoors]", data.NumberOfRollerDoors.ToString());
+                if (data.NumberOfRollerDoors > 0) document.ReplaceText("[numberRollerDoors]", data.NumberOfRollerDoors.ToString());
                 else (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[numberRollerDoors]"))).Remove(false);
 
-                if(data.NumberOfPersonnelDoors > 0) document.ReplaceText("[numberPersonnelDoors]", data.NumberOfPersonnelDoors.ToString());
+                if (data.NumberOfPersonnelDoors > 0) document.ReplaceText("[numberPersonnelDoors]", data.NumberOfPersonnelDoors.ToString());
                 else (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[numberPersonnelDoors]"))).Remove(false);
 
                 document.ReplaceText("[price_WithMargin_WithoutGST]", data.BuildingPrice_WithMargin_WithoutGST.ToString("F2"));
@@ -233,7 +233,7 @@ namespace EXPIMP
                     document.ReplaceText("[exclusion_Gutters]", "Gutters");
                 }
                 else
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_Gutters]"))).Remove(false); 
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_Gutters]"))).Remove(false);
 
                 if ((tables.Find(x => x.TableName == "Flashings")) == null)
                 {
@@ -286,7 +286,7 @@ namespace EXPIMP
             bool containsZinc = false;
             bool containsNotZinc = false;
             foreach (DataRow row in dt.Rows)
-            {                
+            {
                 string colorName = row["ColorName"].ToString();
                 if (string.IsNullOrEmpty(colorName)) continue;
 
@@ -400,7 +400,7 @@ namespace EXPIMP
             // + tabulky podla toho kolko je roznych druhov betonu pre footing pads (len teoreticky, v praxi bude beton len jeden)
             // Este by sa mohol pridat beton pre floor slab a steel pre plates, ale to asi zatial neriesime
 
-            if(diffMaterialsConcrete != null)
+            if (diffMaterialsConcrete != null)
             {
                 foreach (string material in diffMaterialsConcrete)
                 {
@@ -578,7 +578,7 @@ namespace EXPIMP
 
             var t = document.AddTable(1, 7);
             t.Design = TableDesign.TableGrid;
-            t.Alignment = Alignment.left; 
+            t.Alignment = Alignment.left;
 
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Prefix");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Color");
@@ -594,7 +594,7 @@ namespace EXPIMP
             t.Rows[0].Cells[4].Paragraphs[0].Bold();
             t.Rows[0].Cells[5].Paragraphs[0].Bold();
             t.Rows[0].Cells[6].Paragraphs[0].Bold();
-            
+
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
                 Row row = t.InsertRow();
@@ -819,13 +819,13 @@ namespace EXPIMP
             par = DrawDataExportTable(document, par, CStringsManager.LoadWindLoadParameters_AS1170_2());
 
             // Load Case - Datails            
-            par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad_LoadCasesDetails]"));            
+            par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad_LoadCasesDetails]"));
             par.RemoveText(0);
 
             for (int i = 0; i < data.Model.m_arrLoadCases.Length; i++)
             {
                 CLoadCase lc = data.Model.m_arrLoadCases[i];
-                
+
                 // Cpe Factors
                 if (lc.Type == ELCType.eWind && lc.MType_LS == ELCGTypeForLimitState.eULSOnly &&
                    (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)) // Vypiseme len stavy s ULS, SLS maju rovnake faktory
@@ -849,7 +849,7 @@ namespace EXPIMP
 
                     Formatting formatting = new Formatting();
                     formatting.Bold = true;
-                    par = par.InsertParagraphAfterSelf(lc_tableName + " - " + coeficientType, false, formatting);                                        
+                    par = par.InsertParagraphAfterSelf(lc_tableName + " - " + coeficientType, false, formatting);
                     par = par.InsertParagraphAfterSelf("");
                     DrawLoadCaseDetails(document, data.Wind, lc, par);
                 }
@@ -924,57 +924,45 @@ namespace EXPIMP
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
-            // TODO 701
-            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_3D_Scene]; //TODO 855
+            DisplayOptions opts = GetDisplayOptions(view, data);
             opts.LY_ViewsPageSize = EPageSizes.A4;
 
             string sParagraphName;
             string sImageName;
             string sTitle = "";
 
-            // TODO 701 - rozdelit pre 3D scene a pre Ortographic camera elevations
-            // Report Elevations and Roof (centerline model)
-            if(true/*TODO 701 zakomentovane eViewtype == EViewType3D.MEMBER_CENTERLINES*/)
+            if (view == EModelViews.FRONT)
             {
-                if (view == EModelViews.FRONT)
-                {
-                    sParagraphName = "[3DModelImage_MemberCenterlines_Front]";
-                    sImageName = "ViewPort2.png";
-                    sTitle = "Front";
-                }
-                else if (view == EModelViews.BACK)
-                {
-                    sParagraphName = "[3DModelImage_MemberCenterlines_Back]";
-                    sImageName = "ViewPort3.png";
-                    sTitle = "Back";
-                }
-                else if (view == EModelViews.LEFT)
-                {
-                    sParagraphName = "[3DModelImage_MemberCenterlines_Left]";
-                    sImageName = "ViewPort4.png";
-                    sTitle = "Left";
-                }
-                else if (view == EModelViews.RIGHT)
-                {
-                    sParagraphName = "[3DModelImage_MemberCenterlines_Right]";
-                    sImageName = "ViewPort5.png";
-                    sTitle = "Right";
-                }
-                else if (view == EModelViews.TOP)
-                {
-                    sParagraphName = "[3DModelImage_MemberCenterlines_Top]";
-                    sImageName = "ViewPort6.png";
-                    sTitle = "Top";
-                }
-                else
-                {
-                    // Toto by nemalo nastat
-                    sParagraphName = "[error_case]";
-                    sImageName = "error_case.png";
-                }
+                sParagraphName = "[3DModelImage_MemberCenterlines_Front]";
+                sImageName = "ViewPort2.png";
+                sTitle = "Front";
             }
-            else // 3D Scene Report (solid member model)
+            else if (view == EModelViews.BACK)
             {
+                sParagraphName = "[3DModelImage_MemberCenterlines_Back]";
+                sImageName = "ViewPort3.png";
+                sTitle = "Back";
+            }
+            else if (view == EModelViews.LEFT)
+            {
+                sParagraphName = "[3DModelImage_MemberCenterlines_Left]";
+                sImageName = "ViewPort4.png";
+                sTitle = "Left";
+            }
+            else if (view == EModelViews.RIGHT)
+            {
+                sParagraphName = "[3DModelImage_MemberCenterlines_Right]";
+                sImageName = "ViewPort5.png";
+                sTitle = "Right";
+            }
+            else if (view == EModelViews.TOP)
+            {
+                sParagraphName = "[3DModelImage_MemberCenterlines_Top]";
+                sImageName = "ViewPort6.png";
+                sTitle = "Top";
+            }
+            else
+            {                
                 sParagraphName = "[3DModelImage_MemberSolidModel]";
                 sImageName = "ViewPort1.png";
                 sTitle = "";
@@ -1007,6 +995,22 @@ namespace EXPIMP
             picture = null;
             viewPort.Dispose();
             trackport.Dispose();
+        }
+
+        private static DisplayOptions GetDisplayOptions(EModelViews modelView, CModelData data)
+        {
+            if (modelView == EModelViews.FRONT || modelView == EModelViews.BACK || modelView == EModelViews.RIGHT || modelView == EModelViews.LEFT)
+            {
+                return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_FW_Elevations];
+            }
+            else if (modelView == EModelViews.TOP)
+            {
+                return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_FW_Roof];
+            }
+            else
+            {
+                return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_3D_Scene];
+            }
         }
 
         // Vytvori polia s koeficientami Cpe pre vybrany load case
@@ -1061,7 +1065,7 @@ namespace EXPIMP
                     }
                     else //if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)
                     {
-                        values_RoofRight =  wind.fC_pe_U_roof_values_max.ToList();
+                        values_RoofRight = wind.fC_pe_U_roof_values_max.ToList();
                         values_RoofLeft = wind.fC_pe_D_roof_values_max.ToList();
                     }
                 }
@@ -1248,7 +1252,7 @@ namespace EXPIMP
 
             foreach (Paragraph p in table.Paragraphs)
             {
-                if(fontSize != null) p.FontSize(fontSize.Value);
+                if (fontSize != null) p.FontSize(fontSize.Value);
                 else p.FontSize(fontSizeInTable);
             }
         }
@@ -1384,7 +1388,7 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member internal forces ULS");
                 par.StyleName = "Heading4";
                 par = par.InsertParagraphAfterSelf("");
-                par = AppendMemberResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS); 
+                par = AppendMemberResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS);
 
                 if (cInfo.IsFrameMember())
                 {
@@ -1421,14 +1425,14 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member deflections SLS");
                 par.StyleName = "Heading4";
                 par = par.InsertParagraphAfterSelf("");
-                par = AppendMemberResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS); 
+                par = AppendMemberResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS);
 
                 if (cInfo.IsFrameMember())
                 {
                     par = par.InsertParagraphAfterSelf("Frame deflections SLS");
                     par.StyleName = "Heading4";
                     par = par.InsertParagraphAfterSelf("");
-                    par = AppendFrameResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS);  
+                    par = AppendFrameResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS);
                 }
 
                 par = par.InsertParagraphAfterSelf("Member design details - SLS");
@@ -1444,7 +1448,7 @@ namespace EXPIMP
                 }
             }
         }
-        
+
         // TO Ondrej - nove funkcie - len pre ULS alebo SLS / member alebo ram
         // Done
         private static Paragraph AppendMemberResultsCanvases_ULS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
@@ -1510,13 +1514,13 @@ namespace EXPIMP
                 if (maximizeSize)
                 {
                     double ratio = imageMaxWidth / canvas.ActualWidth;
-                    picture = image.CreatePicture((int)(canvas.ActualHeight * ratio), imageMaxWidth);                    
+                    picture = image.CreatePicture((int)(canvas.ActualHeight * ratio), imageMaxWidth);
                 }
                 else
                 {
                     picture = image.CreatePicture((int)canvas.ActualHeight, (int)canvas.ActualWidth);
                 }
-                
+
                 // Insert Picture in paragraph.             
                 par.AppendPicture(picture);
             }
@@ -1548,7 +1552,7 @@ namespace EXPIMP
         {
             float fZoomFactor = 1f;//1.5f;
 
-            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Joints];
+            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_Joints];
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[JointDesign]"));
             par.RemoveText(0);
@@ -1623,14 +1627,14 @@ namespace EXPIMP
         {
             float fZoomFactor = 1f;//3f;
 
-            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Report_Foundations];
+            DisplayOptions sDisplayOptions = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Report_Foundations];
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
             par.RemoveText(0);
 
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
-                if(cInfo.MemberTypePosition != EMemberType_FS_Position.MainColumn &&
+                if (cInfo.MemberTypePosition != EMemberType_FS_Position.MainColumn &&
                     cInfo.MemberTypePosition != EMemberType_FS_Position.EdgeColumn &&
                     cInfo.MemberTypePosition != EMemberType_FS_Position.WindPostFrontSide &&
                     cInfo.MemberTypePosition != EMemberType_FS_Position.WindPostBackSide) continue;
@@ -1680,8 +1684,8 @@ namespace EXPIMP
         {
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
-            
-            if(autofit) t.AutoFit = AutoFit.Window;
+
+            if (autofit) t.AutoFit = AutoFit.Window;
 
             p.InsertTableBeforeSelf(t);
         }
@@ -1753,7 +1757,7 @@ namespace EXPIMP
                     t.Rows[0].Cells[j].InsertParagraph(dt.Columns[j + columnSkip].ExtendedProperties["Unit"].ToString()).Bold();
                     SetAlignment(dt.Columns[j + columnSkip], t.Rows[0].Cells[j].Paragraphs[1]);
                 }
-                
+
                 if (dt.Columns[j + columnSkip].ExtendedProperties["Width"] != null)
                 {
                     columnsWidths.Add((float)dt.Columns[j + columnSkip].ExtendedProperties["Width"]);
@@ -1775,7 +1779,7 @@ namespace EXPIMP
 
                     if (colorColumn != -1 && colorColumn == j)
                     {
-                        if(!string.IsNullOrEmpty(dt.Rows[i][j + columnSkip].ToString()))
+                        if (!string.IsNullOrEmpty(dt.Rows[i][j + columnSkip].ToString()))
                             t.Rows[i + 1].Cells[j].FillColor = System.Drawing.ColorTranslator.FromHtml(dt.Rows[i][j + columnSkip].ToString());
                         continue;
                     }
