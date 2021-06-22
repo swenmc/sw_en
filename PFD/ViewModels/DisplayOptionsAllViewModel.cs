@@ -140,7 +140,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ShowGlobalAxis = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_DisplayIn3DRatio = 0.003f; // Code Only
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LoadSizeScaleIn3D = 0.003f; // Code Only  701 ??? toto nastavenie je v GUI, sice ak je to ako default tak OK
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WireFrameLineThickness = 2;
@@ -596,10 +596,10 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FO_ReinforcementBarColor_Top_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FO_ReinforcementBarColor_Top_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FO_ReinforcementBarColor_Bottom_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FO_ReinforcementBarColor_Bottom_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Top_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Top_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Bottom_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Bottom_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].PlateColor = CComboBoxHelper.GetColorIndex(Colors.Gray;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ScrewColor = CComboBoxHelper.GetColorIndex(Colors.Black;

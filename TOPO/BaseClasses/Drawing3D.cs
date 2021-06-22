@@ -2020,7 +2020,7 @@ namespace BaseClasses
                     {
                         if (selectedLoadCase.NodeLoadsList[i] != null && selectedLoadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.CO_DisplayIn3DRatio)); // Add to the model group
+                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.LoadSizeScaleIn3D)); // Add to the model group
 
                             // Set load for all assigned nodes
 
@@ -2047,7 +2047,7 @@ namespace BaseClasses
                                ))
                             {
                                 Model3DGroup model_gr = new Model3DGroup();
-                                model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.CO_DisplayIn3DRatio);
+                                model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.LoadSizeScaleIn3D);
                                 // Transform modelgroup from LCS to GCS
                                 model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member, selectedLoadCase.MemberLoadsList[i].ELoadCS == ELoadCoordSystem.eLCS);
 
@@ -2067,7 +2067,7 @@ namespace BaseClasses
                         if (selectedLoadCase.SurfaceLoadsList[i] != null && selectedLoadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.CO_DisplayIn3DRatio);
+                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.LoadSizeScaleIn3D);
 
                             model3D_group.Children.Add(model_gr); // Add surface load to the model group
                         }
@@ -4801,7 +4801,7 @@ namespace BaseClasses
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             Model3DGroup model_gr = new Model3DGroup();
-            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.CO_DisplayIn3DRatio);
+            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.LoadSizeScaleIn3D);
 
             Model3D loadLine = model_gr.Children.Last();
             GeometryModel3D model3D = null;
@@ -4877,7 +4877,7 @@ namespace BaseClasses
                 //Pokial by boli vsetky loads rovnako vykreslene a vyuzili by sa SurfacePoints_h s nejakym odsadenim...
                 //tak by sa cisla zobrazili mimo kvadra a bolo by to asi podstatne krajsie
                 //show in load center
-                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform, displayOptions.CO_DisplayIn3DRatio); // Positions in global coordinate system GCS
+                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform, displayOptions.LoadSizeScaleIn3D); // Positions in global coordinate system GCS
                                                                                                                 //show on bottom
                                                                                                                 //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints(l, groupTransform);
                                                                                                                 //show on top
@@ -5160,7 +5160,7 @@ namespace BaseClasses
 
         public static Point3D GetNodalLoadCoordinates_GCS(CNLoad load, DisplayOptions options)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load(options.CO_DisplayIn3DRatio);
+            Model3DGroup gr = load.CreateM_3D_G_Load(options.LoadSizeScaleIn3D);
             if (gr.Children.Count < 1) return new Point3D();
 
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];

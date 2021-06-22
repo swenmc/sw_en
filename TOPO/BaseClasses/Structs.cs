@@ -248,6 +248,8 @@ namespace BaseClasses
         public float DoorDescriptionSize;
         public float WindowDescriptionSize;
 
+        public float LoadSizeScaleIn3D;
+
         // Properties defined only for export - layouts (LY - layout)
         public EPageSizes LY_ViewsPageSize;
         public EImagesQuality LY_ExportImagesQuality;
@@ -257,7 +259,7 @@ namespace BaseClasses
         public bool CO_SameScaleForViews;
 
         public bool CO_bTransformScreenLines3DToCylinders3D;
-        public float CO_DisplayIn3DRatio;
+        
         public int CO_RotateModelX;
         public int CO_RotateModelY;
         public int CO_RotateModelZ;

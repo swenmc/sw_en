@@ -1110,7 +1110,7 @@ namespace sw_en_GUI
             sDisplayOptions.bDisplayMemberLoads_Purlins = true;
             sDisplayOptions.bDisplayMemberLoads_EavePurlins = true;
 
-            sDisplayOptions.CO_DisplayIn3DRatio = 0.001f;
+            sDisplayOptions.LoadSizeScaleIn3D = 0.001f;
 
             sDisplayOptions.bDisplayLoadsLabels = true;
 
@@ -1141,7 +1141,7 @@ namespace sw_en_GUI
             sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             sDisplayOptions.bDisplayLoads = true;
-            sDisplayOptions.CO_DisplayIn3DRatio = 0.001f; // Default
+            sDisplayOptions.LoadSizeScaleIn3D = 0.001f; // Default
 
             Window2 win = new Window2(model, sDisplayOptions, model.m_arrLoadCases[0], m_bDebugging);
             list_trackports.Add(win._trackport);

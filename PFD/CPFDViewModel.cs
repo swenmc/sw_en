@@ -49,7 +49,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private bool MIsRelease;
-        
+
         private int MKitsetTypeIndex;
         private int MModelIndex;
         private float MWidth;
@@ -985,7 +985,7 @@ namespace PFD
                 NotifyPropertyChanged("BackFrameRakeAngle");
             }
         }
-        
+
         //-------------------------------------------------------------------------------------------------------------
         public int SupportTypeIndex
         {
@@ -1002,7 +1002,7 @@ namespace PFD
                 NotifyPropertyChanged("SupportTypeIndex");
             }
         }
-        
+
         //-------------------------------------------------------------------------------------------------------------
         public int LoadCaseIndex
         {
@@ -1035,7 +1035,7 @@ namespace PFD
                 if (!isChangedFromCode) IsSetFromCode = false;
             }
         }
-        
+
         public bool UseCRSCGeometricalAxes
         {
             get
@@ -1387,7 +1387,7 @@ namespace PFD
                 m_TransformScreenLines3DToCylinders3D = value;
             }
         }
-        
+
         public bool RecreateQuotation
         {
             get
@@ -1416,7 +1416,7 @@ namespace PFD
                 iFrontColumnNoInOneFrame = value;
             }
         }
-        
+
         public DoorsAndWindowsViewModel _doorsAndWindowsVM;
 
         public CComponentListVM _componentVM;
@@ -1511,7 +1511,7 @@ namespace PFD
                 RecreateJoints = true;
                 CalculateCladdingParameters_Mato(); //before recreate quotation
                 RecreateQuotation = true;
-                SetComponentListAccordingToCanopies();                
+                SetComponentListAccordingToCanopies();
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CanopiesOptionsChanged");
 
@@ -1535,7 +1535,7 @@ namespace PFD
                 CalculateCladdingParameters_Mato();
                 //to mato a co vysledky? treba vymazat ak sa zmenil Cladding options?
                 //SetResultsAreNotValid();
-                
+
                 if (MSynchronizeGUI) NotifyPropertyChanged("CladdingOptionsChanged");
             }
         }
@@ -2319,7 +2319,7 @@ namespace PFD
             {
                 m_ApplyChangesToModel = value;
 
-                if(!_modelOptionsVM.UpdateAutomatically) NotifyPropertyChanged("ApplyChangesToModel");
+                if (!_modelOptionsVM.UpdateAutomatically) NotifyPropertyChanged("ApplyChangesToModel");
             }
         }
 
@@ -3458,11 +3458,11 @@ namespace PFD
         {
             //To mato - tu by sa asi dalo vybrat len tie DisplayOptions co su pre export
             Dictionary<int, DisplayOptions> dict = new Dictionary<int, DisplayOptions>();
-            
+
             for (int i = 4; i < _displayOptionsVM.DisplayOptionsList.Count; i++)
             {
                 dict.Add(i, GetDisplayOptions(_displayOptionsVM.DisplayOptionsList[i]));
-            }   
+            }
             return dict;
         }
         public DisplayOptions GetDisplayOptions(DisplayOptionsViewModel do_vm)
@@ -3588,7 +3588,6 @@ namespace PFD
             sDisplayOptions.bDisplayLoadsLabels = do_vm.ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = do_vm.ShowLoadsLabelsUnits;
 
-            sDisplayOptions.CO_DisplayIn3DRatio = do_vm.DisplayIn3DRatio;
             sDisplayOptions.bColorsAccordingToMembersPrefix = do_vm.ColorsAccordingToMembersPrefix;
             sDisplayOptions.bColorsAccordingToMembersPosition = do_vm.ColorsAccordingToMembersPosition;
             sDisplayOptions.bColorsAccordingToMembers = sDisplayOptions.bColorsAccordingToMembersPrefix || sDisplayOptions.bColorsAccordingToMembersPosition;
@@ -3640,7 +3639,7 @@ namespace PFD
             sDisplayOptions.DoorTextColor = do_vm.DoorTextColor;
             sDisplayOptions.WindowTextColor = do_vm.WindowTextColor;
 
-            // TODO 701 - toto presunut do display options aj v ramci GUI
+            // TODO 855 - toto presunut do display options aj v ramci GUI
             if (FootingVM != null)
             {
                 sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
@@ -3682,10 +3681,6 @@ namespace PFD
             sDisplayOptions.fFibreglassOpacity = do_vm.FibreglassOpacity;
 
             sDisplayOptions.backgroundColor = do_vm.BackgroundColor;
-            sDisplayOptions.CO_ModelView = ViewIndex;
-            sDisplayOptions.CO_ViewModelMembers = ViewModelMemberFilterIndex;
-
-            sDisplayOptions.CO_IsExport = false;
 
             sDisplayOptions.FloorSlabTextSize = do_vm.FloorSlabTextSize;
             sDisplayOptions.GridlinesSize = do_vm.GridlinesSize;
@@ -3708,7 +3703,29 @@ namespace PFD
             sDisplayOptions.DoorDescriptionSize = do_vm.DoorDescriptionSize;
             sDisplayOptions.WindowDescriptionSize = do_vm.WindowDescriptionSize;
 
-            // TODO 701 - pridat to co nie je v GUI
+            sDisplayOptions.LoadSizeScaleIn3D = do_vm.LoadSizeScaleIn3D;
+
+            //to co nie je v GUI
+            //sDisplayOptions.CO_ModelView = ViewIndex;
+            //sDisplayOptions.CO_ViewModelMembers = ViewModelMemberFilterIndex;
+            //sDisplayOptions.CO_IsExport = false;
+            sDisplayOptions.CO_ModelView = do_vm.CO_ModelView;
+            sDisplayOptions.CO_ViewModelMembers = do_vm.CO_ViewModelMembers;
+            sDisplayOptions.CO_IsExport = do_vm.CO_IsExport;
+            sDisplayOptions.CO_SameScaleForViews = do_vm.CO_SameScaleForViews;
+            sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = do_vm.CO_TransformScreenLines3DToCylinders3D;
+            //sDisplayOptions.CO_DisplayIn3DRatio = do_vm.CO_DisplayIn3DRatio;
+            sDisplayOptions.CO_RotateModelX = do_vm.CO_RotateModelX;
+            sDisplayOptions.CO_RotateModelY = do_vm.CO_RotateModelY;
+            sDisplayOptions.CO_RotateModelZ = do_vm.CO_RotateModelZ;
+            sDisplayOptions.CO_ViewCladding = do_vm.CO_ViewCladding;
+            sDisplayOptions.CO_bUseOrtographicCamera = do_vm.CO_UseOrtographicCamera;
+            sDisplayOptions.CO_OrtographicCameraWidth = do_vm.CO_OrtographicCameraWidth;
+            sDisplayOptions.CO_bCreateHorizontalGridlines = do_vm.CO_CreateHorizontalGridlines;
+            sDisplayOptions.CO_bCreateVerticalGridlinesFront = do_vm.CO_CreateVerticalGridlinesFront;
+            sDisplayOptions.CO_bCreateVerticalGridlinesBack = do_vm.CO_CreateVerticalGridlinesBack;
+            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = do_vm.CO_CreateVerticalGridlinesLeft;
+            sDisplayOptions.CO_bCreateVerticalGridlinesRight = do_vm.CO_CreateVerticalGridlinesRight;
 
             return sDisplayOptions;
         }
@@ -3846,7 +3863,7 @@ namespace PFD
             //double column_crsc_y_plus_temp = EdgeColumnCrsc_y_plus + AdditionalOffsetWall;
             double column_crsc_z_plus_temp = MainColumnCrsc_z_plus + AdditionalOffsetWall;
 
-            double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList, 
+            double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList,
                 _claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
                 _claddingOptionsVM.RoofEdgeOverHang_LR_X,
                 (float)column_crsc_z_plus_temp,
@@ -3972,7 +3989,7 @@ namespace PFD
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
             {
                 BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
-                double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList, 
+                double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList,
                     _claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
                     _claddingOptionsVM.RoofEdgeOverHang_LR_X,
                     MainColumnCrsc_z_plus, //To Mato je tento parameter spravny?
@@ -4019,7 +4036,7 @@ namespace PFD
         {
             if (_doorsAndWindowsVM == null) return;
             if (_doorsAndWindowsVM.Flashings == null) return;
-            
+
             CAccessories_LengthItemProperties flashing = null;
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidge); // Roof Ridge
             if (flashing != null) flashing.Length_total = RoofRidgeFlashing_TotalLength;
@@ -4041,7 +4058,7 @@ namespace PFD
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.FibreglassRoofRidgeCap); // Fibreglass Roof Ridge Cap
             if (flashing != null) flashing.Length_total = FibreglassRoofRidgeCapFlashing_TotalLength;
-            
+
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorTrimmer);
             if (flashing != null) flashing.Length_total = RollerDoorTrimmerFlashing_TotalLength;
 
@@ -4079,7 +4096,7 @@ namespace PFD
             if (_doorsAndWindowsVM == null) return;
             if (_doorsAndWindowsVM.Gutters == null) return;
 
-            if(_doorsAndWindowsVM.Gutters.FirstOrDefault() != null) _doorsAndWindowsVM.Gutters.First().Length_total = Gutters_TotalLength;
+            if (_doorsAndWindowsVM.Gutters.FirstOrDefault() != null) _doorsAndWindowsVM.Gutters.First().Length_total = Gutters_TotalLength;
         }
 
         public void CountDownpipes()
@@ -4401,9 +4418,9 @@ namespace PFD
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
 
-            if(ModelHasLeftWall()) fWallArea_Left = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
+            if (ModelHasLeftWall()) fWallArea_Left = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
 
-            if(ModelHasRightWall())
+            if (ModelHasRightWall())
             {
                 if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
                     fWallArea_Right = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);

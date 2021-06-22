@@ -348,12 +348,16 @@ namespace PFD
 
 
 
-        private float MDisplayIn3DRatio;
+        private float m_LoadSizeScaleIn3D;
         #endregion Loads
 
         #endregion private fields
 
-        // TODO 701
+        private int m_ReinforcementBarColor_Top_x_Index;
+        private int m_ReinforcementBarColor_Top_y_Index;
+        private int m_ReinforcementBarColor_Bottom_x_Index;
+        private int m_ReinforcementBarColor_Bottom_y_Index;
+
 
         // Properties defined only for export - layouts (LY - layout)
         private EPageSizes m_LY_ViewsPageSize;
@@ -380,10 +384,7 @@ namespace PFD
         private bool m_CO_bCreateVerticalGridlinesLeft;
         private bool m_CO_bCreateVerticalGridlinesRight;
 
-        private int m_FO_ReinforcementBarColor_Top_x_Index;
-        private int m_FO_ReinforcementBarColor_Top_y_Index;
-        private int m_FO_ReinforcementBarColor_Bottom_x_Index;
-        private int m_FO_ReinforcementBarColor_Bottom_y_Index;
+        
 
         public bool IsSetFromCode = false;
 
@@ -926,18 +927,18 @@ namespace PFD
             }
         }
 
-        public float DisplayIn3DRatio
+        public float LoadSizeScaleIn3D
         {
             get
             {
-                return MDisplayIn3DRatio;
+                return m_LoadSizeScaleIn3D;
             }
 
             set
             {
-                MDisplayIn3DRatio = value;
+                m_LoadSizeScaleIn3D = value;
 
-                NotifyPropertyChanged("MDisplayIn3DRatio");
+                NotifyPropertyChanged("LoadSizeScaleIn3D");
             }
         }
 
@@ -4086,6 +4087,63 @@ namespace PFD
             }
         }
 
+        public int ReinforcementBarColor_Top_x_Index
+        {
+            get
+            {
+                return m_ReinforcementBarColor_Top_x_Index;
+            }
+
+            set
+            {
+                m_ReinforcementBarColor_Top_x_Index = value;
+                NotifyPropertyChanged("ReinforcementBarColor_Top_x_Index");
+            }
+        }
+
+        public int ReinforcementBarColor_Top_y_Index
+        {
+            get
+            {
+                return m_ReinforcementBarColor_Top_y_Index;
+            }
+
+            set
+            {
+                m_ReinforcementBarColor_Top_y_Index = value;
+                NotifyPropertyChanged("ReinforcementBarColor_Top_y_Index");
+            }
+        }
+
+        public int ReinforcementBarColor_Bottom_x_Index
+        {
+            get
+            {
+                return m_ReinforcementBarColor_Bottom_x_Index;
+            }
+
+            set
+            {
+                m_ReinforcementBarColor_Bottom_x_Index = value;
+                NotifyPropertyChanged("ReinforcementBarColor_Bottom_x_Index");
+            }
+        }
+
+        public int ReinforcementBarColor_Bottom_y_Index
+        {
+            get
+            {
+                return m_ReinforcementBarColor_Bottom_y_Index;
+            }
+
+            set
+            {
+                m_ReinforcementBarColor_Bottom_y_Index = value;
+                NotifyPropertyChanged("ReinforcementBarColor_Bottom_y_Index");
+            }
+        }
+
+
         public bool UseTextures
         {
             get
@@ -4145,7 +4203,7 @@ namespace PFD
         public bool CO_IsExport { get => m_CO_IsExport; set => m_CO_IsExport = value; }
         public bool CO_SameScaleForViews { get => m_CO_SameScaleForViews; set => m_CO_SameScaleForViews = value; }
         public bool CO_TransformScreenLines3DToCylinders3D { get => m_CO_bTransformScreenLines3DToCylinders3D; set => m_CO_bTransformScreenLines3DToCylinders3D = value; }
-        public float CO_DisplayIn3DRatio { get => m_CO_DisplayIn3DRatio; set => m_CO_DisplayIn3DRatio = value; }
+        //public float CO_DisplayIn3DRatio { get => m_CO_DisplayIn3DRatio; set => m_CO_DisplayIn3DRatio = value; }
         public int CO_RotateModelX { get => m_CO_RotateModelX; set => m_CO_RotateModelX = value; }
         public int CO_RotateModelY { get => m_CO_RotateModelY; set => m_CO_RotateModelY = value; }
         public int CO_RotateModelZ { get => m_CO_RotateModelZ; set => m_CO_RotateModelZ = value; }
@@ -4159,10 +4217,12 @@ namespace PFD
         public bool CO_CreateVerticalGridlinesBack { get => m_CO_bCreateVerticalGridlinesBack; set => m_CO_bCreateVerticalGridlinesBack = value; }
         public bool CO_CreateVerticalGridlinesLeft { get => m_CO_bCreateVerticalGridlinesLeft; set => m_CO_bCreateVerticalGridlinesLeft = value; }
         public bool CO_CreateVerticalGridlinesRight { get => m_CO_bCreateVerticalGridlinesRight; set => m_CO_bCreateVerticalGridlinesRight = value; }
-        public int FO_ReinforcementBarColor_Top_x_Index { get => m_FO_ReinforcementBarColor_Top_x_Index; set => m_FO_ReinforcementBarColor_Top_x_Index = value; }
-        public int FO_ReinforcementBarColor_Top_y_Index { get => m_FO_ReinforcementBarColor_Top_y_Index; set => m_FO_ReinforcementBarColor_Top_y_Index = value; }
-        public int FO_ReinforcementBarColor_Bottom_x_Index { get => m_FO_ReinforcementBarColor_Bottom_x_Index; set => m_FO_ReinforcementBarColor_Bottom_x_Index = value; }
-        public int FO_ReinforcementBarColor_Bottom_y_Index { get => m_FO_ReinforcementBarColor_Bottom_y_Index; set => m_FO_ReinforcementBarColor_Bottom_y_Index = value; }
+
+        
+
+
+
+
 
         #endregion Properties
 
@@ -4295,7 +4355,7 @@ namespace PFD
             ShowLocalMembersAxis = newVM.ShowLocalMembersAxis;
             ShowSurfaceLoadsAxis = newVM.ShowSurfaceLoadsAxis;
 
-            DisplayIn3DRatio = newVM.DisplayIn3DRatio;
+            LoadSizeScaleIn3D = newVM.LoadSizeScaleIn3D;
 
 
             WireframeColorIndex = newVM.WireframeColorIndex;
@@ -4397,6 +4457,12 @@ namespace PFD
             CladdingSheetColorIndex = newVM.CladdingSheetColorIndex;
             FibreglassSheetColorIndex = newVM.FibreglassSheetColorIndex;
 
+            // TODO 855 - Presunut nastavenie farieb z Footing Options do Display options
+            ReinforcementBarColor_Top_x_Index = newVM.ReinforcementBarColor_Top_x_Index;
+            ReinforcementBarColor_Top_y_Index = newVM.ReinforcementBarColor_Top_y_Index;
+            ReinforcementBarColor_Bottom_x_Index = newVM.ReinforcementBarColor_Bottom_x_Index;
+            ReinforcementBarColor_Bottom_y_Index = newVM.ReinforcementBarColor_Bottom_y_Index;
+
             IsSetFromCode = false;
         }
 
@@ -4411,8 +4477,7 @@ namespace PFD
             CO_IsExport = newVM.CO_IsExport;
             CO_SameScaleForViews = newVM.CO_SameScaleForViews;
 
-            CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;
-            CO_DisplayIn3DRatio = newVM.CO_DisplayIn3DRatio;
+            CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;            
             CO_RotateModelX = newVM.CO_RotateModelX;
             CO_RotateModelY = newVM.CO_RotateModelY;
             CO_RotateModelZ = newVM.CO_RotateModelZ;
@@ -4427,12 +4492,6 @@ namespace PFD
             CO_CreateVerticalGridlinesBack = newVM.CO_CreateVerticalGridlinesBack;
             CO_CreateVerticalGridlinesLeft = newVM.CO_CreateVerticalGridlinesLeft;
             CO_CreateVerticalGridlinesRight = newVM.CO_CreateVerticalGridlinesRight;
-
-            // TODO 701 - Presunut nastavenie farieb z Footing Options do Display options
-            FO_ReinforcementBarColor_Top_x_Index = newVM.FO_ReinforcementBarColor_Top_x_Index;
-            FO_ReinforcementBarColor_Top_y_Index = newVM.FO_ReinforcementBarColor_Top_y_Index;
-            FO_ReinforcementBarColor_Bottom_x_Index = newVM.FO_ReinforcementBarColor_Bottom_x_Index;
-            FO_ReinforcementBarColor_Bottom_y_Index = newVM.FO_ReinforcementBarColor_Bottom_y_Index;
         }
 
         private void SetIsEnabledLocalMembersAxis()
