@@ -439,7 +439,7 @@ namespace PFD
             #region LAYOUTS
             #region 3D SCENE
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT; // TODO 701 - TODO 851 - sem sa ma napojit vystup z TODO 851, pripadne sa to niekde inde prepise !!!
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT; // TODO 851 - sem sa ma napojit vystup z TODO 851, pripadne sa to niekde inde prepise !!!
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_IsExport = true;

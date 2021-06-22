@@ -129,6 +129,39 @@ namespace PFD
 
             if (optsType != EDisplayOptionsTypes.GUI_3D_Scene) Loads.Visibility = Visibility.Collapsed;
             else Loads.Visibility = Visibility.Visible;
+
+            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene)
+            {
+                chbDisplayWireFrameModel.IsEnabled = false;
+                chbDisplayMembersWireFrame.IsEnabled = false;
+                chbDisplayJointsWireFrame.IsEnabled = false;
+                chbDisplayPlatesWireFrame.IsEnabled = false;
+                chbDisplayConnectorsWireFrame.IsEnabled = false;
+                chbDisplayFoundationsWireFrame.IsEnabled = false;
+                chbDisplayReinforcementBarsWireFrame.IsEnabled = false;
+                chbDisplayFloorSlabWireFrame.IsEnabled = false;
+                chbDisplayCladdingWireFrame.IsEnabled = false;
+                chbDisplayFibreglassWireFrame.IsEnabled = false;
+                chbDisplayDoorsWireFrame.IsEnabled = false;
+                chbDisplayWindowsWireFrame.IsEnabled = false;
+            }
+            else
+            {
+                chbDisplayWireFrameModel.IsEnabled = true;
+                chbDisplayMembersWireFrame.IsEnabled = true;
+                chbDisplayJointsWireFrame.IsEnabled = true;
+                chbDisplayPlatesWireFrame.IsEnabled = true;
+                chbDisplayConnectorsWireFrame.IsEnabled = true;
+                chbDisplayFoundationsWireFrame.IsEnabled = true;
+                chbDisplayReinforcementBarsWireFrame.IsEnabled = true;
+                chbDisplayFloorSlabWireFrame.IsEnabled = true;
+                chbDisplayCladdingWireFrame.IsEnabled = true;
+                chbDisplayFibreglassWireFrame.IsEnabled = true;
+                chbDisplayDoorsWireFrame.IsEnabled = true;
+                chbDisplayWindowsWireFrame.IsEnabled = true;
+            }
+
+            
         }
 
         private void BtnCopySettings_Click(object sender, RoutedEventArgs e)
