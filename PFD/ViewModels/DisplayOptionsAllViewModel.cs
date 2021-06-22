@@ -251,7 +251,7 @@ namespace PFD
 
             #endregion 3D SCENE
             #region JOINT PREVIEW
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayNodes = false;
@@ -265,7 +265,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayConnectors = true;
             #endregion JOINT PREVIEW
             #region FOUNDATION PREVIEW
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayNodes = false;
@@ -290,7 +290,7 @@ namespace PFD
             #endregion FOUNDATION PREVIEW
             #region ACCESSORIES PREVIEW
             // TODO
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplaySolidModel = true;
 
             #endregion ACCESSORIES PREVIEW
@@ -298,7 +298,7 @@ namespace PFD
             #region REPORT
             #region 3D SCENE
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].LY_ViewsPageSize = EPageSizes.A4;
 
@@ -325,7 +325,7 @@ namespace PFD
             #region FRAME VIEWS
             #region ELEVATIONS
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].LY_ViewsPageSize = EPageSizes.A4;
 
@@ -344,7 +344,7 @@ namespace PFD
             #endregion ELEVATIONS
             #region ROOF
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].LY_ViewsPageSize = EPageSizes.A4;
 
@@ -364,7 +364,7 @@ namespace PFD
 
             #endregion FRAME VIEWS
             #region JOINTS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayMembersCenterLines = false;
@@ -395,7 +395,7 @@ namespace PFD
 
             #endregion JOINTS
             #region FOUNDATIONS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].CO_IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayMembersCenterLines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplaySolidModel = true;
@@ -438,7 +438,7 @@ namespace PFD
             #endregion REPORT
             #region LAYOUTS
             #region 3D SCENE
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ModelView = (int)EModelViews.ISO_FRONT_RIGHT; // TODO 701 - TODO 851 - sem sa ma napojit vystup z TODO 851, pripadne sa to niekde inde prepise !!!
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_ViewModelMembers = (int)EViewModelMemberFilters.All;
 
@@ -633,10 +633,10 @@ namespace PFD
             #endregion ELEVATIONS
             // TODO Pre nasledujuce options Frame Views treba doplnit vsade to co je pre elevations
             #region ROOF
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
             #endregion ROOF
             #region FRAMES
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowMemberPrefix = true;
@@ -655,7 +655,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].CO_CreateVerticalGridlinesFront = true;
             #endregion FRAMES
             #region COLUMNS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowMemberPrefix = true;
@@ -680,7 +680,7 @@ namespace PFD
 
             #endregion COLUMNS
             #region FOUNDATIONS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayWireFrameModel = true;
@@ -704,7 +704,7 @@ namespace PFD
 
             #endregion FOUNDATIONS
             #region FLOOR
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayWireFrameModel = true;
@@ -734,7 +734,7 @@ namespace PFD
             #endregion FRAME VIEWS
             #region CLADDING VIEWS
             #region ELEVATIONS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Defaultne hodnoty pre vsetky pohlady
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_TransformScreenLines3DToCylinders3D = false;
@@ -785,7 +785,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowHeightWidth = true;
             #endregion ELEVATIONS
             #region ROOF
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].CO_TransformScreenLines3DToCylinders3D = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
@@ -836,7 +836,7 @@ namespace PFD
             #endregion ROOF
             #endregion CLADDING VIEWS
             #region JOINTS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].ColorsAccordingToMembersPrefix = false;
@@ -874,7 +874,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_IsExport = true;
             #endregion JOINTS
             #region FOUNDATIONS
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].SetViewModel(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].ColorsAccordingToMembersPrefix = false;
