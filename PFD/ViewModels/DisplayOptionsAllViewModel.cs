@@ -289,10 +289,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayReinforcementBars = true; // Display always reinforcement bars
             #endregion FOUNDATION PREVIEW
             #region ACCESSORIES PREVIEW
-            // TODO
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplaySolidModel = true;
-
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplayMembers = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowGlobalAxis = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelX = -90;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelY = 20;
             #endregion ACCESSORIES PREVIEW
             #endregion GUI
             #region REPORT
