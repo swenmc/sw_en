@@ -293,6 +293,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplaySolidModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplayMembers = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowGlobalAxis = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowLocalMembersAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelX = -90;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelY = 20;
             #endregion ACCESSORIES PREVIEW
