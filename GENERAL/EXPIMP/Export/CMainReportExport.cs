@@ -500,7 +500,6 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
-                // TODO 701 ??? Toto je potrebne nastavovat tu?
                 opts.CO_ModelView = GetView(view);
                 opts.CO_ViewCladding = (int)view;
 
@@ -595,20 +594,32 @@ namespace EXPIMP
             if (viewMembers == EViewModelMemberFilters.FRONT)
             {
                 opts.CO_bCreateVerticalGridlinesFront = true;
+                opts.CO_bCreateVerticalGridlinesBack = false;
+                opts.CO_bCreateVerticalGridlinesLeft = false;
+                opts.CO_bCreateVerticalGridlinesRight = false;
                 opts.bDisplayDimensions = true;
             }
             if (viewMembers == EViewModelMemberFilters.BACK)
             {
+                opts.CO_bCreateVerticalGridlinesFront = false;
                 opts.CO_bCreateVerticalGridlinesBack = true;
+                opts.CO_bCreateVerticalGridlinesLeft = false;
+                opts.CO_bCreateVerticalGridlinesRight = false;
                 opts.bDisplayDimensions = false;
             }
             if (viewMembers == EViewModelMemberFilters.LEFT)
             {
+                opts.CO_bCreateVerticalGridlinesFront = false;
+                opts.CO_bCreateVerticalGridlinesBack = false;
                 opts.CO_bCreateVerticalGridlinesLeft = true;
+                opts.CO_bCreateVerticalGridlinesRight = false;
                 opts.bDisplayDimensions = true;
             }
             if (viewMembers == EViewModelMemberFilters.RIGHT)
             {
+                opts.CO_bCreateVerticalGridlinesFront = false;
+                opts.CO_bCreateVerticalGridlinesBack = false;
+                opts.CO_bCreateVerticalGridlinesLeft = false;
                 opts.CO_bCreateVerticalGridlinesRight = true;
                 opts.bDisplayDimensions = false;
             }
@@ -619,18 +630,32 @@ namespace EXPIMP
             if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
             {
                 opts.bDisplayCladdingFrontWall = true;
+                opts.bDisplayCladdingBackWall = false;
+                opts.bDisplayCladdingLeftWall = false;
+                opts.bDisplayCladdingRightWall = false;
+                opts.bDisplayCladdingRoof = false;
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
             {
+                opts.bDisplayCladdingFrontWall = false;
                 opts.bDisplayCladdingBackWall = true;
+                opts.bDisplayCladdingLeftWall = false;
+                opts.bDisplayCladdingRightWall = false;
+                opts.bDisplayCladdingRoof = false;
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
             {
+                opts.bDisplayCladdingFrontWall = false;
+                opts.bDisplayCladdingBackWall = false;
                 opts.bDisplayCladdingLeftWall = true;
+                opts.bDisplayCladdingRightWall = false;                
                 opts.bDisplayCladdingRoof = true;
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
             {
+                opts.bDisplayCladdingFrontWall = false;
+                opts.bDisplayCladdingBackWall = false;
+                opts.bDisplayCladdingLeftWall = false;
                 opts.bDisplayCladdingRightWall = true;
                 opts.bDisplayCladdingRoof = true;
             }

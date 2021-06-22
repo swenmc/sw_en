@@ -43,15 +43,10 @@ namespace EXPIMP
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
 
-                // TODO 701
                 // Solid Model
                 DrawModel3DToDoc(document, modelData, fZoomFactor);
 
                 // Centerline Model
-                // TODO 701
-                // Tu postrebujeme dostat samostatnu sadu Display Options z GUI
-                // Je potrebne pridat pre Export to Report aj children pre nastavenie Elevations a Roof
-
                 DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.FRONT, EViewModelMemberFilters.FRONT);
                 DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.BACK, EViewModelMemberFilters.BACK);
                 DrawModel3DToDoc(document, modelData, fZoomFactor, EModelViews.LEFT, EViewModelMemberFilters.LEFT);
