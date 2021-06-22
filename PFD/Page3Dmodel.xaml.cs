@@ -18,10 +18,9 @@ namespace PFD
     public partial class Page3Dmodel : Page
     {
         //bool bDebugging = false;
-        public DisplayOptions sDisplayOptions;
+        private DisplayOptions sDisplayOptions;
         public Model3DGroup gr = new Model3DGroup();
-        public EGCS eGCS = EGCS.eGCSLeftHanded;
-        //EGCS eGCS = EGCS.eGCSRightHanded;
+        public EGCS eGCS = EGCS.eGCSLeftHanded;        
 
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
@@ -29,67 +28,13 @@ namespace PFD
 
             InitializeComponent();
 
-            // TODO 701
-            // TODO - TO Ondrej, sem asi mozu prichadzat rozne VM pre Display options
-            // EDisplayOptionsTypes.Report_Joints
-            // EDisplayOptionsTypes.GUI_Joint_Preview
-            // EDisplayOptionsTypes.Layouts_Joints
-
-            // Toto treba nastavit do prislusnych VM a odtialto zmazat ???
-            sDisplayOptions.CO_bCreateHorizontalGridlines = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesRight = false;
-
-            if (sDisplayOptions.CO_ModelView == (int)EModelViews.BACK)
-            {
-                sDisplayOptions.CO_bCreateVerticalGridlinesBack = true;
-            }
-            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.LEFT)
-            {
-                sDisplayOptions.CO_bCreateVerticalGridlinesLeft = true;
-            }
-            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.RIGHT)
-            {
-                sDisplayOptions.CO_bCreateVerticalGridlinesRight = true;
-            }
-            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.TOP)
-            {
-                sDisplayOptions.CO_bCreateHorizontalGridlines = true;
-            }
-            else if (sDisplayOptions.CO_ModelView == (int)EModelViews.FRONT) // Front
-            {
-                sDisplayOptions.CO_bCreateVerticalGridlinesFront = true;
-            }
-            else
-            {
-                sDisplayOptions.CO_bCreateHorizontalGridlines = true;
-            }
-
-            //try
-            //{
-                Drawing3D.DrawToTrackPort(_trackport, model, 1f, sDisplayOptions, loadcase, jointsDict);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            Drawing3D.DrawToTrackPort(_trackport, model, 1f, sDisplayOptions, loadcase, jointsDict);            
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
             sDisplayOptions = sDisplayOptions_temp;
 
             InitializeComponent();
-
-            // TODO 701
-            // TODO - TO Ondrej, sem asi mozu prichadzat rozne VM pre Display options
-            // Toto treba nastavit do prislusnych VM a odtialto zmazat ???
-            sDisplayOptions.CO_bCreateHorizontalGridlines = true;
-            sDisplayOptions.CO_bCreateVerticalGridlinesFront = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesBack = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesLeft = false;
-            sDisplayOptions.CO_bCreateVerticalGridlinesRight = false;
 
             if (modelType == EModelType.eJoint)
                 Drawing3D.DrawJointToTrackPort(_trackport, model, 1f, sDisplayOptions);
