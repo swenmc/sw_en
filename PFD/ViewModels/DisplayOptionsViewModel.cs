@@ -4364,6 +4364,11 @@ namespace PFD
             MemberCenterlineColorIndex = newVM.MemberCenterlineColorIndex;
             MemberCenterlineThickness = newVM.MemberCenterlineThickness;
 
+            CladdingTextColorIndex = newVM.CladdingTextColorIndex;
+            FibreglassTextColorIndex = newVM.FibreglassSheetColorIndex;
+            DoorTextColorIndex = newVM.DoorTextColorIndex;
+            WindowTextColorIndex = newVM.WindowTextColorIndex;
+
             NodeDescriptionTextFontSize = newVM.NodeDescriptionTextFontSize;
             MemberDescriptionTextFontSize = newVM.MemberDescriptionTextFontSize;
             DimensionTextFontSize = newVM.DimensionTextFontSize;
