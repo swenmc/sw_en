@@ -51,13 +51,11 @@
                 </TreeViewItem>
                 <TreeViewItem Header="Cladding Views" IsExpanded="True">
                     <TreeViewItem Name="twiSourceLayouts_CW_Elevations" Header="Elevations"></TreeViewItem>
-                    <TreeViewItem Name="twiSourceLayouts_CW_Roof" Header="Roof"></TreeViewItem>                    
+                    <TreeViewItem Name="twiSourceLayouts_CW_Roof" Header="Roof"></TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Name="twiSourceLayouts_Joints" Header="Joints"></TreeViewItem>
                 <TreeViewItem Name="twiSourceLayouts_Foundations" Header="Foundations"></TreeViewItem>
             </TreeViewItem>
-            
-            
         </TreeView>
         <Button Grid.Column="1" Name="BtnCopy" Width="80" Height="30" Click="BtnCopy_Click">Copy</Button>
         <TreeView Name="TreeViewDestination"  Grid.Column="2">
@@ -88,8 +86,8 @@
                     <TreeViewItem.Header>
                         <CheckBox Name="chReport_3D_scene" Content="3D scene"></CheckBox>
                     </TreeViewItem.Header>
-                </TreeViewItem>                
-                <TreeViewItem Header="Frame Views" IsExpanded="True">                    
+                </TreeViewItem>
+                <TreeViewItem Header="Frame Views" IsExpanded="True">
                     <TreeViewItem Name="twiDestReport_FW_Elevations">
                         <TreeViewItem.Header>
                             <CheckBox Name="chReport_FW_Elevations" Content="Elevations"></CheckBox>
@@ -99,7 +97,7 @@
                         <TreeViewItem.Header>
                             <CheckBox Name="chReport_FW_Roof" Content="Roof"></CheckBox>
                         </TreeViewItem.Header>
-                    </TreeViewItem>                    
+                    </TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Name="twiDestReport_Joints">
                     <TreeViewItem.Header>
@@ -173,14 +171,10 @@
                     </TreeViewItem.Header>
                 </TreeViewItem>
             </TreeViewItem>
-
         </TreeView>
 
         <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
             <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
         </StackPanel>
     </Grid>
-
-
-
 </Window>
