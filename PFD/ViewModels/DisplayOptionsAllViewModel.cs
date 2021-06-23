@@ -30,7 +30,16 @@ namespace PFD
             set
             {
                 m_DisplayOptionsList = value;
+                foreach (DisplayOptionsViewModel vm in m_DisplayOptionsList)
+                {
+                    vm.PropertyChanged += displayOptionsViewModel_PropertyChanged;
+                }
             }
+        }
+
+        private void displayOptionsViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyPropertyChanged(e.PropertyName);
         }
 
         //-------------------------------------------------------------------------------------------------------------

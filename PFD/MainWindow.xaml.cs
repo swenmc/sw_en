@@ -997,7 +997,7 @@ namespace PFD
         {
             // Create 3D window
             //UpdateDisplayOptions();
-            sDisplayOptions = vm.GetDisplayOptions();
+            sDisplayOptions = vm.GetDisplayOptions(EDisplayOptionsTypes.GUI_3D_Scene);
 
             //System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
 

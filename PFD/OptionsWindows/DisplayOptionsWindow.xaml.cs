@@ -42,7 +42,18 @@ namespace PFD
             if (sender == null) return;
             if (sender is DisplayOptionsAllViewModel)
             {
+                if (e.PropertyName == "DisplayCladding" || e.PropertyName == "DisplayDoors" || e.PropertyName == "DisplayWindows" ||
+                    e.PropertyName == "FrontCladdingOpacity" || e.PropertyName == "LeftCladdingOpacity" || e.PropertyName == "RoofCladdingOpacity" ||
+                    e.PropertyName == "FlashingOpacity" || e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity" || e.PropertyName == "FibreglassOpacity" || e.PropertyName == "DoorsSimpleSolidModel")
+                    RecreateModelRequired = true;
 
+                if (e.PropertyName == "ColorsAccordingToMembersPrefix" || e.PropertyName == "ColorsAccordingToMembersPosition")
+                {
+                    MemberOptionsChanged = true;
+                    RecreateModelRequired = true;
+                }
+
+                DisplayOptionsChanged = true;
             }
             if (sender is DisplayOptionsViewModel)
             {
