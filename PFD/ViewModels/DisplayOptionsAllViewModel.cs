@@ -814,6 +814,7 @@ namespace PFD
             // Cladding and fibreglass properties
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].RoofCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
             #endregion ELEVATIONS
             #region ROOF
@@ -869,6 +870,7 @@ namespace PFD
             // Cladding and fibreglass properties
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].RoofCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
             #endregion ROOF
             #endregion CLADDING VIEWS
