@@ -4241,12 +4241,22 @@ namespace PFD
         public void SetViewModel(DisplayOptionsViewModel newVM)
         {
             IsSetFromCode = true;
+
+            // Zoradene podla poradia a tabov v GUI
+            // General
             LightDirectional = newVM.LightDirectional;
             LightPoint = newVM.LightPoint;
             LightSpot = newVM.LightSpot;
             LightAmbient = newVM.LightAmbient;
+
             MaterialDiffuse = newVM.MaterialDiffuse;
             MaterialEmissive = newVM.MaterialEmissive;
+
+            ShowGlobalAxis = newVM.ShowGlobalAxis;
+            ShowLocalMembersAxis = newVM.ShowLocalMembersAxis;
+            ShowSurfaceLoadsAxis = newVM.ShowSurfaceLoadsAxis;
+
+            // Objects
             DisplayMembers = newVM.DisplayMembers;
             DisplayJoints = newVM.DisplayJoints;
             DisplayPlates = newVM.DisplayPlates;
@@ -4257,7 +4267,22 @@ namespace PFD
             DisplayFloorSlab = newVM.DisplayFloorSlab;
             DisplaySawCuts = newVM.DisplaySawCuts;
             DisplayControlJoints = newVM.DisplayControlJoints;
+            DisplayNodalSupports = newVM.DisplayNodalSupports;
 
+            DisplayCladding = newVM.DisplayCladding;
+            DisplayCladdingLeftWall = newVM.DisplayCladdingLeftWall;
+            DisplayCladdingRightWall = newVM.DisplayCladdingRightWall;
+            DisplayCladdingFrontWall = newVM.DisplayCladdingFrontWall;
+            DisplayCladdingBackWall = newVM.DisplayCladdingBackWall;
+            DisplayCladdingRoof = newVM.DisplayCladdingRoof;
+            DisplayFibreglass = newVM.DisplayFibreglass;
+            DisplayDoors = newVM.DisplayDoors;
+            DisplayWindows = newVM.DisplayWindows;
+
+            DisplayMembersCenterLines = newVM.DisplayMembersCenterLines;
+            DisplaySolidModel = newVM.DisplaySolidModel;
+
+            DisplayWireFrameModel = newVM.DisplayWireFrameModel;
             DisplayMembersWireFrame = newVM.DisplayMembersWireFrame;
             DisplayJointsWireFrame = newVM.DisplayJointsWireFrame;
             DisplayPlatesWireFrame = newVM.DisplayPlatesWireFrame;
@@ -4275,36 +4300,18 @@ namespace PFD
             DoorsSimpleWireframe = newVM.DoorsSimpleWireframe;
             WindowOutlineOnly = newVM.WindowOutlineOnly;
 
-            DisplayCladding = newVM.DisplayCladding;
-            DisplayCladdingLeftWall = newVM.DisplayCladdingLeftWall;
-            DisplayCladdingRightWall = newVM.DisplayCladdingRightWall;
-            DisplayCladdingFrontWall = newVM.DisplayCladdingFrontWall;
-            DisplayCladdingBackWall = newVM.DisplayCladdingBackWall;
-            DisplayCladdingRoof = newVM.DisplayCladdingRoof;
-            //DisplayIndividualCladdingSheets = newVM.DisplayIndividualCladdingSheets;
-
-            DisplayFibreglass = newVM.DisplayFibreglass;
-            DisplayDoors = newVM.DisplayDoors;
-            DisplayWindows = newVM.DisplayWindows;
-            DisplayNodalSupports = newVM.DisplayNodalSupports;
-            DisplayMembersCenterLines = newVM.DisplayMembersCenterLines;
-            DisplaySolidModel = newVM.DisplaySolidModel;
-            DisplayWireFrameModel = newVM.DisplayWireFrameModel;
-            DisplayDistinguishedColorMember = newVM.DisplayDistinguishedColorMember;
-            //DisplayTransparentModelMember = newVM.DisplayTransparentModelMember;
-            ColorsAccordingToMembersPrefix = newVM.ColorsAccordingToMembersPrefix;
-            ColorsAccordingToMembersPosition = newVM.ColorsAccordingToMembersPosition;
-            ColorsAccordingToSections = newVM.ColorsAccordingToSections;
-
-            ShowNodesDescription = newVM.ShowNodesDescription;
             ShowMemberDescription = newVM.ShowMemberDescription;
             ShowMemberID = newVM.ShowMemberID;
             ShowMemberPrefix = newVM.ShowMemberPrefix;
+            ShowMemberCrossSectionStartName = newVM.ShowMemberCrossSectionStartName;
             ShowMemberRealLength = newVM.ShowMemberRealLength;
             ShowMemberRealLengthInMM = newVM.ShowMemberRealLengthInMM;
             ShowMemberRealLengthUnit = newVM.ShowMemberRealLengthUnit;
-            ShowMemberCrossSectionStartName = newVM.ShowMemberCrossSectionStartName;
+
+            ShowNodesDescription = newVM.ShowNodesDescription;
+
             ShowFoundationsDescription = newVM.ShowFoundationsDescription;
+            ShowFloorSlabDescription = newVM.ShowFloorSlabDescription;
             ShowSawCutsDescription = newVM.ShowSawCutsDescription;
             ShowControlJointsDescription = newVM.ShowControlJointsDescription;
             ShowDimensions = newVM.ShowDimensions;
@@ -4340,26 +4347,49 @@ namespace PFD
             DisplayWindowArea = newVM.DisplayWindowArea;
             DisplayWindowUnits = newVM.DisplayWindowUnits;
 
-            ShowLoads = newVM.ShowLoads;
-            ShowLoadsOnMembers = newVM.ShowLoadsOnMembers;
-            ShowLoadsOnGirts = newVM.ShowLoadsOnGirts;
-            ShowLoadsOnPurlins = newVM.ShowLoadsOnPurlins;
-            ShowLoadsOnEavePurlins = newVM.ShowLoadsOnEavePurlins;
-            ShowLoadsOnWindPosts = newVM.ShowLoadsOnWindPosts;
-            ShowLoadsOnFrameMembers = newVM.ShowLoadsOnFrameMembers;
-            ShowNodalLoads = newVM.ShowNodalLoads;
-            ShowSurfaceLoads = newVM.ShowSurfaceLoads;
-            ShowLoadsLabels = newVM.ShowLoadsLabels;
-            ShowLoadsLabelsUnits = newVM.ShowLoadsLabelsUnits;
-            ShowGlobalAxis = newVM.ShowGlobalAxis;
-            ShowLocalMembersAxis = newVM.ShowLocalMembersAxis;
-            ShowSurfaceLoadsAxis = newVM.ShowSurfaceLoadsAxis;
-
-            LoadSizeScaleIn3D = newVM.LoadSizeScaleIn3D;
-
-
+            // Colours
             WireframeColorIndex = newVM.WireframeColorIndex;
             WireFrameLineThickness = newVM.WireFrameLineThickness;
+
+            MemberCenterlineColorIndex = newVM.MemberCenterlineColorIndex;
+            MemberCenterlineThickness = newVM.MemberCenterlineThickness;
+
+            NodeColorIndex = newVM.NodeColorIndex;
+            NodeDescriptionTextColorIndex = newVM.NodeDescriptionTextColorIndex;
+
+            MemberDescriptionTextColorIndex = newVM.MemberDescriptionTextColorIndex;
+
+            DimensionTextColorIndex = newVM.DimensionTextColorIndex;
+            DimensionLineColorIndex = newVM.DimensionLineColorIndex;
+
+            GridLineLabelTextColorIndex = newVM.GridLineLabelTextColorIndex;
+            GridLineColorIndex = newVM.GridLineColorIndex;
+            GridLinePatternType = newVM.GridLinePatternType;
+
+            SectionSymbolLabelTextColorIndex = newVM.SectionSymbolLabelTextColorIndex;
+            SectionSymbolColorIndex = newVM.SectionSymbolColorIndex;
+
+            DetailSymbolLabelTextColorIndex = newVM.DetailSymbolLabelTextColorIndex;
+            DetailSymbolLabelBackColorIndex = newVM.DetailSymbolLabelBackColorIndex;
+            DetailSymbolColorIndex = newVM.DetailSymbolColorIndex;
+
+            SawCutTextColorIndex = newVM.SawCutTextColorIndex;
+            SawCutLineColorIndex = newVM.SawCutLineColorIndex;
+            SawCutLinePatternType = newVM.SawCutLinePatternType;
+
+            ControlJointTextColorIndex = newVM.ControlJointTextColorIndex;
+            ControlJointLineColorIndex = newVM.ControlJointLineColorIndex;
+            ControlJointLinePatternType = newVM.ControlJointLinePatternType;
+
+            FoundationTextColorIndex = newVM.FoundationTextColorIndex;
+
+            FloorSlabTextColorIndex = newVM.FloorSlabTextColorIndex;
+
+            FoundationColorIndex = newVM.FoundationColorIndex;
+
+            FloorSlabColorIndex = newVM.FloorSlabColorIndex;
+
+            SlabRebateColorIndex = newVM.SlabRebateColorIndex;
 
             MemberCenterlineColorIndex = newVM.MemberCenterlineColorIndex;
             MemberCenterlineThickness = newVM.MemberCenterlineThickness;
@@ -4369,45 +4399,7 @@ namespace PFD
             DoorTextColorIndex = newVM.DoorTextColorIndex;
             WindowTextColorIndex = newVM.WindowTextColorIndex;
 
-            NodeDescriptionTextFontSize = newVM.NodeDescriptionTextFontSize;
-            MemberDescriptionTextFontSize = newVM.MemberDescriptionTextFontSize;
-            DimensionTextFontSize = newVM.DimensionTextFontSize;
-            GridLineLabelTextFontSize = newVM.GridLineLabelTextFontSize;
-            SectionSymbolLabelTextFontSize = newVM.SectionSymbolLabelTextFontSize;
-            DetailSymbolLabelTextFontSize = newVM.DetailSymbolLabelTextFontSize;
-
-            SawCutTextFontSize = newVM.SawCutTextFontSize;
-            ControlJointTextFontSize = newVM.ControlJointTextFontSize;
-
-            FoundationTextFontSize = newVM.FoundationTextFontSize;
-            FloorSlabTextFontSize = newVM.FloorSlabTextFontSize;
-
-            NodeColorIndex = newVM.NodeColorIndex;
-            NodeDescriptionTextColorIndex = newVM.NodeDescriptionTextColorIndex;
-            MemberDescriptionTextColorIndex = newVM.MemberDescriptionTextColorIndex;
-            DimensionTextColorIndex = newVM.DimensionTextColorIndex;
-            DimensionLineColorIndex = newVM.DimensionLineColorIndex;
-            GridLineLabelTextColorIndex = newVM.GridLineLabelTextColorIndex;
-            GridLineColorIndex = newVM.GridLineColorIndex;
-            GridLinePatternType = newVM.GridLinePatternType;
-            SectionSymbolLabelTextColorIndex = newVM.SectionSymbolLabelTextColorIndex;
-            SectionSymbolColorIndex = newVM.SectionSymbolColorIndex;
-            DetailSymbolLabelTextColorIndex = newVM.DetailSymbolLabelTextColorIndex;
-            DetailSymbolLabelBackColorIndex = newVM.DetailSymbolLabelBackColorIndex;
-            DetailSymbolColorIndex = newVM.DetailSymbolColorIndex;
-            SawCutTextColorIndex = newVM.SawCutTextColorIndex;
-            SawCutLineColorIndex = newVM.SawCutLineColorIndex;
-            SawCutLinePatternType = newVM.SawCutLinePatternType;
-            ControlJointTextColorIndex = newVM.ControlJointTextColorIndex;
-            ControlJointLineColorIndex = newVM.ControlJointLineColorIndex;
-            ControlJointLinePatternType = newVM.ControlJointLinePatternType;
-
-            FoundationTextColorIndex = newVM.FoundationTextColorIndex;
-            FloorSlabTextColorIndex = newVM.FloorSlabTextColorIndex;
-
-            FoundationColorIndex = newVM.FoundationColorIndex;
-            FloorSlabColorIndex = newVM.FloorSlabColorIndex;
-            SlabRebateColorIndex = newVM.SlabRebateColorIndex;
+            BackgroundColorIndex = newVM.BackgroundColorIndex;
 
             PlateColorIndex = newVM.PlateColorIndex;
             ScrewColorIndex = newVM.ScrewColorIndex;
@@ -4415,6 +4407,32 @@ namespace PFD
             WasherColorIndex = newVM.WasherColorIndex;
             NutColorIndex = newVM.NutColorIndex;
 
+            ColorsAccordingToMembersPrefix = newVM.ColorsAccordingToMembersPrefix;
+            ColorsAccordingToMembersPosition = newVM.ColorsAccordingToMembersPosition;
+
+            ColorsAccordingToSections = newVM.ColorsAccordingToSections;
+
+            DisplayDistinguishedColorMember = newVM.DisplayDistinguishedColorMember;
+            ColoredCenterlines = newVM.ColoredCenterlines;
+
+            CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;
+            UseDifColorForSheetWithOverlap = newVM.UseDifColorForSheetWithOverlap;
+
+            CladdingSheetColorIndex = newVM.CladdingSheetColorIndex; // Without Overlap
+            FibreglassSheetColorIndex = newVM.FibreglassSheetColorIndex; // Without Overlap
+
+            UseTextures = newVM.UseTextures;
+            UseTexturesMembers = newVM.UseTexturesMembers;
+            UseTexturesPlates = newVM.UseTexturesPlates;
+            UseTexturesCladding = newVM.UseTexturesCladding;
+
+            // TODO 855 - Presunut nastavenie farieb z Footing Options do Display options
+            ReinforcementBarColor_Top_x_Index = newVM.ReinforcementBarColor_Top_x_Index;
+            ReinforcementBarColor_Top_y_Index = newVM.ReinforcementBarColor_Top_y_Index;
+            ReinforcementBarColor_Bottom_x_Index = newVM.ReinforcementBarColor_Bottom_x_Index;
+            ReinforcementBarColor_Bottom_y_Index = newVM.ReinforcementBarColor_Bottom_y_Index;
+
+            // Opacity
             MemberSolidModelOpacity = newVM.MemberSolidModelOpacity;
             PlateSolidModelOpacity = newVM.PlateSolidModelOpacity;
             ScrewSolidModelOpacity = newVM.ScrewSolidModelOpacity;
@@ -4432,46 +4450,64 @@ namespace PFD
             WindowPanelOpacity = newVM.WindowPanelOpacity;
             FibreglassOpacity = newVM.FibreglassOpacity;
 
-            BackgroundColorIndex = newVM.BackgroundColorIndex;
+            // Loads
+            ShowLoads = newVM.ShowLoads;
+            ShowNodalLoads = newVM.ShowNodalLoads;
+            ShowLoadsOnMembers = newVM.ShowLoadsOnMembers;
+            ShowLoadsOnGirts = newVM.ShowLoadsOnGirts;
+            ShowLoadsOnPurlins = newVM.ShowLoadsOnPurlins;
+            ShowLoadsOnEavePurlins = newVM.ShowLoadsOnEavePurlins;
+            ShowLoadsOnWindPosts = newVM.ShowLoadsOnWindPosts;
+            ShowLoadsOnFrameMembers = newVM.ShowLoadsOnFrameMembers;
+            ShowSurfaceLoads = newVM.ShowSurfaceLoads;
 
+            ShowLoadsLabels = newVM.ShowLoadsLabels;
+            ShowLoadsLabelsUnits = newVM.ShowLoadsLabelsUnits;
+
+            LoadSizeScaleIn3D = newVM.LoadSizeScaleIn3D;
+
+            // Texts and Symbols
             FloorSlabTextSize = newVM.FloorSlabTextSize;
+            FloorSlabTextFontSize = newVM.FloorSlabTextFontSize; // Nie je v GetDisplayOptions
+
             GridlinesSize = newVM.GridlinesSize;
             GridLineLabelSize = newVM.GridLineLabelSize;
+            GridLineLabelTextFontSize = newVM.GridLineLabelTextFontSize; // Nie je v GetDisplayOptions
+
             SectionSymbolsSize = newVM.SectionSymbolsSize;
             SectionSymbolLabelSize = newVM.SectionSymbolLabelSize;
+            SectionSymbolLabelTextFontSize = newVM.SectionSymbolLabelTextFontSize; // Nie je v GetDisplayOptions
+
             DetailSymbolSize = newVM.DetailSymbolSize;
             DetailSymbolLabelSize = newVM.DetailSymbolLabelSize;
+            DetailSymbolLabelTextFontSize = newVM.DetailSymbolLabelTextFontSize; // Nie je v GetDisplayOptions
+
             MembersDescriptionSize = newVM.MembersDescriptionSize;
+            MemberDescriptionTextFontSize = newVM.MemberDescriptionTextFontSize; // Nie je v GetDisplayOptions
+
             NodesDescriptionSize = newVM.NodesDescriptionSize;
+            NodeDescriptionTextFontSize = newVM.NodeDescriptionTextFontSize; // Nie je v GetDisplayOptions
+
             SawCutTextSize = newVM.SawCutTextSize;
+            SawCutTextFontSize = newVM.SawCutTextFontSize; // Nie je v GetDisplayOptions
+
             ControlJointTextSize = newVM.ControlJointTextSize;
+            ControlJointTextFontSize = newVM.ControlJointTextFontSize; // Nie je v GetDisplayOptions
+
             FoundationTextSize = newVM.FoundationTextSize;
+            FoundationTextFontSize = newVM.FoundationTextFontSize; // Nie je v GetDisplayOptions
+
             DimensionsTextSize = newVM.DimensionsTextSize;
             DimensionsLineRadius = newVM.DimensionsLineRadius;
             DimensionsScale = newVM.DimensionsScale;
+            DimensionTextFontSize = newVM.DimensionTextFontSize; // Nie je v GetDisplayOptions
+
             DescriptionTextWidthScaleFactor = newVM.DescriptionTextWidthScaleFactor;
 
             CladdingDescriptionSize = newVM.CladdingDescriptionSize;
             FibreglassDescriptionSize = newVM.FibreglassDescriptionSize;
             DoorDescriptionSize = newVM.DoorDescriptionSize;
             WindowDescriptionSize = newVM.WindowDescriptionSize;
-
-            UseTextures = newVM.UseTextures;
-            UseTexturesMembers = newVM.UseTexturesMembers;
-            UseTexturesPlates = newVM.UseTexturesPlates;
-            UseTexturesCladding = newVM.UseTexturesCladding;
-            ColoredCenterlines = newVM.ColoredCenterlines;
-            CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;
-
-            UseDifColorForSheetWithOverlap = newVM.UseDifColorForSheetWithOverlap;
-            CladdingSheetColorIndex = newVM.CladdingSheetColorIndex;
-            FibreglassSheetColorIndex = newVM.FibreglassSheetColorIndex;
-
-            // TODO 855 - Presunut nastavenie farieb z Footing Options do Display options
-            ReinforcementBarColor_Top_x_Index = newVM.ReinforcementBarColor_Top_x_Index;
-            ReinforcementBarColor_Top_y_Index = newVM.ReinforcementBarColor_Top_y_Index;
-            ReinforcementBarColor_Bottom_x_Index = newVM.ReinforcementBarColor_Bottom_x_Index;
-            ReinforcementBarColor_Bottom_y_Index = newVM.ReinforcementBarColor_Bottom_y_Index;
 
             IsSetFromCode = false;
         }
@@ -4487,7 +4523,7 @@ namespace PFD
             CO_IsExport = newVM.CO_IsExport;
             CO_SameScaleForViews = newVM.CO_SameScaleForViews;
 
-            CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;            
+            CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;
             CO_RotateModelX = newVM.CO_RotateModelX;
             CO_RotateModelY = newVM.CO_RotateModelY;
             CO_RotateModelZ = newVM.CO_RotateModelZ;
