@@ -272,6 +272,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayJoints = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayPlates = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayConnectors = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowDimensions = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowMemberID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowMemberPrefix = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowMemberRealLength = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowMemberRealLengthInMM = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowDimensions = false;
             #endregion JOINT PREVIEW
             #region FOUNDATION PREVIEW
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
@@ -285,6 +292,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayJoints = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayPlates = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayConnectors = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowDimensions = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberPrefix = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberRealLength = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberRealLengthInMM = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowDimensions = false;
 
             // Foundations
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayFoundations = true;
@@ -303,6 +317,14 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplayMembers = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowLocalMembersAxis = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowDimensions = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberPrefix = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberRealLength = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberRealLengthInMM = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowDimensions = false;
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelX = -90;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelY = 20;
             #endregion ACCESSORIES PREVIEW
@@ -326,7 +348,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberDescriptionTextColor = Colors.Black;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberCenterlineColor = Colors.Black;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateHorizontalGridlines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesFront = false;
@@ -345,7 +367,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].CO_IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DisplayMembersCenterLines = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplaySolidModel = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DisplaySolidModel = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowMemberID = true;
@@ -364,7 +386,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].CO_IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DisplayMembersCenterLines = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplaySolidModel = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DisplaySolidModel = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowMemberID = true;
@@ -957,7 +979,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_RotateModelY = 45;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_RotateModelZ = 5;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_IsExport = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_IsExport = true;
             #endregion FOUNDATIONS
             #endregion LAYOUTS
         }
