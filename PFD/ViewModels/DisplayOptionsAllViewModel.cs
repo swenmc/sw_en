@@ -123,7 +123,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DisplayMembersCenterLines = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPosition = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToSections = true; // Zobrazujeme farby podla sections, default ktory sa pouzije aj pre Report a Layouts, pretoze tam su v legende len farby podla sections
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColoredCenterlines = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ShowMemberID = true;
@@ -586,7 +586,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelTextFontSize = 30;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndex(Colors.White); // To Ondrej Toto asi nefunguje ???
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndex(Colors.White); // To Ondrej Toto asi nefunguje ??? // BUG 860
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
 
@@ -681,7 +681,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ???
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ??? // BUG 860
 
             #endregion COLUMNS
             #region FOUNDATIONS
@@ -707,7 +707,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ???
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ??? // BUG 860
 
             #endregion FOUNDATIONS
             #region FLOOR
@@ -741,7 +741,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Bottom_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Bottom_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ???
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ??? // BUG 860
             #endregion FLOOR
             #endregion FRAME VIEWS
             #region CLADDING VIEWS
@@ -771,7 +771,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoors = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindows = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWireFrameModel = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWireFrameModel = true; // BUG 860
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFibreglassWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoorsWireFrame = true;
@@ -800,7 +800,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
-
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
@@ -833,7 +832,7 @@ namespace PFD
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorsWireFrame = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowsWireFrame = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingDescription = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingDescription = true; // BUG 860
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingID = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingPrefix = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLengthWidth = true;
