@@ -2000,6 +2000,10 @@ namespace PFD
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             paramsChanged = false;
+
+            //redraw
+            CConnectionJointTypes joint = GetSelectedJoint();
+            displayJoint(joint);
         }
 
 

@@ -71,7 +71,10 @@ namespace PFD
         {
             IsSetFromCode = true;
 
-            DisplayOptionsList = newVM.DisplayOptionsList;
+            for(int i = 0; i < newVM.DisplayOptionsList.Count; i++)
+            {
+                DisplayOptionsList[i].SetViewModel(newVM.DisplayOptionsList[i]);
+            }
 
             IsSetFromCode = false;
         }
