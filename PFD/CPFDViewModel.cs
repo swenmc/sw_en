@@ -3700,21 +3700,32 @@ namespace PFD
 
             // Texts and Symbols
             sDisplayOptions.FloorSlabTextSize = do_vm.FloorSlabTextSize;
+
             sDisplayOptions.GridlinesSize = do_vm.GridlinesSize;
             sDisplayOptions.GridLineLabelSize = do_vm.GridLineLabelSize;
+
             sDisplayOptions.SectionSymbolsSize = do_vm.SectionSymbolsSize;
             sDisplayOptions.SectionSymbolLabelSize = do_vm.SectionSymbolLabelSize;
+
             sDisplayOptions.DetailSymbolSize = do_vm.DetailSymbolSize;
             sDisplayOptions.DetailSymbolLabelSize = do_vm.DetailSymbolLabelSize;
+
             sDisplayOptions.MembersDescriptionSize = do_vm.MembersDescriptionSize;
+
             sDisplayOptions.NodesDescriptionSize = do_vm.NodesDescriptionSize;
+
             sDisplayOptions.SawCutTextSize = do_vm.SawCutTextSize;
+
             sDisplayOptions.ControlJointTextSize = do_vm.ControlJointTextSize;
+
             sDisplayOptions.FoundationTextSize = do_vm.FoundationTextSize;
+
             sDisplayOptions.DimensionsTextSize = do_vm.DimensionsTextSize;
             sDisplayOptions.DimensionsLineRadius = do_vm.DimensionsLineRadius;
             sDisplayOptions.DimensionsScale = do_vm.DimensionsScale;
+
             sDisplayOptions.DescriptionTextWidthScaleFactor = do_vm.DescriptionTextWidthScaleFactor; // ?? Nie je v GUI
+
             sDisplayOptions.CladdingDescriptionSize = do_vm.CladdingDescriptionSize;
             sDisplayOptions.FibreglassDescriptionSize = do_vm.FibreglassDescriptionSize;
             sDisplayOptions.DoorDescriptionSize = do_vm.DoorDescriptionSize;
