@@ -501,6 +501,7 @@ namespace PFD
             #endregion 3D SCENE
             #region FRAME VIEWS
             #region ELEVATIONS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_UseOrtographicCamera = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ColorsAccordingToMembersPrefix = false;
