@@ -317,6 +317,7 @@ namespace PFD
             #region ACCESSORIES PREVIEW
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplaySolidModel = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplayMembersCenterLines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplayMembers = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowLocalMembersAxis = false;
