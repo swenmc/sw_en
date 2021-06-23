@@ -300,27 +300,28 @@ namespace PFD
 
             if (pad == null) return null; // Error - nothing to display
 
-            sDisplayOptions = _pfdVM.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
-            // TODO - refaktorovat s nastavenim zobrazenia joints preview
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayMemberDescription = false;
-            sDisplayOptions.bDisplayNodes = false;
-            sDisplayOptions.bDisplayNodesDescription = false;
+            sDisplayOptions = _pfdVM.GetDisplayOptions(EDisplayOptionsTypes.GUI_Foundation_Preview);
+            
+            ////Here is the place to overwrite displayOptions from Main Model
+            //// TODO - refaktorovat s nastavenim zobrazenia joints preview
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bDisplayMemberDescription = false;
+            //sDisplayOptions.bDisplayNodes = false;
+            //sDisplayOptions.bDisplayNodesDescription = false;
 
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
+            //sDisplayOptions.bDisplaySolidModel = true;
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplayJoints = true;
+            //sDisplayOptions.bDisplayPlates = true;
+            //sDisplayOptions.bDisplayConnectors = true;
 
-            // Foundations
-            sDisplayOptions.bDisplayFoundations = true;
-            sDisplayOptions.bDisplayReinforcementBars = true;
+            //// Foundations
+            //sDisplayOptions.bDisplayFoundations = true;
+            //sDisplayOptions.bDisplayReinforcementBars = true;
 
-            sDisplayOptions.CO_RotateModelX = -80;
-            sDisplayOptions.CO_RotateModelY = 45;
-            sDisplayOptions.CO_RotateModelZ = 5;
+            //sDisplayOptions.CO_RotateModelX = -80;
+            //sDisplayOptions.CO_RotateModelY = 45;
+            //sDisplayOptions.CO_RotateModelZ = 5;
 
             CModel padModel = Drawing3D.GetJointPreviewModel(joint, pad, ref sDisplayOptions);
 

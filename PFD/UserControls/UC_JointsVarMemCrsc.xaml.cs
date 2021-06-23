@@ -1703,20 +1703,21 @@ namespace PFD
         {
             if (joint == null) return; // Error - nothing to display
 
-            sDisplayOptions = _pfdVM.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
-            // TODO - refaktorovat s nastavenim zobrazenia footing pad preview
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayMemberDescription = false;
-            sDisplayOptions.bDisplayNodes = false;
-            sDisplayOptions.bDisplayNodesDescription = false;
-            sDisplayOptions.bDisplayMembersCenterLines = false;
+            sDisplayOptions = _pfdVM.GetDisplayOptions(EDisplayOptionsTypes.GUI_Joint_Preview);
+            
+            ////Here is the place to overwrite displayOptions from Main Model
+            //// TODO - refaktorovat s nastavenim zobrazenia footing pad preview
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bDisplayMemberDescription = false;
+            //sDisplayOptions.bDisplayNodes = false;
+            //sDisplayOptions.bDisplayNodesDescription = false;
+            //sDisplayOptions.bDisplayMembersCenterLines = false;
 
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
+            //sDisplayOptions.bDisplaySolidModel = true;
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplayJoints = true;
+            //sDisplayOptions.bDisplayPlates = true;
+            //sDisplayOptions.bDisplayConnectors = true;
 
             CModel jointModel = Drawing3D.GetJointPreviewModel(joint, null, ref sDisplayOptions);
 

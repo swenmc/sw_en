@@ -3447,8 +3447,7 @@ namespace PFD
         //    return sDisplayOptions;
         //}
 
-        //priprava na 701
-        public DisplayOptions GetDisplayOptions(EDisplayOptionsTypes optionsTypes = EDisplayOptionsTypes.GUI_3D_Scene) //toto by mohol byt default
+        public DisplayOptions GetDisplayOptions(EDisplayOptionsTypes optionsTypes) //toto by mohol byt default  = EDisplayOptionsTypes.GUI_3D_Scene
         {
             DisplayOptionsViewModel do_vm = _displayOptionsVM.DisplayOptionsList.ElementAtOrDefault((int)optionsTypes);
             return GetDisplayOptions(do_vm);

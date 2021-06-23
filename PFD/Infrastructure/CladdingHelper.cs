@@ -58,7 +58,7 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.WallCladdingOverlap,
                 vm._claddingOptionsVM.RoofFibreglassOverlap,
                 vm._claddingOptionsVM.WallFibreglassOverlap,
-                vm.GetDisplayOptions()
+                vm.GetDisplayOptions(EDisplayOptionsTypes.GUI_3D_Scene)
                 );
 
             return cladding;
