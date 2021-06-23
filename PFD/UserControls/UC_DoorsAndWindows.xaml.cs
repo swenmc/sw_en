@@ -128,6 +128,9 @@ namespace PFD
                 _pfdVM.DoorsAndWindowsChanged = true;
             }
             DoorsAndWindowsOptionsChanged = false;
+            previewDoorIndex = int.MinValue;
+            previewWindowIndex = int.MinValue;
+            RedrawDoorOrWindowPreview();
         }
 
 
