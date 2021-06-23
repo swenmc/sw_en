@@ -4451,6 +4451,11 @@ namespace PFD
             DimensionsScale = newVM.DimensionsScale;
             DescriptionTextWidthScaleFactor = newVM.DescriptionTextWidthScaleFactor;
 
+            CladdingDescriptionSize = newVM.CladdingDescriptionSize;
+            FibreglassDescriptionSize = newVM.FibreglassDescriptionSize;
+            DoorDescriptionSize = newVM.DoorDescriptionSize;
+            WindowDescriptionSize = newVM.WindowDescriptionSize;
+
             UseTextures = newVM.UseTextures;
             UseTexturesMembers = newVM.UseTexturesMembers;
             UseTexturesPlates = newVM.UseTexturesPlates;

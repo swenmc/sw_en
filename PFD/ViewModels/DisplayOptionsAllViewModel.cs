@@ -760,12 +760,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowLocalMembersAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowDimensions = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladding = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingLeftWall = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRightWall = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingFrontWall = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingBackWall = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRoof = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladding = true; // V Defaulte chceme mat vsetko na true
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingLeftWall = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRightWall = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingFrontWall = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingBackWall = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRoof = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFibreglass = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoors = true;
@@ -776,6 +776,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFibreglassWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoorsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowsWireFrame = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowMemberDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowMemberPrefix = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowMemberRealLength = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowDetailSymbols = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingID = true;
@@ -816,21 +822,21 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladding = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLeftWall = false;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRightWall = false;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingFrontWall = false;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingBackWall = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRoof = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLeftWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRightWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingFrontWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingBackWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRoof = true; // V Defaulte chceme mat na true len strechu
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglass = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoors = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindows = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoors = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindows = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglassWireFrame = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorsWireFrame = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowsWireFrame = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorsWireFrame = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowsWireFrame = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingDescription = true; // BUG 860
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingID = true;
@@ -842,14 +848,14 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglassPrefix = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFibreglassLengthWidth = true;
 
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorDescription = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorID = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorType = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorHeightWidth = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorType = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorHeightWidth = false;
 
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowDescription = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowID = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowHeightWidth = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowHeightWidth = false;
 
             // Cladding and fibreglass properties
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
