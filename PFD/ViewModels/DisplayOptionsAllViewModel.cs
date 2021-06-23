@@ -586,7 +586,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelTextFontSize = 30;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndex(Colors.White); // To Ondrej Toto asi nefunguje ???
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
 
@@ -638,6 +638,7 @@ namespace PFD
             // TODO Pre nasledujuce options Frame Views treba doplnit vsade to co je pre elevations
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].CO_CreateHorizontalGridlines = true;
             #endregion ROOF
             #region FRAMES
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
@@ -680,14 +681,16 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ???
 
             #endregion COLUMNS
             #region FOUNDATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayMembers = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayWireFrameModel = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayFoundationsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayFloorSlabWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_TransformScreenLines3DToCylinders3D = true;
@@ -704,7 +707,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ???
 
             #endregion FOUNDATIONS
             #region FLOOR
@@ -733,7 +736,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Top_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Top_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Bottom_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Bottom_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ???
             #endregion FLOOR
             #endregion FRAME VIEWS
             #region CLADDING VIEWS
@@ -787,6 +795,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowID = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindowHeightWidth = true;
+
+            // Cladding and fibreglass properties
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
+
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
@@ -837,6 +851,11 @@ namespace PFD
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowDescription = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowID = true;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowHeightWidth = true;
+
+            // Cladding and fibreglass properties
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
             #endregion ROOF
             #endregion CLADDING VIEWS
             #region JOINTS
