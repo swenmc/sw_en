@@ -71,14 +71,20 @@ namespace PFD
         {
             IsSetFromCode = true;
 
-            for(int i = 0; i < newVM.DisplayOptionsList.Count; i++)
+            
+            for (int i = 0; i < newVM.DisplayOptionsList.Count; i++)
             {
                 DisplayOptionsList[i].SetViewModel(newVM.DisplayOptionsList[i]);
+                DisplayOptionsList[i].PropertyChanged += DisplayOptionsAllViewModel_PropertyChanged;
             }
 
             IsSetFromCode = false;
         }
 
+        private void DisplayOptionsAllViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyPropertyChanged(e.PropertyName);
+        }
 
         private void CreateAllViewModelsWithDefaults()
         {

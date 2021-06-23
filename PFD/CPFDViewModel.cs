@@ -1610,7 +1610,7 @@ namespace PFD
             {
                 m_DisplayOptionsChanged = value;
 
-                RecreateModel = false;
+                SynchronizeGUI = true;
 
                 NotifyPropertyChanged("DisplayOptionsChanged");
             }

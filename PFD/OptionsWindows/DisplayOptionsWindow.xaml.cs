@@ -82,8 +82,8 @@ namespace PFD
                     else if(_pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();                    
                 }
 
-                _pfdVM.RecreateModel = RecreateModelRequired;
-                _pfdVM.SynchronizeGUI = true;
+                _pfdVM.RecreateModel = RecreateModelRequired;                
+                _pfdVM.DisplayOptionsChanged = DisplayOptionsChanged;
             }
             this.Close();
         }

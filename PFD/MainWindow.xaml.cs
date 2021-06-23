@@ -184,6 +184,12 @@ namespace PFD
                 if (e.PropertyName == "Downpipes") return;
                 if (e.PropertyName == "ComponentList") return;
 
+                if (e.PropertyName == "DisplayOptionsChanged")
+                {
+                    RedrawPreviews();
+                    return;
+                }
+
                 //To Mato
                 //toto by som mozno aj najradsej zakomentoval, vyznam to ma asi len ked sa ma updatovat Quotation bez updatu Modelu (RecreateModel)
                 //ak by sa niekomu chcelo testovat...tak toto zakomentovat a otestovat,ci to funguje aj tak
@@ -481,7 +487,19 @@ namespace PFD
             if (vm.RecreateQuotation) vm.RecreateQuotation = false;
         }
 
-        
+        private void RedrawPreviews()
+        {
+            if (TabDoorsAndWindows.Content != null)
+            {
+                UC_DoorsAndWindows ucDW = TabDoorsAndWindows.Content as UC_DoorsAndWindows;
+                ucDW.Redraw();
+            }
+            if (Joint_Input.Content != null)
+            {
+                UC_Joints ucJ = Joint_Input.Content as UC_Joints;
+                ucJ.Redraw();
+            }
+        }
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {

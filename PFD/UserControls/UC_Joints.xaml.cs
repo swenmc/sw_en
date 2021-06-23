@@ -2001,12 +2001,14 @@ namespace PFD
         {
             paramsChanged = false;
 
-            //redraw
+            Redraw();
+        }
+
+        public void Redraw()
+        {
             CConnectionJointTypes joint = GetSelectedJoint();
             displayJoint(joint);
         }
-
-
 
 
 
