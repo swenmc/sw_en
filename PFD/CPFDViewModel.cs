@@ -3470,6 +3470,9 @@ namespace PFD
             if (do_vm == null) return sDisplayOptions;
 
             // Get display options from GUI
+
+            // Zoradene podla poradia a tabov v GUI
+            // General
             sDisplayOptions.bUseLightDirectional = do_vm.LightDirectional;
             sDisplayOptions.bUseLightPoint = do_vm.LightPoint;
             sDisplayOptions.bUseLightSpot = do_vm.LightSpot;
@@ -3478,34 +3481,22 @@ namespace PFD
             sDisplayOptions.bUseDiffuseMaterial = do_vm.MaterialDiffuse;
             sDisplayOptions.bUseEmissiveMaterial = do_vm.MaterialEmissive;
 
+            sDisplayOptions.bDisplayGlobalAxis = do_vm.ShowGlobalAxis;
+            sDisplayOptions.bDisplayLocalMembersAxis = do_vm.ShowLocalMembersAxis;
+            sDisplayOptions.bDisplaySurfaceLoadAxis = do_vm.ShowSurfaceLoadsAxis;
+
+            // Objects
             sDisplayOptions.bDisplayMembers = do_vm.DisplayMembers;
             sDisplayOptions.bDisplayJoints = do_vm.DisplayJoints;
             sDisplayOptions.bDisplayPlates = do_vm.DisplayPlates;
             sDisplayOptions.bDisplayConnectors = do_vm.DisplayConnectors;
             sDisplayOptions.bDisplayNodes = do_vm.DisplayNodes;
-
             sDisplayOptions.bDisplayFoundations = do_vm.DisplayFoundations;
             sDisplayOptions.bDisplayReinforcementBars = do_vm.DisplayReinforcementBars;
             sDisplayOptions.bDisplayFloorSlab = do_vm.DisplayFloorSlab;
             sDisplayOptions.bDisplaySawCuts = do_vm.DisplaySawCuts;
             sDisplayOptions.bDisplayControlJoints = do_vm.DisplayControlJoints;
             sDisplayOptions.bDisplayNodalSupports = do_vm.DisplayNodalSupports;
-
-            sDisplayOptions.bDisplayMembersWireFrame = do_vm.DisplayMembersWireFrame;
-            sDisplayOptions.bDisplayJointsWireFrame = do_vm.DisplayJointsWireFrame;
-            sDisplayOptions.bDisplayPlatesWireFrame = do_vm.DisplayPlatesWireFrame;
-            sDisplayOptions.bDisplayConnectorsWireFrame = do_vm.DisplayConnectorsWireFrame;
-            sDisplayOptions.bDisplayNodesWireFrame = do_vm.DisplayNodesWireFrame;
-            sDisplayOptions.bDisplayFoundationsWireFrame = do_vm.DisplayFoundationsWireFrame;
-            sDisplayOptions.bDisplayReinforcementBarsWireFrame = do_vm.DisplayReinforcementBarsWireFrame;
-            sDisplayOptions.bDisplayFloorSlabWireFrame = do_vm.DisplayFloorSlabWireFrame;
-            sDisplayOptions.bDisplayCladdingWireFrame = do_vm.DisplayCladdingWireFrame && _modelOptionsVM.EnableCladding;//bug 835 (pokial nie je EnableCladding tak ani bDisplayCladdingWireframe nemoze byt)
-            sDisplayOptions.bDisplayFibreglassWireFrame = do_vm.DisplayFibreglassWireFrame;
-            sDisplayOptions.bDisplayDoorsWireFrame = do_vm.DisplayDoorsWireFrame;
-            sDisplayOptions.bDisplayWindowsWireFrame = do_vm.DisplayWindowsWireFrame;
-            sDisplayOptions.bDoorsSimpleSolidModel = do_vm.DoorsSimpleSolidModel;
-            sDisplayOptions.bDoorsSimpleWireframe = do_vm.DoorsSimpleWireframe;
-            sDisplayOptions.bWindowOutlineOnly = do_vm.WindowOutlineOnly;
 
             sDisplayOptions.bDisplayCladding = do_vm.DisplayCladding && _modelOptionsVM.EnableCladding; //bug 835 (pokial nie je EnableCladding tak ani bDisplayCladding nemoze byt)
             sDisplayOptions.bDisplayCladdingLeftWall = do_vm.DisplayCladdingLeftWall;
@@ -3517,6 +3508,27 @@ namespace PFD
             sDisplayOptions.bDisplayDoors = do_vm.DisplayDoors;
             sDisplayOptions.bDisplayWindows = do_vm.DisplayWindows;
 
+            sDisplayOptions.bDisplayMembersCenterLines = do_vm.DisplayMembersCenterLines;
+            sDisplayOptions.bDisplaySolidModel = do_vm.DisplaySolidModel;
+
+            sDisplayOptions.bDisplayWireFrameModel = do_vm.DisplayWireFrameModel;
+            sDisplayOptions.bDisplayMembersWireFrame = do_vm.DisplayMembersWireFrame;
+            sDisplayOptions.bDisplayJointsWireFrame = do_vm.DisplayJointsWireFrame;
+            sDisplayOptions.bDisplayPlatesWireFrame = do_vm.DisplayPlatesWireFrame;
+            sDisplayOptions.bDisplayConnectorsWireFrame = do_vm.DisplayConnectorsWireFrame;
+            sDisplayOptions.bDisplayNodesWireFrame = do_vm.DisplayNodesWireFrame; // ??? Nenastavuje sa v GUI
+            sDisplayOptions.bDisplayFoundationsWireFrame = do_vm.DisplayFoundationsWireFrame;
+            sDisplayOptions.bDisplayReinforcementBarsWireFrame = do_vm.DisplayReinforcementBarsWireFrame;
+            sDisplayOptions.bDisplayFloorSlabWireFrame = do_vm.DisplayFloorSlabWireFrame;
+            sDisplayOptions.bDisplayCladdingWireFrame = do_vm.DisplayCladdingWireFrame && _modelOptionsVM.EnableCladding;//bug 835 (pokial nie je EnableCladding tak ani bDisplayCladdingWireframe nemoze byt)
+            sDisplayOptions.bDisplayFibreglassWireFrame = do_vm.DisplayFibreglassWireFrame;
+            sDisplayOptions.bDisplayDoorsWireFrame = do_vm.DisplayDoorsWireFrame;
+            sDisplayOptions.bDisplayWindowsWireFrame = do_vm.DisplayWindowsWireFrame;
+
+            sDisplayOptions.bDoorsSimpleSolidModel = do_vm.DoorsSimpleSolidModel;
+            sDisplayOptions.bDoorsSimpleWireframe = do_vm.DoorsSimpleWireframe;
+            sDisplayOptions.bWindowOutlineOnly = do_vm.WindowOutlineOnly;
+
             sDisplayOptions.bDisplayMemberDescription = do_vm.ShowMemberDescription;
             sDisplayOptions.bDisplayMemberID = do_vm.ShowMemberID;
             sDisplayOptions.bDisplayMemberPrefix = do_vm.ShowMemberPrefix;
@@ -3524,12 +3536,18 @@ namespace PFD
             sDisplayOptions.bDisplayMemberRealLength = do_vm.ShowMemberRealLength;
             sDisplayOptions.bDisplayMemberRealLengthInMM = do_vm.ShowMemberRealLengthInMM;
             sDisplayOptions.bDisplayMemberRealLengthUnit = do_vm.ShowMemberRealLengthUnit;
+
             sDisplayOptions.bDisplayNodesDescription = do_vm.ShowNodesDescription;
 
             sDisplayOptions.bDisplayFoundationsDescription = do_vm.ShowFoundationsDescription;
             sDisplayOptions.bDisplayFloorSlabDescription = do_vm.ShowFloorSlabDescription;
             sDisplayOptions.bDisplaySawCutsDescription = do_vm.ShowSawCutsDescription;
             sDisplayOptions.bDisplayControlJointsDescription = do_vm.ShowControlJointsDescription;
+            sDisplayOptions.bDisplayDimensions = do_vm.ShowDimensions;
+            sDisplayOptions.bDisplayGridlines = do_vm.ShowGridLines;
+            sDisplayOptions.bDisplaySectionSymbols = do_vm.ShowSectionSymbols;
+            sDisplayOptions.bDisplayDetailSymbols = do_vm.ShowDetailSymbols;
+            sDisplayOptions.bDisplaySlabRebates = do_vm.ShowSlabRebates;
 
             sDisplayOptions.bDisplayCladdingDescription = do_vm.DisplayCladdingDescription;
             sDisplayOptions.bDisplayCladdingID = do_vm.DisplayCladdingID;
@@ -3558,42 +3576,7 @@ namespace PFD
             sDisplayOptions.bDisplayWindowArea = do_vm.DisplayWindowArea;
             sDisplayOptions.bDisplayWindowUnits = do_vm.DisplayWindowUnits;
 
-            sDisplayOptions.bDisplayDimensions = do_vm.ShowDimensions;
-            sDisplayOptions.bDisplayGridlines = do_vm.ShowGridLines;
-            sDisplayOptions.bDisplaySectionSymbols = do_vm.ShowSectionSymbols;
-            sDisplayOptions.bDisplayDetailSymbols = do_vm.ShowDetailSymbols;
-            sDisplayOptions.bDisplaySlabRebates = do_vm.ShowSlabRebates;
-
-            sDisplayOptions.bDisplayMembersCenterLines = do_vm.DisplayMembersCenterLines;
-            sDisplayOptions.bDisplaySolidModel = do_vm.DisplaySolidModel;
-            sDisplayOptions.bDisplayWireFrameModel = do_vm.DisplayWireFrameModel;
-
-            sDisplayOptions.bDistinguishedColor = do_vm.DisplayDistinguishedColorMember;
-
-            sDisplayOptions.bDisplayGlobalAxis = do_vm.ShowGlobalAxis;
-            sDisplayOptions.bDisplayLocalMembersAxis = do_vm.ShowLocalMembersAxis;
-            sDisplayOptions.bDisplaySurfaceLoadAxis = do_vm.ShowSurfaceLoadsAxis;
-
-            sDisplayOptions.bDisplayLoads = do_vm.ShowLoads;
-            sDisplayOptions.bDisplayNodalLoads = do_vm.ShowNodalLoads;
-            sDisplayOptions.bDisplayMemberLoads = do_vm.ShowLoadsOnMembers;
-            sDisplayOptions.bDisplayMemberLoads_Girts = do_vm.ShowLoadsOnGirts;
-            sDisplayOptions.bDisplayMemberLoads_Purlins = do_vm.ShowLoadsOnPurlins;
-            sDisplayOptions.bDisplayMemberLoads_EavePurlins = do_vm.ShowLoadsOnEavePurlins;
-            sDisplayOptions.bDisplayMemberLoads_WindPosts = do_vm.ShowLoadsOnWindPosts;
-            sDisplayOptions.bDisplayMemberLoads_Frames = do_vm.ShowLoadsOnFrameMembers;
-            sDisplayOptions.bDisplaySurfaceLoads = do_vm.ShowSurfaceLoads;
-
-            sDisplayOptions.bDisplayLoadsLabels = do_vm.ShowLoadsLabels;
-            sDisplayOptions.bDisplayLoadsLabelsUnits = do_vm.ShowLoadsLabelsUnits;
-
-            sDisplayOptions.bColorsAccordingToMembersPrefix = do_vm.ColorsAccordingToMembersPrefix;
-            sDisplayOptions.bColorsAccordingToMembersPosition = do_vm.ColorsAccordingToMembersPosition;
-            sDisplayOptions.bColorsAccordingToMembers = sDisplayOptions.bColorsAccordingToMembersPrefix || sDisplayOptions.bColorsAccordingToMembersPosition;
-
-            sDisplayOptions.bColorsAccordingToSections = do_vm.ColorsAccordingToSections;
-            sDisplayOptions.bColoredCenterlines = do_vm.ColoredCenterlines;
-
+            // Colours
             sDisplayOptions.wireFrameColor = do_vm.WireframeColor;
             sDisplayOptions.fWireFrameLineThickness = do_vm.WireFrameLineThickness;
 
@@ -3602,7 +3585,9 @@ namespace PFD
 
             sDisplayOptions.NodeColor = do_vm.NodeColor;
             sDisplayOptions.NodeDescriptionTextColor = do_vm.NodeDescriptionTextColor;
+
             sDisplayOptions.MemberDescriptionTextColor = do_vm.MemberDescriptionTextColor;
+
             sDisplayOptions.DimensionTextColor = do_vm.DimensionTextColor;
             sDisplayOptions.DimensionLineColor = do_vm.DimensionLineColor;
 
@@ -3614,7 +3599,7 @@ namespace PFD
             sDisplayOptions.SectionSymbolColor = do_vm.SectionSymbolColor;
 
             sDisplayOptions.DetailSymbolLabelTextColor = do_vm.DetailSymbolLabelTextColor;
-            sDisplayOptions.DetailSymbolLabelBackColor = do_vm.DetailSymbolLabelBackColor;
+            sDisplayOptions.DetailSymbolLabelBackColor = do_vm.DetailSymbolLabelBackColor; // ???? Nie je v GUI
             sDisplayOptions.DetailSymbolColor = do_vm.DetailSymbolColor;
 
             sDisplayOptions.SawCutTextColor = do_vm.SawCutTextColor;
@@ -3626,17 +3611,49 @@ namespace PFD
             sDisplayOptions.ControlJointLinePatternType = (ELinePatternType)do_vm.ControlJointLinePatternType;
 
             sDisplayOptions.FoundationTextColor = do_vm.FoundationTextColor;
+
             sDisplayOptions.FloorSlabTextColor = do_vm.FloorSlabTextColor;
 
             sDisplayOptions.FoundationColor = do_vm.FoundationColor;
+
             sDisplayOptions.FloorSlabColor = do_vm.FloorSlabColor;
 
             sDisplayOptions.SlabRebateColor = do_vm.SlabRebateColor;
+
+            sDisplayOptions.memberCenterlineColor = do_vm.MemberCenterlineColor;
+            sDisplayOptions.fmemberCenterlineThickness = do_vm.MemberCenterlineThickness;
 
             sDisplayOptions.CladdingTextColor = do_vm.CladdingTextColor;
             sDisplayOptions.FibreglassTextColor = do_vm.FibreglassTextColor;
             sDisplayOptions.DoorTextColor = do_vm.DoorTextColor;
             sDisplayOptions.WindowTextColor = do_vm.WindowTextColor;
+
+            sDisplayOptions.backgroundColor = do_vm.BackgroundColor;
+
+            sDisplayOptions.PlateColor = do_vm.PlateColor;
+            sDisplayOptions.ScrewColor = do_vm.ScrewColor;
+            sDisplayOptions.AnchorColor = do_vm.AnchorColor;
+            sDisplayOptions.WasherColor = do_vm.WasherColor;
+            sDisplayOptions.NutColor = do_vm.NutColor;
+
+            sDisplayOptions.bColorsAccordingToMembersPrefix = do_vm.ColorsAccordingToMembersPrefix;
+            sDisplayOptions.bColorsAccordingToMembersPosition = do_vm.ColorsAccordingToMembersPosition;
+            sDisplayOptions.bColorsAccordingToMembers = sDisplayOptions.bColorsAccordingToMembersPrefix || sDisplayOptions.bColorsAccordingToMembersPosition;
+            sDisplayOptions.bColorsAccordingToSections = do_vm.ColorsAccordingToSections;
+
+            sDisplayOptions.bDistinguishedColor = do_vm.DisplayDistinguishedColorMember;
+            sDisplayOptions.bColoredCenterlines = do_vm.ColoredCenterlines;
+
+            sDisplayOptions.bCladdingSheetColoursByID = do_vm.CladdingSheetColoursByID;
+            sDisplayOptions.bUseDistColorOfSheetWithoutOverlap = do_vm.UseDifColorForSheetWithOverlap;
+
+            sDisplayOptions.CladdingSheetNoOverlapColor = do_vm.CladdingSheetColor;
+            sDisplayOptions.FibreglassSheetNoOverlapColor = do_vm.FibreglassSheetColor;
+
+            sDisplayOptions.bUseTextures = do_vm.UseTextures;
+            sDisplayOptions.bUseTexturesMembers = do_vm.UseTexturesMembers;
+            sDisplayOptions.bUseTexturesPlates = do_vm.UseTexturesPlates;
+            sDisplayOptions.bUseTexturesCladding = do_vm.UseTexturesCladding;
 
             // TODO 855 - toto presunut do display options aj v ramci GUI
             if (FootingVM != null)
@@ -3647,21 +3664,7 @@ namespace PFD
                 sDisplayOptions.ReinforcementBarColor_Bottom_y = FootingVM.LongReinBottom_y_Color;
             }
 
-            sDisplayOptions.PlateColor = do_vm.PlateColor;
-            sDisplayOptions.ScrewColor = do_vm.ScrewColor;
-            sDisplayOptions.AnchorColor = do_vm.AnchorColor;
-            sDisplayOptions.WasherColor = do_vm.WasherColor;
-            sDisplayOptions.NutColor = do_vm.NutColor;
-
-            sDisplayOptions.bCladdingSheetColoursByID = do_vm.CladdingSheetColoursByID;
-            sDisplayOptions.bUseTextures = do_vm.UseTextures;
-            sDisplayOptions.bUseTexturesMembers = do_vm.UseTexturesMembers;
-            sDisplayOptions.bUseTexturesPlates = do_vm.UseTexturesPlates;
-            sDisplayOptions.bUseTexturesCladding = do_vm.UseTexturesCladding;
-            sDisplayOptions.bUseDistColorOfSheetWithoutOverlap = do_vm.UseDifColorForSheetWithOverlap;
-            sDisplayOptions.CladdingSheetNoOverlapColor = do_vm.CladdingSheetColor;
-            sDisplayOptions.FibreglassSheetNoOverlapColor = do_vm.FibreglassSheetColor;
-
+            // Opacity
             sDisplayOptions.fMemberSolidModelOpacity = do_vm.MemberSolidModelOpacity;
             sDisplayOptions.fPlateSolidModelOpacity = do_vm.PlateSolidModelOpacity;
             sDisplayOptions.fScrewSolidModelOpacity = do_vm.ScrewSolidModelOpacity;
@@ -3679,8 +3682,23 @@ namespace PFD
             sDisplayOptions.fWindowPanelOpacity = do_vm.WindowPanelOpacity;
             sDisplayOptions.fFibreglassOpacity = do_vm.FibreglassOpacity;
 
-            sDisplayOptions.backgroundColor = do_vm.BackgroundColor;
+            // Loads
+            sDisplayOptions.bDisplayLoads = do_vm.ShowLoads;
+            sDisplayOptions.bDisplayNodalLoads = do_vm.ShowNodalLoads;
+            sDisplayOptions.bDisplayMemberLoads = do_vm.ShowLoadsOnMembers;
+            sDisplayOptions.bDisplayMemberLoads_Girts = do_vm.ShowLoadsOnGirts;
+            sDisplayOptions.bDisplayMemberLoads_Purlins = do_vm.ShowLoadsOnPurlins;
+            sDisplayOptions.bDisplayMemberLoads_EavePurlins = do_vm.ShowLoadsOnEavePurlins;
+            sDisplayOptions.bDisplayMemberLoads_WindPosts = do_vm.ShowLoadsOnWindPosts;
+            sDisplayOptions.bDisplayMemberLoads_Frames = do_vm.ShowLoadsOnFrameMembers;
+            sDisplayOptions.bDisplaySurfaceLoads = do_vm.ShowSurfaceLoads;
 
+            sDisplayOptions.bDisplayLoadsLabels = do_vm.ShowLoadsLabels;
+            sDisplayOptions.bDisplayLoadsLabelsUnits = do_vm.ShowLoadsLabelsUnits;
+
+            sDisplayOptions.LoadSizeScaleIn3D = do_vm.LoadSizeScaleIn3D;
+
+            // Texts and Symbols
             sDisplayOptions.FloorSlabTextSize = do_vm.FloorSlabTextSize;
             sDisplayOptions.GridlinesSize = do_vm.GridlinesSize;
             sDisplayOptions.GridLineLabelSize = do_vm.GridLineLabelSize;
@@ -3696,13 +3714,11 @@ namespace PFD
             sDisplayOptions.DimensionsTextSize = do_vm.DimensionsTextSize;
             sDisplayOptions.DimensionsLineRadius = do_vm.DimensionsLineRadius;
             sDisplayOptions.DimensionsScale = do_vm.DimensionsScale;
-            sDisplayOptions.DescriptionTextWidthScaleFactor = do_vm.DescriptionTextWidthScaleFactor;
+            sDisplayOptions.DescriptionTextWidthScaleFactor = do_vm.DescriptionTextWidthScaleFactor; // ?? Nie je v GUI
             sDisplayOptions.CladdingDescriptionSize = do_vm.CladdingDescriptionSize;
             sDisplayOptions.FibreglassDescriptionSize = do_vm.FibreglassDescriptionSize;
             sDisplayOptions.DoorDescriptionSize = do_vm.DoorDescriptionSize;
             sDisplayOptions.WindowDescriptionSize = do_vm.WindowDescriptionSize;
-
-            sDisplayOptions.LoadSizeScaleIn3D = do_vm.LoadSizeScaleIn3D;
 
             //to co nie je v GUI
             //sDisplayOptions.CO_ModelView = ViewIndex;
@@ -3713,7 +3729,6 @@ namespace PFD
             sDisplayOptions.CO_IsExport = do_vm.CO_IsExport;
             sDisplayOptions.CO_SameScaleForViews = do_vm.CO_SameScaleForViews;
             sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = do_vm.CO_TransformScreenLines3DToCylinders3D;
-            //sDisplayOptions.CO_DisplayIn3DRatio = do_vm.CO_DisplayIn3DRatio;
             sDisplayOptions.CO_RotateModelX = do_vm.CO_RotateModelX;
             sDisplayOptions.CO_RotateModelY = do_vm.CO_RotateModelY;
             sDisplayOptions.CO_RotateModelZ = do_vm.CO_RotateModelZ;
