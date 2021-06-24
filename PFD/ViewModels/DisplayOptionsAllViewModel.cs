@@ -352,6 +352,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplayMembersCenterLines = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplaySolidModel = false;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowGlobalAxis = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowLocalMembersAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberPrefix = false;
@@ -496,6 +498,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ColorsAccordingToMembersPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ColorsAccordingToSections = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowGlobalAxis = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowLocalMembersAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberID = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberPrefix = false;
@@ -757,6 +760,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowFloorSlabDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowFoundationsDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowMemberDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowMemberPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowGridLines = true; // Horizontal
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowSectionSymbols = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].ShowDetailSymbols = false;
@@ -767,6 +771,9 @@ namespace PFD
             #endregion FOUNDATIONS
             #region FLOOR
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
+
+            // Pre FLOOR nezobrazujeme members. Pre schemy COLUMNS a FOUNDATIONS ich zobrazujeme.
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayMembers = false;
 
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayWireFrameModel = true;
@@ -781,6 +788,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowFloorSlabDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowFoundationsDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowMemberDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowMemberPrefix = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplaySawCuts = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowSawCutsDescription = true;
@@ -812,7 +820,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFoundations = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFloorSlab = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowLocalMembersAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladding = true; // V Defaulte chceme mat vsetko na true
@@ -862,6 +869,9 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].RoofCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateHorizontalGridlines = false;
+
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
@@ -918,6 +928,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].RoofCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateHorizontalGridlines = true;
             #endregion ROOF
             #endregion CLADDING VIEWS
             #region JOINTS
