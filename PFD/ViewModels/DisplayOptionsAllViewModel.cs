@@ -870,6 +870,11 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].RoofCladdingOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowGridLines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateVerticalGridlinesFront = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateVerticalGridlinesBack = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateVerticalGridlinesLeft = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateVerticalGridlinesRight = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateHorizontalGridlines = false;
 
             #endregion ELEVATIONS
@@ -924,12 +929,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowHeightWidth = false;
 
             // Cladding and fibreglass properties
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FrontCladdingOpacity = 0.5f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].LeftCladdingOpacity = 0.5f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].RoofCladdingOpacity = 0.5f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].FibreglassOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].FrontCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].LeftCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].RoofCladdingOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].FibreglassOpacity = 0.5f;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_CreateHorizontalGridlines = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].CO_CreateHorizontalGridlines = true;
             #endregion ROOF
             #endregion CLADDING VIEWS
             #region JOINTS

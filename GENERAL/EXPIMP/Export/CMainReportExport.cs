@@ -81,7 +81,7 @@ namespace EXPIMP
 
             if (exportOpts.ExportFloorDetails)
                 DrawFloorDetails(s_document, modelData, exportOpts);
-                        
+
             //To Mato - task 787, neviem ci staci aby bol nejaky cladding a davame vsetko, alebo treba dovnutra a davat obrazky iba ak je to relevantne
             if (exportOpts.ExportStandardDetails && modelData.HasCladding) 
                 DrawStandardDetails(s_document, modelData, exportOpts);
@@ -411,7 +411,7 @@ namespace EXPIMP
 
                 opts.CO_ModelView = GetView(viewMembers);
                 opts.CO_ViewModelMembers = (int)viewMembers;
-                ChangeDisplayOptionsAcordingToView(viewMembers, ref opts);
+                ChangeDisplayOptionsAcordingToSideView(viewMembers, ref opts);
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
                 {
@@ -503,7 +503,7 @@ namespace EXPIMP
                 opts.CO_ModelView = GetView(view);
                 opts.CO_ViewCladding = (int)view;
 
-                ChangeDisplayOptionsAcordingToView(view, ref opts);
+                ChangeDisplayOptionsAcordingToSideView(view, ref opts);
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
@@ -586,49 +586,68 @@ namespace EXPIMP
             else throw new Exception("Unknown EViewModelMemberFilters view");
         }
 
-        private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
+        private static void ChangeDisplayOptionsAcordingToSideView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
         {
+            // Riesime len nastavenie pre side view
             // Nastavime rozdiel oproti zakladnemu defaultu pre Elevations
-            opts.CO_bCreateHorizontalGridlines = false; // Vypneme pre vsetky elevations
 
             if (viewMembers == EViewModelMemberFilters.FRONT)
             {
+                // Gridlines
                 opts.CO_bCreateVerticalGridlinesFront = true;
                 opts.CO_bCreateVerticalGridlinesBack = false;
                 opts.CO_bCreateVerticalGridlinesLeft = false;
                 opts.CO_bCreateVerticalGridlinesRight = false;
+                opts.CO_bCreateHorizontalGridlines = false;
                 opts.bDisplayDimensions = true;
             }
             if (viewMembers == EViewModelMemberFilters.BACK)
             {
+                // Gridlines
                 opts.CO_bCreateVerticalGridlinesFront = false;
                 opts.CO_bCreateVerticalGridlinesBack = true;
                 opts.CO_bCreateVerticalGridlinesLeft = false;
                 opts.CO_bCreateVerticalGridlinesRight = false;
+                opts.CO_bCreateHorizontalGridlines = false;
                 opts.bDisplayDimensions = false;
             }
             if (viewMembers == EViewModelMemberFilters.LEFT)
             {
+                // Gridlines
                 opts.CO_bCreateVerticalGridlinesFront = false;
                 opts.CO_bCreateVerticalGridlinesBack = false;
                 opts.CO_bCreateVerticalGridlinesLeft = true;
                 opts.CO_bCreateVerticalGridlinesRight = false;
+                opts.CO_bCreateHorizontalGridlines = false;
                 opts.bDisplayDimensions = true;
             }
             if (viewMembers == EViewModelMemberFilters.RIGHT)
             {
+                // Gridlines
                 opts.CO_bCreateVerticalGridlinesFront = false;
                 opts.CO_bCreateVerticalGridlinesBack = false;
                 opts.CO_bCreateVerticalGridlinesLeft = false;
                 opts.CO_bCreateVerticalGridlinesRight = true;
+                opts.CO_bCreateHorizontalGridlines = false;
                 opts.bDisplayDimensions = false;
             }
         }
 
-        private static void ChangeDisplayOptionsAcordingToView(EViewCladdingFilters viewMembers, ref DisplayOptions opts)
+        private static void ChangeDisplayOptionsAcordingToSideView(EViewCladdingFilters viewMembers, ref DisplayOptions opts)
         {
+            // Riesime len nastavenie pre side view
+            // Nastavime rozdiel oproti zakladnemu defaultu pre Elevations
+
             if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
             {
+                // Gridlines
+                opts.CO_bCreateVerticalGridlinesFront = true;
+                opts.CO_bCreateVerticalGridlinesBack = false;
+                opts.CO_bCreateVerticalGridlinesLeft = false;
+                opts.CO_bCreateVerticalGridlinesRight = false;
+                opts.CO_bCreateHorizontalGridlines = false;
+
+                // Cladding - Building Sides
                 opts.bDisplayCladdingFrontWall = true;
                 opts.bDisplayCladdingBackWall = false;
                 opts.bDisplayCladdingLeftWall = false;
@@ -637,6 +656,14 @@ namespace EXPIMP
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
             {
+                // Gridlines
+                opts.CO_bCreateVerticalGridlinesFront = false;
+                opts.CO_bCreateVerticalGridlinesBack = true;
+                opts.CO_bCreateVerticalGridlinesLeft = false;
+                opts.CO_bCreateVerticalGridlinesRight = false;
+                opts.CO_bCreateHorizontalGridlines = false;
+
+                // Cladding - Building Sides
                 opts.bDisplayCladdingFrontWall = false;
                 opts.bDisplayCladdingBackWall = true;
                 opts.bDisplayCladdingLeftWall = false;
@@ -645,19 +672,35 @@ namespace EXPIMP
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
             {
+                // Gridlines
+                opts.CO_bCreateVerticalGridlinesFront = false;
+                opts.CO_bCreateVerticalGridlinesBack = false;
+                opts.CO_bCreateVerticalGridlinesLeft = true;
+                opts.CO_bCreateVerticalGridlinesRight = false;
+                opts.CO_bCreateHorizontalGridlines = false;
+
+                // Cladding - Building Sides
                 opts.bDisplayCladdingFrontWall = false;
                 opts.bDisplayCladdingBackWall = false;
                 opts.bDisplayCladdingLeftWall = true;
-                opts.bDisplayCladdingRightWall = false;                
-                opts.bDisplayCladdingRoof = true;
+                opts.bDisplayCladdingRightWall = false;
+                opts.bDisplayCladdingRoof = true; // K diskusii - Chceme zobrazit aj roof?
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
             {
+                // Gridlines
+                opts.CO_bCreateVerticalGridlinesFront = false;
+                opts.CO_bCreateVerticalGridlinesBack = false;
+                opts.CO_bCreateVerticalGridlinesLeft = false;
+                opts.CO_bCreateVerticalGridlinesRight = true;
+                opts.CO_bCreateHorizontalGridlines = false;
+
+                // Cladding - Building Sides
                 opts.bDisplayCladdingFrontWall = false;
                 opts.bDisplayCladdingBackWall = false;
                 opts.bDisplayCladdingLeftWall = false;
                 opts.bDisplayCladdingRightWall = true;
-                opts.bDisplayCladdingRoof = true;
+                opts.bDisplayCladdingRoof = true; // K diskusii - Chceme zobrazit aj roof?
             }
         }
 
