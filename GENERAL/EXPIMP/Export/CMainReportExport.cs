@@ -684,7 +684,7 @@ namespace EXPIMP
                 opts.bDisplayCladdingBackWall = false;
                 opts.bDisplayCladdingLeftWall = true;
                 opts.bDisplayCladdingRightWall = false;
-                opts.bDisplayCladdingRoof = true; // K diskusii - Chceme zobrazit aj roof?
+                opts.bDisplayCladdingRoof = false; // K diskusii - Chceme zobrazit aj roof? V takom prípade sa skaredo vykresluje popis.
             }
             if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
             {
@@ -700,7 +700,7 @@ namespace EXPIMP
                 opts.bDisplayCladdingBackWall = false;
                 opts.bDisplayCladdingLeftWall = false;
                 opts.bDisplayCladdingRightWall = true;
-                opts.bDisplayCladdingRoof = true; // K diskusii - Chceme zobrazit aj roof?
+                opts.bDisplayCladdingRoof = false; // K diskusii - Chceme zobrazit aj roof? V takom prípade sa skaredo vykresluje popis.
             }
         }
 

@@ -827,7 +827,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRightWall = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingFrontWall = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingBackWall = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRoof = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingRoof = false; // K diskusii - Chceme zobrazit aj roof? V takom prípade sa skaredo vykresluje popis.
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFibreglass = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoors = true;
