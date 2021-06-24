@@ -333,7 +333,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberRealLength = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowMemberRealLengthInMM = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelX = -90;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].CO_RotateModelY = 20;
@@ -350,10 +349,13 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplayMembersCenterLines = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplaySolidModel = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplaySolidModel = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberPrefix = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberRealLength = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberRealLengthInMM = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberDescriptionTextColor = Colors.Black;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberCenterlineColor = Colors.Black;
@@ -421,6 +423,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayNodes = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].ShowNodesDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].ShowMemberID = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].ShowGlobalAxis = false;
@@ -433,7 +436,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayPlatesWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayConnectorsWireFrame = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayConnectorsWireFrame = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black); // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
@@ -451,6 +454,7 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayNodes = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].ShowNodesDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].ShowMemberID = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].CO_UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].ShowGlobalAxis = false;
@@ -463,7 +467,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayPlatesWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayConnectorsWireFrame = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayConnectorsWireFrame = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black); // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
@@ -492,10 +496,15 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ColorsAccordingToSections = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberPrefix = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberRealLength = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].ShowMemberRealLengthInMM = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplaySolidModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayMembersCenterLines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayWireFrameModel = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_TransformScreenLines3DToCylinders3D = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayMembers = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].DisplayJoints = false;
@@ -553,7 +562,11 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_TransformScreenLines3DToCylinders3D = true;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberPrefix = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLength = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowMemberRealLengthInMM = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DisplayNodes = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowNodesDescription = false;
