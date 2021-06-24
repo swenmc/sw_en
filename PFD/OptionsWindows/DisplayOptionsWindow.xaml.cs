@@ -131,6 +131,7 @@ namespace PFD
             {
                 this.DataContext = _pfdVM._displayOptionsVM.DisplayOptionsList[selectedIndex];
                 ChangeControlsVisibilityBasedOnSelectedTreeViewItem((EDisplayOptionsTypes)selectedIndex);
+                ChangeControlsIsEnabledBasedOnSelectedTreeViewItem((EDisplayOptionsTypes)selectedIndex);
             }
         }
 
@@ -140,6 +141,10 @@ namespace PFD
 
             if (optsType != EDisplayOptionsTypes.GUI_3D_Scene) Loads.Visibility = Visibility.Collapsed;
             else Loads.Visibility = Visibility.Visible;
+        }
+        private void ChangeControlsIsEnabledBasedOnSelectedTreeViewItem(EDisplayOptionsTypes optsType)
+        {
+            if (!IsLoaded) return;
 
             if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene)
             {
@@ -172,7 +177,15 @@ namespace PFD
                 chbDisplayWindowsWireFrame.IsEnabled = true;
             }
 
-            
+            if (optsType == EDisplayOptionsTypes.GUI_Joint_Preview || optsType == EDisplayOptionsTypes.GUI_Accessories_Preview || optsType == EDisplayOptionsTypes.GUI_Foundation_Preview
+                || optsType == EDisplayOptionsTypes.Report_Joints || optsType == EDisplayOptionsTypes.Report_Foundations
+                || optsType == EDisplayOptionsTypes.Layouts_Joints || optsType == EDisplayOptionsTypes.Layouts_Foundations)
+            {
+                chbDisplayGlobalAxis.IsEnabled = false;
+            }
+            else chbDisplayGlobalAxis.IsEnabled = true;
+
+
         }
 
         private void BtnCopySettings_Click(object sender, RoutedEventArgs e)

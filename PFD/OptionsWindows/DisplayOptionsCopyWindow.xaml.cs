@@ -259,16 +259,44 @@ namespace PFD
             MessageBoxResult result = MessageBox.Show($"Do you really want to copy settings from [{selectedSource}] to the selected items on the right?", "Information", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                foreach (DisplayOptionsViewModel destVM in destVMs)
+                
+                for(int i = 0; i < destVMs.Count; i++)
                 {
-                    //tu sa treba trosku zamysliet, lebo pokial setnem viewmodel pre GUI na IsExport = true a neda sa to nastavit potom inak, tak je to vlastne pruser
-                    destVM.SetViewModel(sourceVM);
+                    destVMs[i].SetViewModel(sourceVM);
+
+                    UncheckParamsThatCouldNotBeChanged(destVMs[i], (EDisplayOptionsTypes)destIndexes[i]);
 
                     OptionsChanged = true;
                 }
                 if (OptionsChanged && destIndexes.Contains((int)EDisplayOptionsTypes.GUI_3D_Scene)) GUI3DSceneOptionsChanged = true;
 
                 MessageBox.Show("Settings were succesfully copied.");
+            }
+        }
+
+        private void UncheckParamsThatCouldNotBeChanged(DisplayOptionsViewModel vm, EDisplayOptionsTypes optsType)
+        {
+            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene)
+            {
+                vm.DisplayWireFrameModel = false;
+                vm.DisplayMembersWireFrame = false;
+                vm.DisplayJointsWireFrame = false;
+                vm.DisplayPlatesWireFrame = false;
+                vm.DisplayConnectorsWireFrame = false;
+                vm.DisplayFoundationsWireFrame = false;
+                vm.DisplayReinforcementBarsWireFrame = false;
+                vm.DisplayFloorSlabWireFrame = false;
+                vm.DisplayCladdingWireFrame = false;
+                vm.DisplayFibreglassWireFrame = false;
+                vm.DisplayDoorsWireFrame = false;
+                vm.DisplayWindowsWireFrame = false;
+            }            
+
+            if (optsType == EDisplayOptionsTypes.GUI_Joint_Preview || optsType == EDisplayOptionsTypes.GUI_Accessories_Preview || optsType == EDisplayOptionsTypes.GUI_Foundation_Preview
+                || optsType == EDisplayOptionsTypes.Report_Joints || optsType == EDisplayOptionsTypes.Report_Foundations
+                || optsType == EDisplayOptionsTypes.Layouts_Joints || optsType == EDisplayOptionsTypes.Layouts_Foundations)
+            {
+                vm.ShowGlobalAxis = false;
             }
         }
 
