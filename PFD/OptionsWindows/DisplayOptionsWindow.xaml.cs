@@ -146,7 +146,7 @@ namespace PFD
         {
             if (!IsLoaded) return;
 
-            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene)
+            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene || optsType == EDisplayOptionsTypes.Report_3D_Scene)
             {
                 chbDisplayWireFrameModel.IsEnabled = false;
                 chbDisplayMembersWireFrame.IsEnabled = false;

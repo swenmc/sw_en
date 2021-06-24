@@ -276,7 +276,7 @@ namespace PFD
 
         private void UncheckParamsThatCouldNotBeChanged(DisplayOptionsViewModel vm, EDisplayOptionsTypes optsType)
         {
-            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene)
+            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene || optsType == EDisplayOptionsTypes.Report_3D_Scene)
             {
                 vm.DisplayWireFrameModel = false;
                 vm.DisplayMembersWireFrame = false;
