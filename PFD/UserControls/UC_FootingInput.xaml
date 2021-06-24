@@ -152,7 +152,7 @@
             Text="{Binding Path=LongReinTop_x_distance_s_y, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="16" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
-                    <ComboBox Grid.Row="16" Grid.Column="7" Name ="Combobox_LongReinTop_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                    <!--<ComboBox Grid.Row="16" Grid.Column="7" Name ="Combobox_LongReinTop_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                         VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -162,7 +162,7 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    </ComboBox>-->
 
                     <!-- Top y -->
                     <TextBlock Grid.Row="17" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Top y-direction"/>
@@ -179,7 +179,7 @@
              Text="{Binding Path=LongReinTop_y_distance_s_x, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="17" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
-                    <ComboBox Grid.Row="17" Grid.Column="7" Name ="Combobox_LongReinTop_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                    <!--<ComboBox Grid.Row="17" Grid.Column="7" Name ="Combobox_LongReinTop_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                 VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -189,7 +189,7 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    </ComboBox>-->
 
                     <!-- Bottom x -->
                     <TextBlock Grid.Row="18" Grid.Column="0" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Bottom x-direction"/>
@@ -205,7 +205,7 @@
             Text="{Binding Path=LongReinBottom_x_distance_s_y, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="18" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
-                    <ComboBox Grid.Row="18" Grid.Column="7" Name ="Combobox_LongReinBottom_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                    <!--<ComboBox Grid.Row="18" Grid.Column="7" Name ="Combobox_LongReinBottom_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
         VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -215,7 +215,7 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    </ComboBox>-->
 
                     <!-- Bottom y -->
                     <TextBlock Grid.Row="19" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Bottom y-direction"/>
@@ -231,7 +231,7 @@
             Text="{Binding Path=LongReinBottom_y_distance_s_x, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="19" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
-                    <ComboBox Grid.Row="19" Grid.Column="7" Name ="Combobox_LongReinBottom_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                    <!--<ComboBox Grid.Row="19" Grid.Column="7" Name ="Combobox_LongReinBottom_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
         VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -241,7 +241,7 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    </ComboBox>-->
 
                 </Grid>
             </ScrollViewer>

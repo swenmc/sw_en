@@ -50,13 +50,13 @@
                 </TreeViewItem>
                 <TreeViewItem Header="Cladding Views" IsExpanded="True" Focusable="False">
                     <TreeViewItem Name="twiLayouts_CW_Elevations" Header="Elevations"></TreeViewItem>
-                    <TreeViewItem Name="twiLayouts_CW_Roof" Header="Roof"></TreeViewItem>                    
+                    <TreeViewItem Name="twiLayouts_CW_Roof" Header="Roof"></TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Name="twiLayouts_Joints" Header="Joints"></TreeViewItem>
                 <TreeViewItem Name="twiLayouts_Foundations" Header="Foundations"></TreeViewItem>
             </TreeViewItem>
-            
-            
+
+
         </TreeView>
 
         <TabControl Grid.Column="1" Margin="5,5,0,0" Name="MainTabControl">
@@ -113,7 +113,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>                            
+                        <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
@@ -658,7 +658,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        
+
                         <TextBlock Grid.Row="0" Grid.Column="2" Text="Background Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="0" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
@@ -743,6 +743,58 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
+                        <TextBlock Grid.Row="6" Grid.Column="2" Text="Reinforcement Top x-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="6" Grid.Column="3" Name ="Combobox_LongReinTop_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="7" Grid.Column="2" Text="Reinforcement Top y-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="7" Grid.Column="3" Name ="Combobox_LongReinTop_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        
+                        <TextBlock Grid.Row="8" Grid.Column="2" Text="Reinforcement Bottom x-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="8" Grid.Column="3" Name ="Combobox_LongReinBottom_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="9" Grid.Column="2" Text="Reinforcement Bottom y-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="9" Grid.Column="3" Name ="Combobox_LongReinBottom_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                         <StackPanel Grid.Row="21" Grid.Column="2" Grid.RowSpan="4" Orientation="Vertical" Grid.ColumnSpan="2">
                             <TextBlock Text="Member Colour:" HorizontalAlignment="Left"/>
                             <RadioButton Name="radioColorsIn3DMembersPrefix" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPrefix, Mode=TwoWay}">according to Prefix</RadioButton>
@@ -754,7 +806,7 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="25" Grid.Column="2" Grid.RowSpan="2">
-                            <TextBlock Text="Cladding Colour:" HorizontalAlignment="Left"/>                            
+                            <TextBlock Text="Cladding Colour:" HorizontalAlignment="Left"/>
                             <CheckBox Name="chbCladdingSheetColoursByID" IsChecked="{Binding Path=CladdingSheetColoursByID}">Cladding Sheet Colours By ID</CheckBox>
                             <CheckBox Name="chbUseDifColorForSheetWithOverlap" Margin="0 5 0 0" IsChecked="{Binding Path=UseDifColorForSheetWithOverlap}">Use distinguished colour of sheet without overlap</CheckBox>
                         </StackPanel>
@@ -792,7 +844,7 @@
                             <CheckBox Name="chbUseTexturesPlates" IsChecked="{Binding Path=UseTexturesPlates}" Margin="25 0 0 0">Plates</CheckBox>
                             <CheckBox Name="chbUseTexturesCladding" IsChecked="{Binding Path=UseTexturesCladding}" Margin="25 0 0 0">Cladding</CheckBox>
                         </StackPanel>
-                        
+
 
                     </Grid>
                 </ScrollViewer>
@@ -831,7 +883,7 @@
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
-                            
+
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
@@ -892,7 +944,7 @@
                         <TextBlock Grid.Row="14" Grid.Column="0" Text="Fibreglass Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <Slider Grid.Row="14" Grid.Column="1" x:Name="sldFibreglassOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=FibreglassOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
 
-                        
+
 
                     </Grid>
                 </ScrollViewer>
