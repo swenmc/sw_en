@@ -295,6 +295,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayNodes = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowNodesDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayMembersCenterLines = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplaySolidModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayMembers = true;
