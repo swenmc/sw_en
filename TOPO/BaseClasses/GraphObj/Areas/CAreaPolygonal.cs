@@ -116,6 +116,7 @@ namespace BaseClasses.GraphObj
 
         public void SetWireFramePoints()
         {
+            WireFramePoints = new List<Point3D>();
             if (EdgePointList == null || EdgePointList.Count < 2) return;
 
             for (int i = 0; i < EdgePointList.Count - 1; i++)

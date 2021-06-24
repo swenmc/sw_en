@@ -1220,7 +1220,7 @@ namespace BaseClasses.GraphObj
                 outOffPlaneOffset_FG = 0.000;
             }
 
-            bool claddingWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame;
+            //bool claddingWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame;
             bool fibreglassWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame && options.bDisplayFibreglassWireFrame;
 
             if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall)
