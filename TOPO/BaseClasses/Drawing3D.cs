@@ -39,7 +39,7 @@ namespace BaseClasses
         }
 
         public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, float fZoomFactor, DisplayOptions sDisplayOptions,
-            CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
+            CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict, Transform3D currentGUItransform = null)
         {
             CModel model = null;
             //DateTime start = DateTime.Now;
@@ -256,6 +256,7 @@ namespace BaseClasses
 
                 if (centerModel)
                 {
+                    if (currentGUItransform != null) centerModelTransGr.Children.Add(currentGUItransform);
                     //translate transform to model center
                     ((Model3D)gr).Transform = centerModelTransGr;
 

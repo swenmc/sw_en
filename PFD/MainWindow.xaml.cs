@@ -1620,8 +1620,13 @@ namespace PFD
             win.Show();
         }
 
+        Transform3D currrent_transform3D = null;
+
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
+            Trackport3D current_trackport = ((Page3Dmodel)Frame1.Content)._trackport;
+            currrent_transform3D = current_trackport.Trackball.Transform.Inverse as Transform3D;
+            
             LayoutExportOptionsWindow exportOptions = new LayoutExportOptionsWindow(vm);
             var result = exportOptions.ShowDialog();
 
@@ -1647,7 +1652,7 @@ namespace PFD
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 //Canvas canvas = ((UC_FootingInput)Footing_Input.Content).Frame2D.Content as Canvas;
 
-                CMainReportExport.ReportAllDataToPDFFile(modelData, vm._layoutsExportOptionsVM);
+                CMainReportExport.ReportAllDataToPDFFile(modelData, vm._layoutsExportOptionsVM, (vm._layoutsExportOptionsVM.ViewIndex == (int)EModelViews.CURRENT ? currrent_transform3D : null));
 
                 //pokusy to dat do vlakien a a potom spojit PDFka do jedneho PDF
                 //temp

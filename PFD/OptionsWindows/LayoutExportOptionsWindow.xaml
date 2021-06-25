@@ -33,11 +33,7 @@
             
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="8">
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
-                <!--<ComboBox Grid.Row="0" Grid.Column="0" Name ="Combobox_View" HorizontalAlignment="Left" 
-                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=ModelViews, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                  SelectedValue="{Binding Path=ExportPageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>-->
-
+                
                 <StackPanel Orientation="Horizontal" Margin="20 0 0 5">
                     <TextBlock Margin="0 0 10 0">View:</TextBlock>
                     <ComboBox Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}" 

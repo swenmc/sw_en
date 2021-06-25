@@ -1540,7 +1540,7 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, float fZoomFactor, out CModel filteredModel, out Trackport3D _trackport, double width = 1400, double height = 1000)
+        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, float fZoomFactor, out CModel filteredModel, out Trackport3D _trackport, Transform3D currentTrans = null, double width = 1400, double height = 1000)
         {
             //double width = 1400; double height = 1000; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
 
@@ -1558,7 +1558,7 @@ namespace EXPIMP
             //_trackport.ViewPort.Arrange(new Rect(size));
             //_trackport.ViewPort.UpdateLayout();
 
-            filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, fZoomFactor, sDisplayOptions, null, modelData.JointsDict);
+            filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, fZoomFactor, sDisplayOptions, null, modelData.JointsDict, currentTrans);
 
             //todo skusit refaktorovat Trackport3D a vyrobit mu nejaku dispose metodu na uvolennei pamate
             //pripadne skusit stale pouzivat jeden Trackport napriec celym exportom a len mu mazat model a viewport

@@ -45,8 +45,12 @@ namespace EXPIMP
         //private static PdfDocument document = null;
         private static List<string[]> contents = new List<string[]>();
 
-        public static void ReportAllDataToPDFFile(CModelData modelData, LayoutsExportOptionsViewModel exportOpts)
+        private static Transform3D _currrent_transform3D;
+        
+        public static void ReportAllDataToPDFFile(CModelData modelData, LayoutsExportOptionsViewModel exportOpts, Transform3D currrent_transform3D)
         {
+            _currrent_transform3D = currrent_transform3D;            
+
             sheetNo = 1;
             PdfDocument s_document = new PdfDocument();
 
@@ -302,7 +306,7 @@ namespace EXPIMP
             double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.LY_ExportImagesQuality);
             double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.LY_ExportImagesQuality);
 
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, _currrent_transform3D, width, height);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -441,7 +445,7 @@ namespace EXPIMP
                 double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.LY_ExportImagesQuality);
 
                 //Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * factor, 1000 * factor);
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, null, width, height);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
                 System.Diagnostics.Trace.WriteLine("DrawModelViews after GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
@@ -517,7 +521,7 @@ namespace EXPIMP
                 double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.LY_ExportImagesQuality);
                 double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.LY_ExportImagesQuality);
 
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, null, width, height);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
 
@@ -1441,7 +1445,7 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, _currrent_transform3D);
             viewPort.UpdateLayout();
 
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
