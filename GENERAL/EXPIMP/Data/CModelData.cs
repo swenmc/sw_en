@@ -138,6 +138,7 @@ namespace EXPIMP
         private bool m_HasCladdingRight;
         private bool m_HasCladdingRoof;
 
+        private int m_ViewIndex;
 
         private CModel MModel;
 
@@ -1115,6 +1116,19 @@ namespace EXPIMP
             set
             {
                 m_HasCladding = value;
+            }
+        }
+
+        public int ViewIndex
+        {
+            get
+            {
+                return m_ViewIndex;
+            }
+
+            set
+            {
+                m_ViewIndex = value;                
             }
         }
 

@@ -294,6 +294,7 @@ namespace EXPIMP
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
             DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_3D_Scene];
+            opts.CO_ModelView = GetViewIndex(data, exportOpts); //851
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
@@ -326,6 +327,12 @@ namespace EXPIMP
             trackport.Dispose();
             gfx.Dispose();
             page.Close();
+        }
+
+        private static int GetViewIndex(CModelData data, LayoutsExportOptionsViewModel exportOpts)
+        {
+            if (exportOpts.ViewIndex == (int)EModelViews.CURRENT) return data.ViewIndex;
+            else return exportOpts.ViewIndex;
         }
 
         //private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport, LayoutsExportOptionsViewModel exportOpts)
@@ -1429,7 +1436,8 @@ namespace EXPIMP
             if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectPart, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 90);
 
             // Preview - izometricky pohlad na konstrukciu
-            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene]; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene];
+            opts.CO_ModelView = GetViewIndex(data, exportOpts); //851            
 
             CModel filteredModel = null;
             Trackport3D trackport = null;

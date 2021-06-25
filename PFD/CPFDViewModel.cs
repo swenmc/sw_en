@@ -1135,8 +1135,6 @@ namespace PFD
             }
         }
 
-
-
         public List<string> ModelViews
         {
             get
@@ -2850,6 +2848,8 @@ namespace PFD
             data.WallCladdingCoatingIndex = _claddingOptionsVM.WallCladdingCoatingIndex;
             data.WallCladdingColorIndex = _claddingOptionsVM.WallCladdingColorIndex;
             data.WallCladdingThicknessIndex = _claddingOptionsVM.WallCladdingThicknessIndex;
+
+            data.ViewIndex = ViewIndex;
 
             data.RoofFibreglassThicknessIndex = _claddingOptionsVM.RoofFibreglassThicknessIndex;
             data.WallFibreglassThicknessIndex = _claddingOptionsVM.WallFibreglassThicknessIndex;

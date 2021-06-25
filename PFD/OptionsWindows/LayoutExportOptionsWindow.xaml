@@ -7,10 +7,10 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Layout Export Options" Height="480" Width="550">
+        Title="Layout Export Options" Height="510" Width="550">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
-        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">140</System:Double>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridExportOptions" Margin="5">
@@ -33,6 +33,17 @@
             
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="8">
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
+                <!--<ComboBox Grid.Row="0" Grid.Column="0" Name ="Combobox_View" HorizontalAlignment="Left" 
+                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=ModelViews, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=ExportPageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>-->
+
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 5">
+                    <TextBlock Margin="0 0 10 0">View:</TextBlock>
+                    <ComboBox Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}" 
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=ModelViews}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                </StackPanel>
+
                 <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Framing Scheme Views</CheckBox>
 
                 <CheckBox Name="chckExportModelViewsFront" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>

@@ -48,6 +48,9 @@ namespace BaseClasses
 
         private int m_ExportImagesQuality;
 
+        private List<string> m_ModelViews;
+        private int m_ViewIndex;
+
         public bool ExportModel3D
         {
             get
@@ -498,6 +501,29 @@ namespace BaseClasses
             }
         }
 
+        public int ViewIndex
+        {
+            get
+            {
+                return m_ViewIndex;
+            }
+
+            set
+            {
+                m_ViewIndex = value;
+                NotifyPropertyChanged("ViewIndex");
+            }
+        }
+
+        public List<string> ModelViews
+        {
+            get
+            {
+                if (m_ModelViews == null) m_ModelViews = new List<string>() { "ISO Front-Right", "ISO Front-Left", "ISO Back-Right", "ISO Back-Left", "Front", "Back", "Left", "Right", "Top", "Current" };
+                return m_ModelViews;
+            }
+        }
+
         public LayoutsExportOptionsViewModel()
         {
             ExportModel3D = true;
@@ -534,6 +560,8 @@ namespace BaseClasses
             ExportPageOrientationViewsCladding = (int)EPageOrientation.Landscape;
 
             ExportImagesQuality = (int)EImagesQuality.Normal;
+
+            ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
         }
 
         protected void NotifyPropertyChanged(string propertyName)
@@ -576,6 +604,8 @@ namespace BaseClasses
             ExportPageSizeViewsCladding = vm.ExportPageSizeViewsCladding;
             ExportPageOrientationViewsCladding = vm.ExportPageOrientationViewsCladding;
             ExportImagesQuality = vm.ExportImagesQuality;
+
+            ViewIndex = vm.ViewIndex;
         }
     }
 }
