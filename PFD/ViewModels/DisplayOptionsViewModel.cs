@@ -4361,10 +4361,11 @@ namespace PFD
             DisplayJointsWireFrame = newVM.DisplayJointsWireFrame;
             DisplayPlatesWireFrame = newVM.DisplayPlatesWireFrame;
             DisplayConnectorsWireFrame = newVM.DisplayConnectorsWireFrame;
-            DisplayNodesWireFrame = newVM.DisplayNodesWireFrame;
+            //DisplayNodesWireFrame = newVM.DisplayNodesWireFrame; // Nie je v GUI
             DisplayFoundationsWireFrame = newVM.DisplayFoundationsWireFrame;
             DisplayReinforcementBarsWireFrame = newVM.DisplayReinforcementBarsWireFrame;
             DisplayFloorSlabWireFrame = newVM.DisplayFloorSlabWireFrame;
+            //DisplaySlabRebateWireFrame = newVM.DisplaySlabRebateWireFrame; // Nie je v GUI
             DisplayCladdingWireFrame = newVM.DisplayCladdingWireFrame;
             DisplayFibreglassWireFrame = newVM.DisplayFibreglassWireFrame;
             DisplayDoorsWireFrame = newVM.DisplayDoorsWireFrame;
@@ -4424,9 +4425,6 @@ namespace PFD
             // Colours
             WireframeColorIndex = newVM.WireframeColorIndex;
             WireFrameLineThickness = newVM.WireFrameLineThickness;
-
-            MemberCenterlineColorIndex = newVM.MemberCenterlineColorIndex;
-            MemberCenterlineThickness = newVM.MemberCenterlineThickness;
 
             NodeColorIndex = newVM.NodeColorIndex;
             NodeDescriptionTextColorIndex = newVM.NodeDescriptionTextColorIndex;
@@ -4592,24 +4590,24 @@ namespace PFD
             LY_ViewsPageSize = newVM.LY_ViewsPageSize;
             LY_ExportImagesQuality = newVM.LY_ExportImagesQuality;
 
+            CO_ModelView = newVM.CO_ModelView;
+            CO_ViewModelMembers = newVM.CO_ViewModelMembers;
             CO_IsExport = newVM.CO_IsExport;
             CO_SameScaleForViews = newVM.CO_SameScaleForViews;
-
             CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;
             CO_RotateModelX = newVM.CO_RotateModelX;
             CO_RotateModelY = newVM.CO_RotateModelY;
             CO_RotateModelZ = newVM.CO_RotateModelZ;
-            CO_ModelView = newVM.CO_ModelView;
-            CO_ViewModelMembers = newVM.CO_ViewModelMembers;
             CO_ViewCladding = newVM.CO_ViewCladding;
             CO_UseOrtographicCamera = newVM.CO_UseOrtographicCamera;
             CO_OrtographicCameraWidth = newVM.CO_OrtographicCameraWidth;
-
             CO_CreateHorizontalGridlines = newVM.CO_CreateHorizontalGridlines;
             CO_CreateVerticalGridlinesFront = newVM.CO_CreateVerticalGridlinesFront;
             CO_CreateVerticalGridlinesBack = newVM.CO_CreateVerticalGridlinesBack;
             CO_CreateVerticalGridlinesLeft = newVM.CO_CreateVerticalGridlinesLeft;
             CO_CreateVerticalGridlinesRight = newVM.CO_CreateVerticalGridlinesRight;
+
+            // MirrorPlate3D = newVM.MirrorPlate3D;  // Nie je v GUI PFD - presunut do CO?, pouziva sa v SCV
         }
 
         private void SetIsEnabledLocalMembersAxis()

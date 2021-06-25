@@ -3168,285 +3168,6 @@ namespace PFD
             }
         }
 
-        //public DisplayOptions GetDisplayOptions()
-        //{
-        //    DisplayOptions sDisplayOptions = new DisplayOptions();
-        //    // Get display options from GUI
-        //    sDisplayOptions.bUseLightDirectional = _displayOptionsVM.LightDirectional;
-        //    sDisplayOptions.bUseLightPoint = _displayOptionsVM.LightPoint;
-        //    sDisplayOptions.bUseLightSpot = _displayOptionsVM.LightSpot;
-        //    sDisplayOptions.bUseLightAmbient = _displayOptionsVM.LightAmbient;
-
-        //    sDisplayOptions.bUseDiffuseMaterial = _displayOptionsVM.MaterialDiffuse;
-        //    sDisplayOptions.bUseEmissiveMaterial = _displayOptionsVM.MaterialEmissive;
-
-        //    sDisplayOptions.bDisplayMembers = _displayOptionsVM.DisplayMembers;
-        //    sDisplayOptions.bDisplayJoints = _displayOptionsVM.DisplayJoints;
-        //    sDisplayOptions.bDisplayPlates = _displayOptionsVM.DisplayPlates;
-        //    sDisplayOptions.bDisplayConnectors = _displayOptionsVM.DisplayConnectors;
-        //    sDisplayOptions.bDisplayNodes = _displayOptionsVM.DisplayNodes;
-
-        //    sDisplayOptions.bDisplayFoundations = _displayOptionsVM.DisplayFoundations;
-        //    sDisplayOptions.bDisplayReinforcementBars = _displayOptionsVM.DisplayReinforcementBars;
-        //    sDisplayOptions.bDisplayFloorSlab = _displayOptionsVM.DisplayFloorSlab;
-        //    sDisplayOptions.bDisplaySawCuts = _displayOptionsVM.DisplaySawCuts;
-        //    sDisplayOptions.bDisplayControlJoints = _displayOptionsVM.DisplayControlJoints;
-        //    sDisplayOptions.bDisplayNodalSupports = _displayOptionsVM.DisplayNodalSupports;
-
-        //    sDisplayOptions.bDisplayMembersWireFrame = _displayOptionsVM.DisplayMembersWireFrame;
-        //    sDisplayOptions.bDisplayJointsWireFrame = _displayOptionsVM.DisplayJointsWireFrame;
-        //    sDisplayOptions.bDisplayPlatesWireFrame = _displayOptionsVM.DisplayPlatesWireFrame;
-        //    sDisplayOptions.bDisplayConnectorsWireFrame = _displayOptionsVM.DisplayConnectorsWireFrame;
-        //    sDisplayOptions.bDisplayNodesWireFrame = _displayOptionsVM.DisplayNodesWireFrame;
-        //    sDisplayOptions.bDisplayFoundationsWireFrame = _displayOptionsVM.DisplayFoundationsWireFrame;
-        //    sDisplayOptions.bDisplayReinforcementBarsWireFrame = _displayOptionsVM.DisplayReinforcementBarsWireFrame;
-        //    sDisplayOptions.bDisplayFloorSlabWireFrame = _displayOptionsVM.DisplayFloorSlabWireFrame;
-        //    sDisplayOptions.bDisplayCladdingWireFrame = _displayOptionsVM.DisplayCladdingWireFrame && _modelOptionsVM.EnableCladding;//bug 835 (pokial nie je EnableCladding tak ani bDisplayCladdingWireframe nemoze byt)
-        //    sDisplayOptions.bDisplayFibreglassWireFrame = _displayOptionsVM.DisplayFibreglassWireFrame;
-        //    sDisplayOptions.bDisplayDoorsWireFrame = _displayOptionsVM.DisplayDoorsWireFrame;
-        //    sDisplayOptions.bDisplayWindowsWireFrame = _displayOptionsVM.DisplayWindowsWireFrame;
-        //    sDisplayOptions.bDoorsSimpleSolidModel = _displayOptionsVM.DoorsSimpleSolidModel;
-        //    sDisplayOptions.bDoorsSimpleWireframe = _displayOptionsVM.DoorsSimpleWireframe;
-        //    sDisplayOptions.bWindowOutlineOnly = _displayOptionsVM.WindowOutlineOnly;
-
-        //    sDisplayOptions.bDisplayCladding = _displayOptionsVM.DisplayCladding && _modelOptionsVM.EnableCladding; //bug 835 (pokial nie je EnableCladding tak ani bDisplayCladding nemoze byt)
-        //    sDisplayOptions.bDisplayCladdingLeftWall = _displayOptionsVM.DisplayCladdingLeftWall;
-        //    sDisplayOptions.bDisplayCladdingRightWall = _displayOptionsVM.DisplayCladdingRightWall;
-        //    sDisplayOptions.bDisplayCladdingFrontWall = _displayOptionsVM.DisplayCladdingFrontWall;
-        //    sDisplayOptions.bDisplayCladdingBackWall = _displayOptionsVM.DisplayCladdingBackWall;
-        //    sDisplayOptions.bDisplayCladdingRoof = _displayOptionsVM.DisplayCladdingRoof;
-        //    sDisplayOptions.bDisplayFibreglass = _displayOptionsVM.DisplayFibreglass;
-        //    sDisplayOptions.bDisplayDoors = _displayOptionsVM.DisplayDoors;
-        //    sDisplayOptions.bDisplayWindows = _displayOptionsVM.DisplayWindows;
-
-        //    sDisplayOptions.bDisplayMemberDescription = _displayOptionsVM.ShowMemberDescription;
-        //    sDisplayOptions.bDisplayMemberID = _displayOptionsVM.ShowMemberID;
-        //    sDisplayOptions.bDisplayMemberPrefix = _displayOptionsVM.ShowMemberPrefix;
-        //    sDisplayOptions.bDisplayMemberCrossSectionStartName = _displayOptionsVM.ShowMemberCrossSectionStartName;
-        //    sDisplayOptions.bDisplayMemberRealLength = _displayOptionsVM.ShowMemberRealLength;
-        //    sDisplayOptions.bDisplayMemberRealLengthInMM = _displayOptionsVM.ShowMemberRealLengthInMM;
-        //    sDisplayOptions.bDisplayMemberRealLengthUnit = _displayOptionsVM.ShowMemberRealLengthUnit;
-        //    sDisplayOptions.bDisplayNodesDescription = _displayOptionsVM.ShowNodesDescription;
-
-        //    sDisplayOptions.bDisplayFoundationsDescription = _displayOptionsVM.ShowFoundationsDescription;
-        //    sDisplayOptions.bDisplayFloorSlabDescription = _displayOptionsVM.ShowFloorSlabDescription;
-        //    sDisplayOptions.bDisplaySawCutsDescription = _displayOptionsVM.ShowSawCutsDescription;
-        //    sDisplayOptions.bDisplayControlJointsDescription = _displayOptionsVM.ShowControlJointsDescription;
-
-        //    sDisplayOptions.bDisplayCladdingDescription = _displayOptionsVM.DisplayCladdingDescription;
-        //    sDisplayOptions.bDisplayCladdingID = _displayOptionsVM.DisplayCladdingID;
-        //    sDisplayOptions.bDisplayCladdingPrefix = _displayOptionsVM.DisplayCladdingPrefix;
-        //    sDisplayOptions.bDisplayCladdingLengthWidth = _displayOptionsVM.DisplayCladdingLengthWidth;
-        //    sDisplayOptions.bDisplayCladdingArea = _displayOptionsVM.DisplayCladdingArea;
-        //    sDisplayOptions.bDisplayCladdingUnits = _displayOptionsVM.DisplayCladdingUnits;
-
-        //    sDisplayOptions.bDisplayFibreglassDescription = _displayOptionsVM.DisplayFibreglassDescription;
-        //    sDisplayOptions.bDisplayFibreglassID = _displayOptionsVM.DisplayFibreglassID;
-        //    sDisplayOptions.bDisplayFibreglassPrefix = _displayOptionsVM.DisplayFibreglassPrefix;
-        //    sDisplayOptions.bDisplayFibreglassLengthWidth = _displayOptionsVM.DisplayFibreglassLengthWidth;
-        //    sDisplayOptions.bDisplayFibreglassArea = _displayOptionsVM.DisplayFibreglassArea;
-        //    sDisplayOptions.bDisplayFibreglassUnits = _displayOptionsVM.DisplayFibreglassUnits;
-
-        //    sDisplayOptions.bDisplayDoorDescription = _displayOptionsVM.DisplayDoorDescription;
-        //    sDisplayOptions.bDisplayDoorID = _displayOptionsVM.DisplayDoorID;
-        //    sDisplayOptions.bDisplayDoorType = _displayOptionsVM.DisplayDoorType;
-        //    sDisplayOptions.bDisplayDoorHeightWidth = _displayOptionsVM.DisplayDoorHeightWidth;
-        //    sDisplayOptions.bDisplayDoorArea = _displayOptionsVM.DisplayDoorArea;
-        //    sDisplayOptions.bDisplayDoorUnits = _displayOptionsVM.DisplayDoorUnits;
-
-        //    sDisplayOptions.bDisplayWindowDescription = _displayOptionsVM.DisplayWindowDescription;
-        //    sDisplayOptions.bDisplayWindowID = _displayOptionsVM.DisplayWindowID;
-        //    sDisplayOptions.bDisplayWindowHeightWidth = _displayOptionsVM.DisplayWindowHeightWidth;
-        //    sDisplayOptions.bDisplayWindowArea = _displayOptionsVM.DisplayWindowArea;
-        //    sDisplayOptions.bDisplayWindowUnits = _displayOptionsVM.DisplayWindowUnits;
-
-        //    sDisplayOptions.bDisplayDimensions = _displayOptionsVM.ShowDimensions;
-        //    sDisplayOptions.bDisplayGridlines = _displayOptionsVM.ShowGridLines;
-        //    sDisplayOptions.bDisplaySectionSymbols = _displayOptionsVM.ShowSectionSymbols;
-        //    sDisplayOptions.bDisplayDetailSymbols = _displayOptionsVM.ShowDetailSymbols;
-        //    sDisplayOptions.bDisplaySlabRebates = _displayOptionsVM.ShowSlabRebates;
-
-        //    sDisplayOptions.bDisplayMembersCenterLines = _displayOptionsVM.DisplayMembersCenterLines;
-        //    sDisplayOptions.bDisplaySolidModel = _displayOptionsVM.DisplaySolidModel;
-        //    sDisplayOptions.bDisplayWireFrameModel = _displayOptionsVM.DisplayWireFrameModel;
-
-        //    sDisplayOptions.bDistinguishedColor = _displayOptionsVM.DisplayDistinguishedColorMember;
-        //    //sDisplayOptions.bTransparentMemberModel = _displayOptionsVM.DisplayTransparentModelMember;
-
-        //    sDisplayOptions.bDisplayGlobalAxis = _displayOptionsVM.ShowGlobalAxis;
-        //    sDisplayOptions.bDisplayLocalMembersAxis = _displayOptionsVM.ShowLocalMembersAxis;
-        //    sDisplayOptions.bDisplaySurfaceLoadAxis = _displayOptionsVM.ShowSurfaceLoadsAxis;
-
-        //    sDisplayOptions.bDisplayLoads = _displayOptionsVM.ShowLoads;
-        //    sDisplayOptions.bDisplayNodalLoads = _displayOptionsVM.ShowNodalLoads;
-        //    sDisplayOptions.bDisplayMemberLoads = _displayOptionsVM.ShowLoadsOnMembers;
-        //    sDisplayOptions.bDisplayMemberLoads_Girts = _displayOptionsVM.ShowLoadsOnGirts;
-        //    sDisplayOptions.bDisplayMemberLoads_Purlins = _displayOptionsVM.ShowLoadsOnPurlins;
-        //    sDisplayOptions.bDisplayMemberLoads_EavePurlins = _displayOptionsVM.ShowLoadsOnEavePurlins;
-        //    sDisplayOptions.bDisplayMemberLoads_WindPosts = _displayOptionsVM.ShowLoadsOnWindPosts;
-        //    sDisplayOptions.bDisplayMemberLoads_Frames = _displayOptionsVM.ShowLoadsOnFrameMembers;
-        //    sDisplayOptions.bDisplaySurfaceLoads = _displayOptionsVM.ShowSurfaceLoads;
-
-        //    sDisplayOptions.bDisplayLoadsLabels = _displayOptionsVM.ShowLoadsLabels;
-        //    sDisplayOptions.bDisplayLoadsLabelsUnits = _displayOptionsVM.ShowLoadsLabelsUnits;
-
-        //    sDisplayOptions.DisplayIn3DRatio = _displayOptionsVM.DisplayIn3DRatio;
-        //    sDisplayOptions.bColorsAccordingToMembersPrefix = _displayOptionsVM.ColorsAccordingToMembersPrefix;
-        //    sDisplayOptions.bColorsAccordingToMembersPosition = _displayOptionsVM.ColorsAccordingToMembersPosition;
-        //    sDisplayOptions.bColorsAccordingToMembers = sDisplayOptions.bColorsAccordingToMembersPrefix || sDisplayOptions.bColorsAccordingToMembersPosition;
-
-        //    sDisplayOptions.bColorsAccordingToSections = _displayOptionsVM.ColorsAccordingToSections;
-        //    sDisplayOptions.bColoredCenterlines = _displayOptionsVM.ColoredCenterlines;
-
-        //    //sDisplayOptions.wireFrameColor = WireframeColor;
-        //    sDisplayOptions.wireFrameColor = _displayOptionsVM.WireframeColor;
-        //    sDisplayOptions.fWireFrameLineThickness = _displayOptionsVM.WireFrameLineThickness;
-
-        //    sDisplayOptions.memberCenterlineColor = _displayOptionsVM.MemberCenterlineColor;
-        //    sDisplayOptions.fmemberCenterlineThickness = _displayOptionsVM.MemberCenterlineThickness;
-
-        //    //sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fDimensionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fGridLineLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fSectionSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fDetailSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-
-        //    //sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-
-        //    //sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-        //    //sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-
-        //    sDisplayOptions.NodeColor = _displayOptionsVM.NodeColor;
-        //    sDisplayOptions.NodeDescriptionTextColor = _displayOptionsVM.NodeDescriptionTextColor;
-        //    sDisplayOptions.MemberDescriptionTextColor = _displayOptionsVM.MemberDescriptionTextColor;
-        //    sDisplayOptions.DimensionTextColor = _displayOptionsVM.DimensionTextColor;
-        //    sDisplayOptions.DimensionLineColor = _displayOptionsVM.DimensionLineColor;
-
-        //    sDisplayOptions.GridLineLabelTextColor = _displayOptionsVM.GridLineLabelTextColor;
-        //    sDisplayOptions.GridLineColor = _displayOptionsVM.GridLineColor;
-        //    sDisplayOptions.GridLinePatternType = (ELinePatternType)_displayOptionsVM.GridLinePatternType;
-
-        //    sDisplayOptions.SectionSymbolLabelTextColor = _displayOptionsVM.SectionSymbolLabelTextColor;
-        //    sDisplayOptions.SectionSymbolColor = _displayOptionsVM.SectionSymbolColor;
-
-        //    sDisplayOptions.DetailSymbolLabelTextColor = _displayOptionsVM.DetailSymbolLabelTextColor;
-        //    sDisplayOptions.DetailSymbolLabelBackColor = _displayOptionsVM.DetailSymbolLabelBackColor;
-        //    sDisplayOptions.DetailSymbolColor = _displayOptionsVM.DetailSymbolColor;
-
-        //    sDisplayOptions.SawCutTextColor = _displayOptionsVM.SawCutTextColor;
-        //    sDisplayOptions.SawCutLineColor = _displayOptionsVM.SawCutLineColor;
-        //    sDisplayOptions.SawCutLinePatternType = (ELinePatternType)_displayOptionsVM.SawCutLinePatternType;
-
-        //    sDisplayOptions.ControlJointTextColor = _displayOptionsVM.ControlJointTextColor;
-        //    sDisplayOptions.ControlJointLineColor = _displayOptionsVM.ControlJointLineColor;
-        //    sDisplayOptions.ControlJointLinePatternType = (ELinePatternType)_displayOptionsVM.ControlJointLinePatternType;
-
-        //    sDisplayOptions.FoundationTextColor = _displayOptionsVM.FoundationTextColor;
-        //    sDisplayOptions.FloorSlabTextColor = _displayOptionsVM.FloorSlabTextColor;
-
-        //    sDisplayOptions.FoundationColor = _displayOptionsVM.FoundationColor;
-        //    sDisplayOptions.FloorSlabColor = _displayOptionsVM.FloorSlabColor;
-
-        //    sDisplayOptions.SlabRebateColor = _displayOptionsVM.SlabRebateColor;
-
-        //    sDisplayOptions.CladdingTextColor = _displayOptionsVM.CladdingTextColor;
-        //    sDisplayOptions.FibreglassTextColor = _displayOptionsVM.FibreglassTextColor;
-        //    sDisplayOptions.DoorTextColor = _displayOptionsVM.DoorTextColor;
-        //    sDisplayOptions.WindowTextColor = _displayOptionsVM.WindowTextColor;
-
-        //    if (FootingVM != null)
-        //    {
-        //        sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
-        //        sDisplayOptions.ReinforcementBarColor_Top_y = FootingVM.LongReinTop_y_Color;
-        //        sDisplayOptions.ReinforcementBarColor_Bottom_x = FootingVM.LongReinBottom_x_Color;
-        //        sDisplayOptions.ReinforcementBarColor_Bottom_y = FootingVM.LongReinBottom_y_Color;
-        //    }
-
-        //    sDisplayOptions.PlateColor = _displayOptionsVM.PlateColor;
-        //    sDisplayOptions.ScrewColor = _displayOptionsVM.ScrewColor;
-        //    sDisplayOptions.AnchorColor = _displayOptionsVM.AnchorColor;
-        //    sDisplayOptions.WasherColor = _displayOptionsVM.WasherColor;
-        //    sDisplayOptions.NutColor = _displayOptionsVM.NutColor;
-
-        //    sDisplayOptions.bCladdingSheetColoursByID = _displayOptionsVM.CladdingSheetColoursByID;
-        //    sDisplayOptions.bUseTextures = _displayOptionsVM.UseTextures;
-        //    sDisplayOptions.bUseTexturesMembers = _displayOptionsVM.UseTexturesMembers;
-        //    sDisplayOptions.bUseTexturesPlates = _displayOptionsVM.UseTexturesPlates;
-        //    sDisplayOptions.bUseTexturesCladding = _displayOptionsVM.UseTexturesCladding;
-        //    sDisplayOptions.bUseDistColorOfSheetWithoutOverlap = _displayOptionsVM.UseDifColorForSheetWithOverlap;
-        //    sDisplayOptions.CladdingSheetNoOverlapColor = _displayOptionsVM.CladdingSheetColor;
-        //    sDisplayOptions.FibreglassSheetNoOverlapColor = _displayOptionsVM.FibreglassSheetColor;
-
-        //    sDisplayOptions.fMemberSolidModelOpacity = _displayOptionsVM.MemberSolidModelOpacity;
-        //    sDisplayOptions.fPlateSolidModelOpacity = _displayOptionsVM.PlateSolidModelOpacity;
-        //    sDisplayOptions.fScrewSolidModelOpacity = _displayOptionsVM.ScrewSolidModelOpacity;
-        //    sDisplayOptions.fAnchorSolidModelOpacity = _displayOptionsVM.AnchorSolidModelOpacity;
-        //    sDisplayOptions.fFoundationSolidModelOpacity = _displayOptionsVM.FoundationSolidModelOpacity;
-        //    sDisplayOptions.fReinforcementBarSolidModelOpacity = _displayOptionsVM.ReinforcementBarSolidModelOpacity;
-        //    sDisplayOptions.fFloorSlabSolidModelOpacity = _displayOptionsVM.FloorSlabSolidModelOpacity;
-        //    sDisplayOptions.fSlabRebateSolidModelOpacity = _displayOptionsVM.SlabRebateSolidModelOpacity;
-
-        //    sDisplayOptions.fFrontCladdingOpacity = _displayOptionsVM.FrontCladdingOpacity;
-        //    sDisplayOptions.fLeftCladdingOpacity = _displayOptionsVM.LeftCladdingOpacity;
-        //    sDisplayOptions.fRoofCladdingOpacity = _displayOptionsVM.RoofCladdingOpacity;
-        //    sDisplayOptions.fFlashingOpacity = _displayOptionsVM.FlashingOpacity;
-        //    sDisplayOptions.fDoorPanelOpacity = _displayOptionsVM.DoorPanelOpacity;
-        //    sDisplayOptions.fWindowPanelOpacity = _displayOptionsVM.WindowPanelOpacity;
-        //    sDisplayOptions.fFibreglassOpacity = _displayOptionsVM.FibreglassOpacity;
-
-        //    sDisplayOptions.backgroundColor = _displayOptionsVM.BackgroundColor;
-        //    sDisplayOptions.ModelView = ViewIndex;
-        //    sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
-
-        //    sDisplayOptions.IsExport = false;
-        //    //To Mato tu sa daju ponastavovat velkosti relativne podla velkosti modelu
-        //    sDisplayOptions.ExportFloorSlabTextSize = _displayOptionsVM.ExportFloorSlabTextSize;
-        //    sDisplayOptions.ExportGridlinesSize = _displayOptionsVM.ExportGridlinesSize;
-        //    sDisplayOptions.ExportGridLineLabelSize = _displayOptionsVM.ExportGridLineLabelSize;
-        //    sDisplayOptions.ExportSectionSymbolsSize = _displayOptionsVM.ExportSectionSymbolsSize;
-        //    sDisplayOptions.ExportSectionSymbolLabelSize = _displayOptionsVM.ExportSectionSymbolLabelSize;
-        //    sDisplayOptions.ExportDetailSymbolSize = _displayOptionsVM.ExportDetailSymbolSize;
-        //    sDisplayOptions.ExportDetailSymbolLabelSize = _displayOptionsVM.ExportDetailSymbolLabelSize;
-        //    sDisplayOptions.ExportMembersDescriptionSize = _displayOptionsVM.ExportMembersDescriptionSize;
-        //    sDisplayOptions.ExportNodesDescriptionSize = _displayOptionsVM.ExportNodesDescriptionSize;
-        //    sDisplayOptions.ExportSawCutTextSize = _displayOptionsVM.ExportSawCutTextSize;
-        //    sDisplayOptions.ExportControlJointTextSize = _displayOptionsVM.ExportControlJointTextSize;
-        //    sDisplayOptions.ExportFoundationTextSize = _displayOptionsVM.ExportFoundationTextSize;
-        //    sDisplayOptions.ExportDimensionsTextSize = _displayOptionsVM.ExportDimensionsTextSize;
-        //    sDisplayOptions.ExportDimensionsLineRadius = _displayOptionsVM.ExportDimensionsLineRadius;
-        //    sDisplayOptions.ExportDimensionsScale = _displayOptionsVM.ExportDimensionsScale;
-        //    sDisplayOptions.ExportDescriptionTextWidthScaleFactor = _displayOptionsVM.ExportDescriptionTextWidthScaleFactor;
-        //    sDisplayOptions.ExportCladdingDescriptionSize = _displayOptionsVM.ExportCladdingDescriptionSize;
-        //    sDisplayOptions.ExportFibreglassDescriptionSize = _displayOptionsVM.ExportFibreglassDescriptionSize;
-        //    sDisplayOptions.ExportDoorDescriptionSize = _displayOptionsVM.ExportDoorDescriptionSize;
-        //    sDisplayOptions.ExportWindowDescriptionSize = _displayOptionsVM.ExportWindowDescriptionSize;
-
-        //    sDisplayOptions.GUIFloorSlabTextSize = _displayOptionsVM.GUIFloorSlabTextSize;
-        //    sDisplayOptions.GUIGridlinesSize = _displayOptionsVM.GUIGridlinesSize;
-        //    sDisplayOptions.GUIGridLineLabelSize = _displayOptionsVM.GUIGridLineLabelSize;
-        //    sDisplayOptions.GUISectionSymbolsSize = _displayOptionsVM.GUISectionSymbolsSize;
-        //    sDisplayOptions.GUISectionSymbolLabelSize = _displayOptionsVM.GUISectionSymbolLabelSize;
-        //    sDisplayOptions.GUIDetailSymbolSize = _displayOptionsVM.GUIDetailSymbolSize;
-        //    sDisplayOptions.GUIDetailSymbolLabelSize = _displayOptionsVM.GUIDetailSymbolLabelSize;
-        //    sDisplayOptions.GUIMembersDescriptionSize = _displayOptionsVM.GUIMembersDescriptionSize;
-        //    sDisplayOptions.GUINodesDescriptionSize = _displayOptionsVM.GUINodesDescriptionSize;
-        //    sDisplayOptions.GUISawCutTextSize = _displayOptionsVM.GUISawCutTextSize;
-        //    sDisplayOptions.GUIControlJointTextSize = _displayOptionsVM.GUIControlJointTextSize;
-        //    sDisplayOptions.GUIFoundationTextSize = _displayOptionsVM.GUIFoundationTextSize;
-        //    sDisplayOptions.GUIDimensionsTextSize = _displayOptionsVM.GUIDimensionsTextSize;
-        //    sDisplayOptions.GUIDimensionsLineRadius = _displayOptionsVM.GUIDimensionsLineRadius;
-        //    sDisplayOptions.GUIDimensionsScale = _displayOptionsVM.GUIDimensionsScale;
-        //    sDisplayOptions.GUIDescriptionTextWidthScaleFactor = _displayOptionsVM.GUIDescriptionTextWidthScaleFactor;
-        //    sDisplayOptions.GUICladdingDescriptionSize = _displayOptionsVM.GUICladdingDescriptionSize;
-        //    sDisplayOptions.GUIFibreglassDescriptionSize = _displayOptionsVM.GUIFibreglassDescriptionSize;
-        //    sDisplayOptions.GUIDoorDescriptionSize = _displayOptionsVM.GUIDoorDescriptionSize;
-        //    sDisplayOptions.GUIWindowDescriptionSize = _displayOptionsVM.GUIWindowDescriptionSize;
-
-        //    return sDisplayOptions;
-        //}
-
         public DisplayOptions GetDisplayOptions(EDisplayOptionsTypes optionsTypes) //toto by mohol byt default  = EDisplayOptionsTypes.GUI_3D_Scene
         {
             DisplayOptionsViewModel do_vm = _displayOptionsVM.DisplayOptionsList.ElementAtOrDefault((int)optionsTypes);
@@ -3516,10 +3237,11 @@ namespace PFD
             sDisplayOptions.bDisplayJointsWireFrame = do_vm.DisplayJointsWireFrame;
             sDisplayOptions.bDisplayPlatesWireFrame = do_vm.DisplayPlatesWireFrame;
             sDisplayOptions.bDisplayConnectorsWireFrame = do_vm.DisplayConnectorsWireFrame;
-            sDisplayOptions.bDisplayNodesWireFrame = do_vm.DisplayNodesWireFrame; // ??? Nenastavuje sa v GUI
+            //sDisplayOptions.bDisplayNodesWireFrame = do_vm.DisplayNodesWireFrame; // ??? Nenastavuje sa v GUI
             sDisplayOptions.bDisplayFoundationsWireFrame = do_vm.DisplayFoundationsWireFrame;
             sDisplayOptions.bDisplayReinforcementBarsWireFrame = do_vm.DisplayReinforcementBarsWireFrame;
             sDisplayOptions.bDisplayFloorSlabWireFrame = do_vm.DisplayFloorSlabWireFrame;
+            //sDisplayOptions.bDisplaySlabRebateWireFrame = do_vm.DisplaySlabRebateWireFrame; // ??? Nenastavuje sa v GUI
             sDisplayOptions.bDisplayCladdingWireFrame = do_vm.DisplayCladdingWireFrame && _modelOptionsVM.EnableCladding;//bug 835 (pokial nie je EnableCladding tak ani bDisplayCladdingWireframe nemoze byt)
             sDisplayOptions.bDisplayFibreglassWireFrame = do_vm.DisplayFibreglassWireFrame;
             sDisplayOptions.bDisplayDoorsWireFrame = do_vm.DisplayDoorsWireFrame;
@@ -3580,9 +3302,6 @@ namespace PFD
             sDisplayOptions.wireFrameColor = do_vm.WireframeColor;
             sDisplayOptions.fWireFrameLineThickness = do_vm.WireFrameLineThickness;
 
-            sDisplayOptions.memberCenterlineColor = do_vm.MemberCenterlineColor;
-            sDisplayOptions.fmemberCenterlineThickness = do_vm.MemberCenterlineThickness;
-
             sDisplayOptions.NodeColor = do_vm.NodeColor;
             sDisplayOptions.NodeDescriptionTextColor = do_vm.NodeDescriptionTextColor;
 
@@ -3635,6 +3354,10 @@ namespace PFD
             sDisplayOptions.AnchorColor = do_vm.AnchorColor;
             sDisplayOptions.WasherColor = do_vm.WasherColor;
             sDisplayOptions.NutColor = do_vm.NutColor;
+            sDisplayOptions.ReinforcementBarColor_Top_x = do_vm.LongReinTop_x_Color;
+            sDisplayOptions.ReinforcementBarColor_Top_y = do_vm.LongReinTop_y_Color;
+            sDisplayOptions.ReinforcementBarColor_Bottom_x = do_vm.LongReinBottom_x_Color;
+            sDisplayOptions.ReinforcementBarColor_Bottom_y = do_vm.LongReinBottom_y_Color;
 
             sDisplayOptions.bColorsAccordingToMembersPrefix = do_vm.ColorsAccordingToMembersPrefix;
             sDisplayOptions.bColorsAccordingToMembersPosition = do_vm.ColorsAccordingToMembersPosition;
@@ -3654,11 +3377,6 @@ namespace PFD
             sDisplayOptions.bUseTexturesMembers = do_vm.UseTexturesMembers;
             sDisplayOptions.bUseTexturesPlates = do_vm.UseTexturesPlates;
             sDisplayOptions.bUseTexturesCladding = do_vm.UseTexturesCladding;
-
-            sDisplayOptions.ReinforcementBarColor_Top_x = do_vm.LongReinTop_x_Color;
-            sDisplayOptions.ReinforcementBarColor_Top_y = do_vm.LongReinTop_y_Color;
-            sDisplayOptions.ReinforcementBarColor_Bottom_x = do_vm.LongReinBottom_x_Color;
-            sDisplayOptions.ReinforcementBarColor_Bottom_y = do_vm.LongReinBottom_y_Color;
 
             // Opacity
             sDisplayOptions.fMemberSolidModelOpacity = do_vm.MemberSolidModelOpacity;
@@ -3727,10 +3445,7 @@ namespace PFD
             sDisplayOptions.DoorDescriptionSize = do_vm.DoorDescriptionSize;
             sDisplayOptions.WindowDescriptionSize = do_vm.WindowDescriptionSize;
 
-            //to co nie je v GUI
-            //sDisplayOptions.CO_ModelView = ViewIndex;
-            //sDisplayOptions.CO_ViewModelMembers = ViewModelMemberFilterIndex;
-            //sDisplayOptions.CO_IsExport = false;
+            // Properties defined only in source code (CO - code only)
             sDisplayOptions.CO_ModelView = do_vm.CO_ModelView;
             sDisplayOptions.CO_ViewModelMembers = do_vm.CO_ViewModelMembers;
             sDisplayOptions.CO_IsExport = do_vm.CO_IsExport;
@@ -3748,6 +3463,7 @@ namespace PFD
             sDisplayOptions.CO_bCreateVerticalGridlinesLeft = do_vm.CO_CreateVerticalGridlinesLeft;
             sDisplayOptions.CO_bCreateVerticalGridlinesRight = do_vm.CO_CreateVerticalGridlinesRight;
 
+            //sDisplayOptions.bMirrorPlate3D = do_vm.MirrorPlate3D; // Nie je v GUI PFD - presunut do CO?, pouziva sa v SCV
             return sDisplayOptions;
         }
 

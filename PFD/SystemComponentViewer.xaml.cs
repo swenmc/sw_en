@@ -132,7 +132,7 @@ namespace PFD
             // Create 3D window
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bUseEmissiveMaterial = true;
-            sDisplayOptions.bUseLightAmbient = true;            
+            sDisplayOptions.bUseLightAmbient = true;
 
             sDisplayOptions.NodeColor = Colors.Red;
             sDisplayOptions.NodesDescriptionSize = 1f / 5;
