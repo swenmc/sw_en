@@ -658,10 +658,10 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Top_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Top_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Bottom_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarColor_Bottom_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].PlateColor = CComboBoxHelper.GetColorIndex(Colors.Gray;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ScrewColor = CComboBoxHelper.GetColorIndex(Colors.Black;
@@ -799,10 +799,10 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowDetailSymbols = false;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayDimensions = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Top_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Top_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Bottom_x_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ReinforcementBarColor_Bottom_y_Index = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ??? // BUG 860
             #endregion FLOOR

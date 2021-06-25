@@ -3655,14 +3655,10 @@ namespace PFD
             sDisplayOptions.bUseTexturesPlates = do_vm.UseTexturesPlates;
             sDisplayOptions.bUseTexturesCladding = do_vm.UseTexturesCladding;
 
-            // TODO 855 - toto presunut do display options aj v ramci GUI
-            if (FootingVM != null)
-            {
-                sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
-                sDisplayOptions.ReinforcementBarColor_Top_y = FootingVM.LongReinTop_y_Color;
-                sDisplayOptions.ReinforcementBarColor_Bottom_x = FootingVM.LongReinBottom_x_Color;
-                sDisplayOptions.ReinforcementBarColor_Bottom_y = FootingVM.LongReinBottom_y_Color;
-            }
+            sDisplayOptions.ReinforcementBarColor_Top_x = do_vm.LongReinTop_x_Color;
+            sDisplayOptions.ReinforcementBarColor_Top_y = do_vm.LongReinTop_y_Color;
+            sDisplayOptions.ReinforcementBarColor_Bottom_x = do_vm.LongReinBottom_x_Color;
+            sDisplayOptions.ReinforcementBarColor_Bottom_y = do_vm.LongReinBottom_y_Color;
 
             // Opacity
             sDisplayOptions.fMemberSolidModelOpacity = do_vm.MemberSolidModelOpacity;

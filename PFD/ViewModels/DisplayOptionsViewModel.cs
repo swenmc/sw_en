@@ -280,6 +280,19 @@ namespace PFD
         [NonSerialized]
         private Color m_BackgroundColor = Colors.Black;
 
+        private int m_LongReinTop_x_ColorIndex;
+        private int m_LongReinTop_y_ColorIndex;
+        private int m_LongReinBottom_x_ColorIndex;
+        private int m_LongReinBottom_y_ColorIndex;
+        [NonSerialized]
+        private Color m_LongReinTop_x_Color;
+        [NonSerialized]
+        private Color m_LongReinTop_y_Color;
+        [NonSerialized]
+        private Color m_LongReinBottom_x_Color;
+        [NonSerialized]
+        private Color m_LongReinBottom_y_Color;
+
         //To Mato: naco sa to tu inicializovalo, nato je konstruktor
         private float m_MemberSolidModelOpacity;
         private float m_PlateSolidModelOpacity;
@@ -352,12 +365,6 @@ namespace PFD
         #endregion Loads
 
         #endregion private fields
-
-        private int m_ReinforcementBarColor_Top_x_Index;
-        private int m_ReinforcementBarColor_Top_y_Index;
-        private int m_ReinforcementBarColor_Bottom_x_Index;
-        private int m_ReinforcementBarColor_Bottom_y_Index;
-
 
         // Properties defined only for export - layouts (LY - layout)
         private EPageSizes m_LY_ViewsPageSize;
@@ -2316,6 +2323,134 @@ namespace PFD
             }
         }
 
+        public int LongReinTop_x_ColorIndex
+        {
+            get
+            {
+                return m_LongReinTop_x_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinTop_x_ColorIndex = value;
+
+                LongReinTop_x_Color = CComboBoxHelper.ColorList[m_LongReinTop_x_ColorIndex].Color.Value;
+
+                NotifyPropertyChanged("LongReinTop_x_ColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LongReinTop_y_ColorIndex
+        {
+            get
+            {
+                return m_LongReinTop_y_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinTop_y_ColorIndex = value;
+
+                LongReinTop_y_Color = CComboBoxHelper.ColorList[m_LongReinTop_y_ColorIndex].Color.Value;
+
+                NotifyPropertyChanged("LongReinTop_y_ColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LongReinBottom_x_ColorIndex
+        {
+            get
+            {
+                return m_LongReinBottom_x_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinBottom_x_ColorIndex = value;
+
+                LongReinBottom_x_Color = CComboBoxHelper.ColorList[m_LongReinBottom_x_ColorIndex].Color.Value;
+
+                NotifyPropertyChanged("LongReinBottom_x_ColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LongReinBottom_y_ColorIndex
+        {
+            get
+            {
+                return m_LongReinBottom_y_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinBottom_y_ColorIndex = value;
+
+                LongReinBottom_y_Color = CComboBoxHelper.ColorList[m_LongReinBottom_y_ColorIndex].Color.Value;
+                
+                NotifyPropertyChanged("LongReinBottom_y_ColorIndex");
+            }
+        }
+
+        public Color LongReinTop_x_Color
+        {
+            get
+            {
+                return m_LongReinTop_x_Color;
+            }
+
+            set
+            {
+                m_LongReinTop_x_Color = value;
+                NotifyPropertyChanged("LongReinTop_x_Color");
+            }
+        }
+
+        public Color LongReinTop_y_Color
+        {
+            get
+            {
+                return m_LongReinTop_y_Color;
+            }
+
+            set
+            {
+                m_LongReinTop_y_Color = value;
+                NotifyPropertyChanged("LongReinTop_y_Color");
+            }
+        }
+
+        public Color LongReinBottom_x_Color
+        {
+            get
+            {
+                return m_LongReinBottom_x_Color;
+            }
+
+            set
+            {
+                m_LongReinBottom_x_Color = value;
+                NotifyPropertyChanged("LongReinBottom_x_Color");
+            }
+        }
+
+        public Color LongReinBottom_y_Color
+        {
+            get
+            {
+                return m_LongReinBottom_y_Color;
+            }
+
+            set
+            {
+                m_LongReinBottom_y_Color = value;
+                NotifyPropertyChanged("LongReinBottom_y_Color");
+            }
+        }
+
+
         public List<CComboColor> ColorList
         {
             get
@@ -4087,63 +4222,6 @@ namespace PFD
             }
         }
 
-        public int ReinforcementBarColor_Top_x_Index
-        {
-            get
-            {
-                return m_ReinforcementBarColor_Top_x_Index;
-            }
-
-            set
-            {
-                m_ReinforcementBarColor_Top_x_Index = value;
-                NotifyPropertyChanged("ReinforcementBarColor_Top_x_Index");
-            }
-        }
-
-        public int ReinforcementBarColor_Top_y_Index
-        {
-            get
-            {
-                return m_ReinforcementBarColor_Top_y_Index;
-            }
-
-            set
-            {
-                m_ReinforcementBarColor_Top_y_Index = value;
-                NotifyPropertyChanged("ReinforcementBarColor_Top_y_Index");
-            }
-        }
-
-        public int ReinforcementBarColor_Bottom_x_Index
-        {
-            get
-            {
-                return m_ReinforcementBarColor_Bottom_x_Index;
-            }
-
-            set
-            {
-                m_ReinforcementBarColor_Bottom_x_Index = value;
-                NotifyPropertyChanged("ReinforcementBarColor_Bottom_x_Index");
-            }
-        }
-
-        public int ReinforcementBarColor_Bottom_y_Index
-        {
-            get
-            {
-                return m_ReinforcementBarColor_Bottom_y_Index;
-            }
-
-            set
-            {
-                m_ReinforcementBarColor_Bottom_y_Index = value;
-                NotifyPropertyChanged("ReinforcementBarColor_Bottom_y_Index");
-            }
-        }
-
-
         public bool UseTextures
         {
             get
@@ -4219,6 +4297,8 @@ namespace PFD
         public bool CO_CreateVerticalGridlinesRight { get => m_CO_bCreateVerticalGridlinesRight; set => m_CO_bCreateVerticalGridlinesRight = value; }
 
         
+
+
 
 
 
@@ -4407,6 +4487,11 @@ namespace PFD
             WasherColorIndex = newVM.WasherColorIndex;
             NutColorIndex = newVM.NutColorIndex;
 
+            LongReinTop_x_ColorIndex = newVM.LongReinTop_x_ColorIndex;
+            LongReinTop_y_ColorIndex = newVM.LongReinTop_y_ColorIndex;
+            LongReinBottom_x_ColorIndex = newVM.LongReinBottom_x_ColorIndex;
+            LongReinBottom_y_ColorIndex = newVM.LongReinBottom_y_ColorIndex;
+
             ColorsAccordingToMembersPrefix = newVM.ColorsAccordingToMembersPrefix;
             ColorsAccordingToMembersPosition = newVM.ColorsAccordingToMembersPosition;
 
@@ -4425,12 +4510,6 @@ namespace PFD
             UseTexturesMembers = newVM.UseTexturesMembers;
             UseTexturesPlates = newVM.UseTexturesPlates;
             UseTexturesCladding = newVM.UseTexturesCladding;
-
-            // TODO 855 - Presunut nastavenie farieb z Footing Options do Display options
-            ReinforcementBarColor_Top_x_Index = newVM.ReinforcementBarColor_Top_x_Index;
-            ReinforcementBarColor_Top_y_Index = newVM.ReinforcementBarColor_Top_y_Index;
-            ReinforcementBarColor_Bottom_x_Index = newVM.ReinforcementBarColor_Bottom_x_Index;
-            ReinforcementBarColor_Bottom_y_Index = newVM.ReinforcementBarColor_Bottom_y_Index;
 
             // Opacity
             MemberSolidModelOpacity = newVM.MemberSolidModelOpacity;
