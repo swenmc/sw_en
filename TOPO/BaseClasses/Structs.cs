@@ -4,6 +4,7 @@ namespace BaseClasses
 {
     public struct DisplayOptions
     {
+        // TODO - usporiadat polozky podla toho ako su v GUI Display Options a v GetDisplayOptions
         public bool bUseLightDirectional;
         public bool bUseLightPoint;
         public bool bUseLightSpot;
