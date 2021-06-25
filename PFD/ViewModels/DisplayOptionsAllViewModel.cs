@@ -222,6 +222,11 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WasherColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CladdingSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Yellow);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
 
@@ -658,16 +663,16 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].PlateColor = CComboBoxHelper.GetColorIndex(Colors.Gray;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ScrewColor = CComboBoxHelper.GetColorIndex(Colors.Black;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].AnchorColor = CComboBoxHelper.GetColorIndex(Colors.Black;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].WasherColor = CComboBoxHelper.GetColorIndex(Colors.Gray;
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].NutColor = CComboBoxHelper.GetColorIndex(Colors.Black;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FoundationSolidModelOpacity = 0;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FloorSlabSolidModelOpacity = 0;
