@@ -763,7 +763,8 @@ namespace BaseClasses
         BACK = 5,
         LEFT = 6,
         RIGHT = 7,
-        TOP = 8
+        TOP = 8,
+        CURRENT = 9
     }
     public enum EViewModelMemberFilters
     {
