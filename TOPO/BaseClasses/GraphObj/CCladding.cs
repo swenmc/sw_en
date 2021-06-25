@@ -2581,8 +2581,9 @@ namespace BaseClasses.GraphObj
                     doverlapwidthFixingPoints -= Math.Max(0, (int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 - 2);
 
                 // Podmienka neplati ak su na cladding sheet len 2 rebra
-                if (sheet.HasOverlap && doverlapwidthFixingPoints < 1)
-                    throw new Exception("Incompatible sheet properties."); // Overlap width fixing points je nula ale sheet ma overlap = true ????
+                // Tato kontrola nefunguje uplne dobre, treba to este skontrolovat pre sheets ktore su nad doors alebo v okoli windows.
+                //if (sheet.HasOverlap && doverlapwidthFixingPoints < 1)
+                //    throw new Exception("Incompatible sheet properties."); // Overlap width fixing points je nula ale sheet ma overlap = true ????
 
                 return doverlapwidthFixingPoints;
             }
