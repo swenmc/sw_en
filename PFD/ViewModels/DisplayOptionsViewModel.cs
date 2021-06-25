@@ -4298,12 +4298,6 @@ namespace PFD
 
         
 
-
-
-
-
-
-
         #endregion Properties
 
         //-------------------------------------------------------------------------------------------------------------
@@ -4486,7 +4480,6 @@ namespace PFD
             AnchorColorIndex = newVM.AnchorColorIndex;
             WasherColorIndex = newVM.WasherColorIndex;
             NutColorIndex = newVM.NutColorIndex;
-
             LongReinTop_x_ColorIndex = newVM.LongReinTop_x_ColorIndex;
             LongReinTop_y_ColorIndex = newVM.LongReinTop_y_ColorIndex;
             LongReinBottom_x_ColorIndex = newVM.LongReinBottom_x_ColorIndex;
