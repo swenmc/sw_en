@@ -50,27 +50,19 @@ namespace PFD
         private string m_LongReinTop_x_No;
         private string m_LongReinTop_x_Phi;
         private float m_LongReinTop_x_distance_s_y;
-        //private int m_LongReinTop_x_ColorIndex;
-        //public Color LongReinTop_x_Color;
-
+        
         private string m_LongReinTop_y_No;
         private string m_LongReinTop_y_Phi;
         private float m_LongReinTop_y_distance_s_x;
-        //private int m_LongReinTop_y_ColorIndex;
-        //public Color LongReinTop_y_Color;
-
+        
         private string m_LongReinBottom_x_No;
         private string m_LongReinBottom_x_Phi;
         private float m_LongReinBottom_x_distance_s_y;
-        //private int m_LongReinBottom_x_ColorIndex;
-        //public Color LongReinBottom_x_Color;
-
+        
         private string m_LongReinBottom_y_No;
         private string m_LongReinBottom_y_Phi;
         private float m_LongReinBottom_y_distance_s_x;
-        //private int m_LongReinBottom_y_ColorIndex;
-        //public Color LongReinBottom_y_Color;
-
+        
         private float m_FootingPadSize_x_Or_a;
         private float m_FootingPadSize_y_Or_b;
         private float m_FootingPadSize_z_Or_h;
@@ -515,33 +507,6 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        //public int LongReinTop_x_ColorIndex
-        //{
-        //    get
-        //    {
-        //        return m_LongReinTop_x_ColorIndex;
-        //    }
-
-        //    set
-        //    {
-        //        m_LongReinTop_x_ColorIndex = value;
-
-        //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-        //        LongReinTop_x_Color = listOfMediaColours[m_LongReinTop_x_ColorIndex].Color.Value;
-
-        //        foreach (CFoundation pad in listOfSelectedTypePads)
-        //        {
-        //            pad.Reference_Top_Bar_x.ColorBar = LongReinTop_x_Color;
-        //        }
-
-        //        if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
-
-        //        NotifyPropertyChanged("LongReinTop_x_ColorIndex");
-        //    }
-        //}
-
-        //-------------------------------------------------------------------------------------------------------------
         public string LongReinTop_y_No
         {
             get
@@ -605,33 +570,6 @@ namespace PFD
                 NotifyPropertyChanged("LongReinTop_y_distance_s_x");
             }
         }
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int LongReinTop_y_ColorIndex
-        //{
-        //    get
-        //    {
-        //        return m_LongReinTop_y_ColorIndex;
-        //    }
-
-        //    set
-        //    {
-        //        m_LongReinTop_y_ColorIndex = value;
-
-        //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-        //        LongReinTop_y_Color = listOfMediaColours[m_LongReinTop_y_ColorIndex].Color.Value;
-
-        //        foreach (CFoundation pad in listOfSelectedTypePads)
-        //        {
-        //            pad.Reference_Top_Bar_y.ColorBar = LongReinTop_y_Color;
-        //        }
-
-        //        if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
-
-        //        NotifyPropertyChanged("LongReinTop_y_ColorIndex");
-        //    }
-        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public string LongReinBottom_x_No
@@ -698,33 +636,6 @@ namespace PFD
             }
         }
 
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int LongReinBottom_x_ColorIndex
-        //{
-        //    get
-        //    {
-        //        return m_LongReinBottom_x_ColorIndex;
-        //    }
-
-        //    set
-        //    {
-        //        m_LongReinBottom_x_ColorIndex = value;
-
-        //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-        //        LongReinBottom_x_Color = listOfMediaColours[m_LongReinBottom_x_ColorIndex].Color.Value;
-
-        //        foreach (CFoundation pad in listOfSelectedTypePads)
-        //        {
-        //            pad.Reference_Bottom_Bar_x.ColorBar = LongReinBottom_x_Color;
-        //        }
-
-        //        if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
-
-        //        NotifyPropertyChanged("LongReinBottom_x_ColorIndex");
-        //    }
-        //}
-
         //-------------------------------------------------------------------------------------------------------------
         public string LongReinBottom_y_No
         {
@@ -789,33 +700,6 @@ namespace PFD
                 NotifyPropertyChanged("LongReinBottom_y_distance_s_x");
             }
         }
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int LongReinBottom_y_ColorIndex
-        //{
-        //    get
-        //    {
-        //        return m_LongReinBottom_y_ColorIndex;
-        //    }
-
-        //    set
-        //    {
-        //        m_LongReinBottom_y_ColorIndex = value;
-
-        //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-        //        LongReinBottom_y_Color = listOfMediaColours[m_LongReinBottom_y_ColorIndex].Color.Value;
-
-        //        foreach (CFoundation pad in listOfSelectedTypePads)
-        //        {
-        //            pad.Reference_Bottom_Bar_y.ColorBar = LongReinBottom_y_Color;
-        //        }
-
-        //        if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
-
-        //        NotifyPropertyChanged("LongReinBottom_y_ColorIndex");
-        //    }
-        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public float FootingPadSize_x_Or_a
@@ -2379,11 +2263,6 @@ namespace PFD
 
             if (LongReinBottom_y_No != "None")
                 LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, pad.Count_Bottom_Bars_x > 0 ? float.Parse(LongReinBottom_x_Phi) * 0.001f : 0, ConcreteCover * 0.001f, false);
-
-            //LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
-            //LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
-            //LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
-            //LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
         }
 
         //tato metoda ma sluzit na nastavenie vlastnosti oznaceneho Footing pad podla hodnot z GUI

@@ -68,10 +68,7 @@
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
                     <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ComponentType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" DisplayMemberPath="Name"
                   SelectedIndex="{Binding Path=FootingPadMemberTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=FootingPadMemberTypes}" >
-                        <!--<ComboBoxItem Content="Main Column"/>
-                        <ComboBoxItem Content="Edge Column"/>
-                        <ComboBoxItem Content="Wind Post - Front"/>
-                        <ComboBoxItem Content="Wind Post - Back"/>-->
+                        
                     </ComboBox>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Concrete Grade:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -151,19 +148,7 @@
                     <TextBox Grid.Row="16" Grid.Column="5" Name="TextBoxLongReinTop_x_distance_s_y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True" IsEnabled="False"
             Text="{Binding Path=LongReinTop_x_distance_s_y, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="16" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
-
-                    <!--<ComboBox Grid.Row="16" Grid.Column="7" Name ="Combobox_LongReinTop_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                        VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>-->
-
+                    
                     <!-- Top y -->
                     <TextBlock Grid.Row="17" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Top y-direction"/>
                     <ComboBox Grid.Row="17" Grid.Column="1" Name ="ComboBox_LongReinTop_y_No" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
@@ -179,18 +164,6 @@
              Text="{Binding Path=LongReinTop_y_distance_s_x, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="17" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
-                    <!--<ComboBox Grid.Row="17" Grid.Column="7" Name ="Combobox_LongReinTop_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>-->
-
                     <!-- Bottom x -->
                     <TextBlock Grid.Row="18" Grid.Column="0" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Bottom x-direction"/>
                     <ComboBox Grid.Row="18" Grid.Column="1" Name ="ComboBox_LongReinBottom_x_No" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
@@ -205,18 +178,6 @@
             Text="{Binding Path=LongReinBottom_x_distance_s_y, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="18" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
-                    <!--<ComboBox Grid.Row="18" Grid.Column="7" Name ="Combobox_LongReinBottom_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-        VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>-->
-
                     <!-- Bottom y -->
                     <TextBlock Grid.Row="19" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Bottom y-direction"/>
                     <ComboBox Grid.Row="19" Grid.Column="1" Name ="ComboBox_LongReinBottom_y_No" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
@@ -230,19 +191,7 @@
                     <TextBox Grid.Row="19" Grid.Column="5" Name="TextBoxLongReinBottom_y_distance_s_x" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True" IsEnabled="False"
             Text="{Binding Path=LongReinBottom_y_distance_s_x, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="19" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
-
-                    <!--<ComboBox Grid.Row="19" Grid.Column="7" Name ="Combobox_LongReinBottom_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-        VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>-->
-
+                    
                 </Grid>
             </ScrollViewer>
         </TabItem>
