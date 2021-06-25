@@ -802,12 +802,8 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowGridLines = true; // Horizontal
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowSectionSymbols = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowDetailSymbols = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].ShowSlabRebates = true; // Zapnute len pre FLOOR
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayDimensions = true;
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_CreateHorizontalGridlines = true;  // To Ondrej Toto asi nefunguje ??? // BUG 860
             #endregion FLOOR
