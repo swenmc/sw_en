@@ -168,7 +168,7 @@
     <Compile Include="Infrastructure\DesignResultsConverter.cs" />
     <Compile Include="Infrastructure\GeoLocation\GeoLocation.cs" />
     <Compile Include="Infrastructure\PartListHelper.cs" />
-    <Compile Include="LayoutExportOptionsWindow.xaml.cs">
+    <Compile Include="OptionsWindows\LayoutExportOptionsWindow.xaml.cs">
       <DependentUpon>LayoutExportOptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Calculations\SalesmanPlateCalculation.cs" />
@@ -196,16 +196,16 @@
     <Compile Include="OptionsWindows\FreightDetailsWindow.xaml.cs">
       <DependentUpon>FreightDetailsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsWindows\UC_CladdingOptions.xaml.cs">
+    <Compile Include="UserControls\UC_CladdingOptions.xaml.cs">
       <DependentUpon>UC_CladdingOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsWindows\UC_CanopiesOptions.xaml.cs">
+    <Compile Include="UserControls\UC_CanopiesOptions.xaml.cs">
       <DependentUpon>UC_CanopiesOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsWindows\UC_CrossBracingOptions.xaml.cs">
+    <Compile Include="UserControls\UC_CrossBracingOptions.xaml.cs">
       <DependentUpon>UC_CrossBracingOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsWindows\UC_BaysWidthOptions.xaml.cs">
+    <Compile Include="UserControls\UC_BaysWidthOptions.xaml.cs">
       <DependentUpon>UC_BaysWidthOptions.xaml</DependentUpon>
     </Compile>
     <Compile Include="OptionsWindows\BaysWidthOptionsWindow.xaml.cs">
@@ -428,7 +428,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LayoutExportOptionsWindow.xaml">
+    <Page Include="OptionsWindows\LayoutExportOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -452,19 +452,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="OptionsWindows\UC_CladdingOptions.xaml">
+    <Page Include="UserControls\UC_CladdingOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="OptionsWindows\UC_CanopiesOptions.xaml">
+    <Page Include="UserControls\UC_CanopiesOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="OptionsWindows\UC_CrossBracingOptions.xaml">
+    <Page Include="UserControls\UC_CrossBracingOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="OptionsWindows\UC_BaysWidthOptions.xaml">
+    <Page Include="UserControls\UC_BaysWidthOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
