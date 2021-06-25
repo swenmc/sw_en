@@ -124,7 +124,7 @@ namespace PFD
                     {
                         (model as CPlate_Frame).MirrorPlate();
                     }
-                }                
+                }
 
                 // Get model limits
                 CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);

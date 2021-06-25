@@ -4,7 +4,7 @@ namespace BaseClasses
 {
     public struct DisplayOptions
     {
-        // TODO - usporiadat polozky podla toho ako su v GUI Display Options a v GetDisplayOptions
+        // General
         public bool bUseLightDirectional;
         public bool bUseLightPoint;
         public bool bUseLightSpot;
@@ -13,6 +13,11 @@ namespace BaseClasses
         public bool bUseDiffuseMaterial;
         public bool bUseEmissiveMaterial;
 
+        public bool bDisplayGlobalAxis;
+        public bool bDisplayLocalMembersAxis;
+        public bool bDisplaySurfaceLoadAxis;
+
+        // Objects
         public bool bDisplayMembers;
         public bool bDisplayJoints;
         public bool bDisplayPlates;
@@ -21,31 +26,11 @@ namespace BaseClasses
         public bool bDisplayFoundations;
         public bool bDisplayReinforcementBars;
         public bool bDisplayFloorSlab;
-        public bool bDisplaySlabRebates;
         public bool bDisplaySawCuts;
         public bool bDisplayControlJoints;
         public bool bDisplayNodalSupports;
 
-        public bool bDisplayMembersWireFrame;
-        public bool bDisplayJointsWireFrame;
-        public bool bDisplayPlatesWireFrame;
-        public bool bDisplayConnectorsWireFrame;
-        public bool bDisplayNodesWireFrame;
-        public bool bDisplayFoundationsWireFrame;
-        public bool bDisplayReinforcementBarsWireFrame;
-        public bool bDisplayFloorSlabWireFrame;
-        public bool bDisplaySlabRebateWireFrame;
-        public bool bDisplayCladdingWireFrame;
-        public bool bDisplayFibreglassWireFrame;
-        public bool bDisplayDoorsWireFrame;
-        public bool bDisplayWindowsWireFrame;
-
-        public bool bDoorsSimpleSolidModel;
-        public bool bDoorsSimpleWireframe;
-        public bool bWindowOutlineOnly;
-
         public bool bDisplayCladding;
-        //public bool bDisplayIndividualCladdingSheets;
         public bool bDisplayCladdingLeftWall;
         public bool bDisplayCladdingRightWall;
         public bool bDisplayCladdingFrontWall;
@@ -57,14 +42,25 @@ namespace BaseClasses
 
         public bool bDisplayMembersCenterLines;
         public bool bDisplaySolidModel;
+
         public bool bDisplayWireFrameModel;
+        public bool bDisplayMembersWireFrame;
+        public bool bDisplayJointsWireFrame;
+        public bool bDisplayPlatesWireFrame;
+        public bool bDisplayConnectorsWireFrame;
+        //public bool bDisplayNodesWireFrame; // Nie je v GUI
+        public bool bDisplayFoundationsWireFrame;
+        public bool bDisplayReinforcementBarsWireFrame;
+        public bool bDisplayFloorSlabWireFrame;
+        //public bool bDisplaySlabRebateWireFrame; // Nie je v GUI
+        public bool bDisplayCladdingWireFrame;
+        public bool bDisplayFibreglassWireFrame;
+        public bool bDisplayDoorsWireFrame;
+        public bool bDisplayWindowsWireFrame;
 
-        public bool bDistinguishedColor;       // Distinquished color of front and back area of member (slower), if false -> one color of whole member (faster)
-        //public bool bTransparentMemberModel;   // Set material opacity less than 1.0 - toto uz nema vyznam, lebo mame opacity
-
-        public bool bDisplayGlobalAxis;
-        public bool bDisplayLocalMembersAxis;
-        public bool bDisplaySurfaceLoadAxis;
+        public bool bDoorsSimpleSolidModel;
+        public bool bDoorsSimpleWireframe;
+        public bool bWindowOutlineOnly;
 
         public bool bDisplayMemberDescription;
         public bool bDisplayMemberID;
@@ -73,13 +69,18 @@ namespace BaseClasses
         public bool bDisplayMemberRealLength;
         public bool bDisplayMemberRealLengthInMM;
         public bool bDisplayMemberRealLengthUnit;
+
         public bool bDisplayNodesDescription;
-        public bool bMirrorPlate3D;
 
         public bool bDisplayFoundationsDescription;
         public bool bDisplayFloorSlabDescription;
         public bool bDisplaySawCutsDescription;
         public bool bDisplayControlJointsDescription;
+        public bool bDisplayDimensions;
+        public bool bDisplayGridlines;
+        public bool bDisplaySectionSymbols;
+        public bool bDisplayDetailSymbols;
+        public bool bDisplaySlabRebates;
 
         public bool bDisplayCladdingDescription;
         public bool bDisplayCladdingID;
@@ -108,54 +109,18 @@ namespace BaseClasses
         public bool bDisplayWindowArea;
         public bool bDisplayWindowUnits;
 
-        public bool bDisplayDimensions;
-        public bool bDisplayGridlines;
-        public bool bDisplaySectionSymbols;
-        public bool bDisplayDetailSymbols;
-
-        public bool bDisplayLoads;
-        public bool bDisplayLoadsLabels;
-        public bool bDisplayLoadsLabelsUnits;
-
-        public bool bDisplayNodalLoads;
-        public bool bDisplayMemberLoads;
-        public bool bDisplayMemberLoads_Girts;
-        public bool bDisplayMemberLoads_Purlins;
-        public bool bDisplayMemberLoads_EavePurlins;
-        public bool bDisplayMemberLoads_WindPosts;
-        public bool bDisplayMemberLoads_Frames;
-        public bool bDisplaySurfaceLoads;
-
-        public bool bColorsAccordingToMembersPrefix;
-        public bool bColorsAccordingToMembersPosition;
-        public bool bColorsAccordingToMembers;
-        public bool bColorsAccordingToSections;
-        public bool bColoredCenterlines;
-
-        public Color backgroundColor;
-
+        // Colours
         public Color wireFrameColor;
         public float fWireFrameLineThickness;
 
-        public Color memberCenterlineColor;
-        public float fmemberCenterlineThickness;
-
-        public int fNodeDescriptionTextFontSize;
-        public int fMemberDescriptionTextFontSize;
-        public int fDimensionTextFontSize;
-        public int fGridLineLabelTextFontSize;
-        public int fSectionSymbolLabelTextFontSize;
-        public int fDetailSymbolLabelTextFontSize;
-        public int fSawCutTextFontSize;
-        public int fControlJointTextFontSize;
-        public int fFoundationTextFontSize;
-        public int fFloorSlabTextFontSize;
-
         public Color NodeColor;
         public Color NodeDescriptionTextColor;
+
         public Color MemberDescriptionTextColor;
+
         public Color DimensionTextColor;
         public Color DimensionLineColor;
+
         public Color GridLineLabelTextColor;
         public Color GridLineColor;
         public ELinePatternType GridLinePatternType;
@@ -167,7 +132,6 @@ namespace BaseClasses
         public Color DetailSymbolLabelTextColor;
         public Color? DetailSymbolLabelBackColor;
         public Color DetailSymbolColor;
-        
         //public ELinePatternType DetailSymbolPatternType;
 
         public Color SawCutTextColor;
@@ -179,38 +143,55 @@ namespace BaseClasses
         public ELinePatternType ControlJointLinePatternType;
 
         public Color FoundationTextColor;
+
         public Color FloorSlabTextColor;
 
         public Color FoundationColor;
+
         public Color FloorSlabColor;
+
         public Color SlabRebateColor;
+
+        public Color memberCenterlineColor;
+        public float fmemberCenterlineThickness;
 
         public Color CladdingTextColor;
         public Color FibreglassTextColor;
         public Color DoorTextColor;
         public Color WindowTextColor;
 
-        public Color ReinforcementBarColor_Top_x;
-        public Color ReinforcementBarColor_Top_y;
-        public Color ReinforcementBarColor_Bottom_x;
-        public Color ReinforcementBarColor_Bottom_y;
+        public Color backgroundColor;
 
         public Color PlateColor;
         public Color ScrewColor;
         public Color AnchorColor;
         public Color WasherColor;
         public Color NutColor;
+        public Color ReinforcementBarColor_Top_x;
+        public Color ReinforcementBarColor_Top_y;
+        public Color ReinforcementBarColor_Bottom_x;
+        public Color ReinforcementBarColor_Bottom_y;
+
+        public bool bColorsAccordingToMembersPrefix;
+        public bool bColorsAccordingToMembersPosition;
+        public bool bColorsAccordingToMembers;
+        public bool bColorsAccordingToSections;
+
+        public bool bDistinguishedColor; // Distinquished color of front and back area of member (slower), if false -> one color of whole member (faster)
+        public bool bColoredCenterlines;
+
+        public bool bCladdingSheetColoursByID;
+        public bool bUseDistColorOfSheetWithoutOverlap;
 
         public Color CladdingSheetNoOverlapColor;
         public Color FibreglassSheetNoOverlapColor;
 
-        public bool bCladdingSheetColoursByID;
         public bool bUseTextures;
         public bool bUseTexturesMembers;
         public bool bUseTexturesPlates;
         public bool bUseTexturesCladding;
-        public bool bUseDistColorOfSheetWithoutOverlap;
 
+        // Opacity
         public float fMemberSolidModelOpacity;
         public float fPlateSolidModelOpacity;
         public float fScrewSolidModelOpacity;
@@ -228,53 +209,88 @@ namespace BaseClasses
         public float fWindowPanelOpacity;
         public float fFibreglassOpacity;
 
+        // Loads
+        public bool bDisplayLoads;
+        public bool bDisplayNodalLoads;
+        public bool bDisplayMemberLoads;
+        public bool bDisplayMemberLoads_Girts;
+        public bool bDisplayMemberLoads_Purlins;
+        public bool bDisplayMemberLoads_EavePurlins;
+        public bool bDisplayMemberLoads_WindPosts;
+        public bool bDisplayMemberLoads_Frames;
+        public bool bDisplaySurfaceLoads;
+
+        public bool bDisplayLoadsLabels;
+        public bool bDisplayLoadsLabelsUnits;
+
+        public float LoadSizeScaleIn3D;
+
+        // Texts and Symbols
         public float FloorSlabTextSize;
+        public int fFloorSlabTextFontSize;
+
         public float GridlinesSize;
+        public float GridLineLabelSize;
+        public int fGridLineLabelTextFontSize;
+
         public float SectionSymbolsSize;
         public float SectionSymbolLabelSize;
+        public int fSectionSymbolLabelTextFontSize;
+
         public float DetailSymbolSize;
         public float DetailSymbolLabelSize;
+        public int fDetailSymbolLabelTextFontSize;
+
         public float MembersDescriptionSize;
+        public int fMemberDescriptionTextFontSize;
+
         public float NodesDescriptionSize;
-        public float GridLineLabelSize;
+        public int fNodeDescriptionTextFontSize;
+
         public float SawCutTextSize;
+        public int fSawCutTextFontSize;
+
         public float ControlJointTextSize;
+        public int fControlJointTextFontSize;
+
         public float FoundationTextSize;
+        public int fFoundationTextFontSize;
+
         public float DimensionsTextSize;
         public float DimensionsLineRadius;
         public float DimensionsScale;
+        public int fDimensionTextFontSize;
+
         public float DescriptionTextWidthScaleFactor;
+
         public float CladdingDescriptionSize;
         public float FibreglassDescriptionSize;
         public float DoorDescriptionSize;
         public float WindowDescriptionSize;
-
-        public float LoadSizeScaleIn3D;
 
         // Properties defined only for export - layouts (LY - layout)
         public EPageSizes LY_ViewsPageSize;
         public EImagesQuality LY_ExportImagesQuality;
 
         // Properties defined only in source code (CO - code only)
+        public int CO_ModelView;
+        public int CO_ViewModelMembers;
         public bool CO_IsExport;
         public bool CO_SameScaleForViews;
-
         public bool CO_bTransformScreenLines3DToCylinders3D;
-        
         public int CO_RotateModelX;
         public int CO_RotateModelY;
         public int CO_RotateModelZ;
-        public int CO_ModelView;
-        public int CO_ViewModelMembers;
         public int CO_ViewCladding;
         public bool CO_bUseOrtographicCamera;
         public double CO_OrtographicCameraWidth;
-
         public bool CO_bCreateHorizontalGridlines;
         public bool CO_bCreateVerticalGridlinesFront;
         public bool CO_bCreateVerticalGridlinesBack;
         public bool CO_bCreateVerticalGridlinesLeft;
         public bool CO_bCreateVerticalGridlinesRight;
+
+        public bool bMirrorPlate3D; // Nie je v GUI PFD - presunut do CO?, pouziva sa v SCV
     }
 
     public struct DisplayOptionsFootingPad2D
