@@ -231,12 +231,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].MemberSolidModelOpacity = 0.8f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].PlateSolidModelOpacity = 0.5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].PlateSolidModelOpacity = 0.7f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ScrewSolidModelOpacity = 0.9f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].AnchorSolidModelOpacity = 0.9f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FoundationSolidModelOpacity = 0.4f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ReinforcementBarSolidModelOpacity = 0.9f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FloorSlabSolidModelOpacity = 0.3f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FloorSlabSolidModelOpacity = 0.5f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].SlabRebateSolidModelOpacity = 0.3f;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FrontCladdingOpacity = 0.95f;
