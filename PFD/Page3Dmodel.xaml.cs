@@ -161,8 +161,14 @@ namespace PFD
                     ((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
 
                     Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-                    if(sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, null, null);
                     
+                    if (sDisplayOptions.bDisplayGlobalAxis)
+                    {
+                        Model3DGroup lines = null; // linie ako 3D valcove plochy
+                        Drawing3D.DrawGlobalAxis(_trackport.ViewPort, null, null, sDisplayOptions, 1, out lines);
+                        if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                    }
+
                     _trackport.Model = (Model3D)gr;
                 }
                 

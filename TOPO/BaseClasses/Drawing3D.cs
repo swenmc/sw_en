@@ -78,14 +78,26 @@ namespace BaseClasses
                 //predchadzajuce bolo pouzite kvoli zacentrovaniu modelu, toto je kvoli zoomovanym prvkom podla velkosti modelu podla toho aky je view
                 pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
+                Model3DGroup gr = new Model3DGroup();
+
                 // Global coordinate system - axis
-                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, (centerModel ? centerModelTransGr : null));
+                if (sDisplayOptions.bDisplayGlobalAxis)
+                {
+                    Model3DGroup lines = null; // linie ako 3D valcove plochy
+                    DrawGlobalAxis(_trackport.ViewPort, model, (centerModel ? centerModelTransGr : null), sDisplayOptions, fZoomFactor, out lines);
+                    if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                } 
 
                 if (sDisplayOptions.bDisplaySurfaceLoadAxis) DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
 
-                if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
-
-                Model3DGroup gr = new Model3DGroup();
+                if (sDisplayOptions.bDisplayLocalMembersAxis)
+                {
+                    Model3DGroup lines = null; // linie ako 3D valcove plochy
+                    //DrawModelMembersAxis(model, _trackport.ViewPort);
+                    DrawModelMembersAxis(model, _trackport.ViewPort, sDisplayOptions, fZoomFactor, out lines);
+                    if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+                
 
                 // Najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty
                 if (sDisplayOptions.bDisplayLoads && sDisplayOptions.bDisplayLoadsLabels)
@@ -386,11 +398,23 @@ namespace BaseClasses
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
 
-                // Global coordinate system - axis
-                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
-                if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
-
                 Model3DGroup gr = new Model3DGroup();
+
+                // Global coordinate system - axis
+                if (sDisplayOptions.bDisplayGlobalAxis)
+                {
+                    Model3DGroup lines = null; // linie ako 3D valcove plochy
+                    DrawGlobalAxis(_trackport.ViewPort, model, null, sDisplayOptions, fZoomFactor, out lines);
+                    if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+
+                if (sDisplayOptions.bDisplayLocalMembersAxis)
+                {
+                    Model3DGroup lines = null; // linie ako 3D valcove plochy
+                    DrawModelMembersAxis(model, _trackport.ViewPort, sDisplayOptions, fZoomFactor, out lines);
+                    if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+                
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
@@ -541,12 +565,23 @@ namespace BaseClasses
                     AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.CO_RotateModelZ);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
+                Model3DGroup gr = new Model3DGroup();
 
                 // Global coordinate system - axis
-                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
-                if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayGlobalAxis)
+                {
+                    Model3DGroup lines = null; // linie ako 3D valcove plochy
+                    DrawGlobalAxis(_trackport.ViewPort, model, null, sDisplayOptions, fZoomFactor, out lines);
+                    if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
 
-                Model3DGroup gr = new Model3DGroup();
+                if (sDisplayOptions.bDisplayLocalMembersAxis)
+                {
+                    Model3DGroup lines = null; // linie ako 3D valcove plochy
+                    DrawModelMembersAxis(model, _trackport.ViewPort, sDisplayOptions, fZoomFactor, out lines);
+                    if (lines != null) gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+                
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
@@ -2593,14 +2628,39 @@ namespace BaseClasses
 
         #region Draw To ViewPort methods
         // Draw GCS Axis
-        public static void DrawGlobalAxis(Viewport3D viewPort, CModel model, Transform3D trans)
+        public static void DrawGlobalAxis(Viewport3D viewPort, CModel model, Transform3D trans, DisplayOptions opts, float fZoomFactor, out Model3DGroup cylinders)
         {
+            cylinders = null;
+
             float flineThickness = 3;
             // Global coordinate system - axis
             Point3D pGCS_centre = new Point3D(0, 0, 0);
             Point3D pAxisX = new Point3D(1, 0, 0);
             Point3D pAxisY = new Point3D(0, 1, 0);
             Point3D pAxisZ = new Point3D(0, 0, 1);
+
+
+            if (opts.CO_bTransformScreenLines3DToCylinders3D)
+            {
+                if (cylinders == null) cylinders = new Model3DGroup();
+
+                float modelMaxLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                //float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+
+                float fLineThickness_Basic = flineThickness; // Default value - prebera sa z GUI - same as in GUI - zakladna hrubka ciar, ktoru chceme na vykresoch / obrazkoch
+                float fLineThickness_Factor = 1.10f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+
+                float fThickness_CylinderDiameter_Final = fLineThickness_Basic * fLineThickness_Factor * fLineThickness_ModelSize_Factor * fZoomFactor;
+
+                GeometryModel3D cylinderX = Get3DLineReplacement(Colors.Red, fThickness_CylinderDiameter_Final, pGCS_centre, pAxisX);
+                GeometryModel3D cylinderY = Get3DLineReplacement(Colors.Green, fThickness_CylinderDiameter_Final, pGCS_centre, pAxisY);
+                GeometryModel3D cylinderZ = Get3DLineReplacement(Colors.Blue, fThickness_CylinderDiameter_Final, pGCS_centre, pAxisZ);
+                cylinders.Children.Add(cylinderX);
+                cylinders.Children.Add(cylinderY);
+                cylinders.Children.Add(cylinderZ);
+                return;
+            }
 
             bool useScreenSpaceLines3D = false;
             bool useWireLine = false;
@@ -2750,11 +2810,27 @@ namespace BaseClasses
         }
 
         // Draw Member Axes
-        public static void DrawModelMembersAxis(CModel model, Viewport3D viewPort)
+        public static void DrawModelMembersAxis(CModel model, Viewport3D viewPort, DisplayOptions opts, float fZoomFactor, out Model3DGroup cylinders)
         {
+            cylinders = null;
             double axisL = 0.5;
             // Members
             if (model.m_arrMembers == null) return;
+
+            float fThickness_CylinderDiameter_Final = 1;
+            if (opts.CO_bTransformScreenLines3DToCylinders3D)
+            {
+                cylinders = new Model3DGroup();
+
+                float modelMaxLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                //float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+
+                float fLineThickness_Basic = 3f; // Default value - prebera sa z GUI - same as in GUI - zakladna hrubka ciar, ktoru chceme na vykresoch / obrazkoch
+                float fLineThickness_Factor = 1.10f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+
+                fThickness_CylinderDiameter_Final = fLineThickness_Basic * fLineThickness_Factor * fLineThickness_ModelSize_Factor * fZoomFactor;
+            }
 
             foreach (CMember m in model.m_arrMembers)
             {
@@ -2777,9 +2853,24 @@ namespace BaseClasses
                     pAxisY = transform.Transform(pAxisY);
                     pAxisZ = transform.Transform(pAxisZ);
 
-                    DrawAxis(viewPort, pC, pAxisX, pAxisY, pAxisZ);
+                    if (opts.CO_bTransformScreenLines3DToCylinders3D)
+                    {
+                        GeometryModel3D cylinderX = Get3DLineReplacement(Colors.Red, fThickness_CylinderDiameter_Final, pC, pAxisX);
+                        GeometryModel3D cylinderY = Get3DLineReplacement(Colors.Green, fThickness_CylinderDiameter_Final, pC, pAxisY);
+                        GeometryModel3D cylinderZ = Get3DLineReplacement(Colors.Blue, fThickness_CylinderDiameter_Final, pC, pAxisZ);
+                        cylinders.Children.Add(cylinderX);
+                        cylinders.Children.Add(cylinderY);
+                        cylinders.Children.Add(cylinderZ);
+                    }
+                    else
+                    {
+                        DrawAxis(viewPort, pC, pAxisX, pAxisY, pAxisZ);
+                    }
                 }
             }
+
+            
+
         }
 
         // Draw Axis
