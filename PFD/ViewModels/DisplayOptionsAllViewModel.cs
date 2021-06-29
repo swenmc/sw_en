@@ -379,6 +379,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MemberCenterlineColor = Colors.Black;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_TransformScreenLines3DToCylinders3D = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateHorizontalGridlines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesFront = false;
@@ -388,7 +389,6 @@ namespace PFD
             #endregion 3D SCENE
             #region FRAME VIEWS
             #region ELEVATIONS
-
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].LY_ViewsPageSize = EPageSizes.A4;
@@ -404,10 +404,8 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberDescriptionTextColor = Colors.Black;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberCenterlineColor = Colors.Black;
-
             #endregion ELEVATIONS
             #region ROOF
-
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].LY_ViewsPageSize = EPageSizes.A4;
@@ -423,7 +421,6 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberDescriptionTextColor = Colors.Black;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberCenterlineColor = Colors.Black;
-
             #endregion ROOF
 
             #endregion FRAME VIEWS
@@ -977,7 +974,7 @@ namespace PFD
             // Do dokumentu exporujeme aj s wireframe
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].WireFrameLineThickness = 2;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_TransformScreenLines3DToCylinders3D = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].CO_TransformScreenLines3DToCylinders3D = true; // Bug 871 - Local Member Axis
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayPlatesWireFrame = true;
@@ -1015,7 +1012,7 @@ namespace PFD
             // Do dokumentu exporujeme aj s wireframe
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].WireFrameLineThickness = 2;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_TransformScreenLines3DToCylinders3D = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].CO_TransformScreenLines3DToCylinders3D = true; // Bug 871 - Local Member Axis
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayMembersWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayPlatesWireFrame = true;
