@@ -1925,7 +1925,16 @@ namespace PFD
             {
                 m_DetailSymbolLabelBackColorIndex = value;
 
-                DetailSymbolLabelBackColor = CComboBoxHelper.ColorListWithTransparent[m_DetailSymbolLabelBackColorIndex].Color;
+                //DetailSymbolLabelBackColor = CComboBoxHelper.ColorListWithTransparent[m_DetailSymbolLabelBackColorIndex].Color;
+                if (CComboBoxHelper.ColorList[m_DetailSymbolLabelBackColorIndex].Name == "Transparent")
+                {
+                    DetailSymbolLabelBackColor = null;
+                }
+                else
+                {
+                    DetailSymbolLabelBackColor = CComboBoxHelper.ColorList[m_DetailSymbolLabelBackColorIndex].Color.Value;
+                }
+                
 
                 NotifyPropertyChanged("DetailSymbolLabelBackColorIndex");
             }

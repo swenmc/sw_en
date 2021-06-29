@@ -203,7 +203,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].SectionSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndexWithTransparent(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].SawCutTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);

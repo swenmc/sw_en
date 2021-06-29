@@ -433,8 +433,22 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Detail Symbol Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_DetailSymbolColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Detail Symbol Label Background Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_DetailSymbolLabelBackColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=DetailSymbolLabelBackColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Detail Symbol Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_DetailSymbolColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=DetailSymbolColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -447,8 +461,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Saw Cut Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_SawCutTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Saw Cut Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_SawCutTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=SawCutTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -461,8 +475,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Saw Cut Line Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_SawCutLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Saw Cut Line Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SawCutLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=SawCutLineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -475,13 +489,13 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Saw Cut Line Pattern Type:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SawCutLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Saw Cut Line Pattern Type:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_SawCutLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=SawCutLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Control Joint Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_ControlJointTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Control Joint Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_ControlJointTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=ControlJointTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -494,8 +508,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Control Joint Line Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_ControlJointLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Control Joint Line Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_ControlJointLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=ControlJointLineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -508,14 +522,14 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Control Joint Line Pattern Type:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_ControlJointLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Control Joint Line Pattern Type:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_ControlJointLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ControlJointLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
 
-                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Foundation Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_FoundationTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Foundation Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_FoundationTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=FoundationTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -528,8 +542,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Floor Slab Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_FloorSlabTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Floor Slab Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_FloorSlabTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=FloorSlabTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -542,8 +556,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Foundation Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_FoundationColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="23" Grid.Column="0" Text="Foundation Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="23" Grid.Column="1" Name ="Combobox_FoundationColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=FoundationColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -556,8 +570,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="23" Grid.Column="0" Text="Floor Slab Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="23" Grid.Column="1" Name ="Combobox_FloorSlabColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Floor Slab Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_FloorSlabColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=FloorSlabColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -570,8 +584,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Slab Rebate Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_SlabRebateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="25" Grid.Column="0" Text="Slab Rebate Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_SlabRebateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=SlabRebateColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -584,8 +598,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="25" Grid.Column="0" Text="Member Centerline Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_MemberCenterlineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="26" Grid.Column="0" Text="Member Centerline Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="26" Grid.Column="1" Name ="Combobox_MemberCenterlineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=MemberCenterlineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -598,13 +612,13 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="26" Grid.Column="0" Text="Member Centerline Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="26" Grid.Column="1" Name ="MemberCenterlineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="27" Grid.Column="0" Text="Member Centerline Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="27" Grid.Column="1" Name ="MemberCenterlineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=MemberCenterlineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="27" Grid.Column="0" Text="Cladding Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="27" Grid.Column="1" Name ="Combobox_CladdingTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="28" Grid.Column="0" Text="Cladding Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="28" Grid.Column="1" Name ="Combobox_CladdingTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=CladdingTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -617,8 +631,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="28" Grid.Column="0" Text="Fibreglass Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="28" Grid.Column="1" Name ="Combobox_FibreglassTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="29" Grid.Column="0" Text="Fibreglass Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="29" Grid.Column="1" Name ="Combobox_FibreglassTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=FibreglassTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -631,8 +645,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="29" Grid.Column="0" Text="Door Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="29" Grid.Column="1" Name ="Combobox_DoorTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="30" Grid.Column="0" Text="Door Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="30" Grid.Column="1" Name ="Combobox_DoorTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=DoorTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -645,8 +659,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="30" Grid.Column="0" Text="Window Text Colour:" HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Row="30" Grid.Column="1" Name ="Combobox_WindowTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Window Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="0" Grid.Column="3" Name ="Combobox_WindowTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=WindowTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -659,8 +673,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Background Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="0" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Background Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="1" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -673,8 +687,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Plate Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="1" Grid.Column="3" Name ="Combobox_PlateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="Plate Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="2" Grid.Column="3" Name ="Combobox_PlateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=PlateColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -687,8 +701,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="Screw Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="2" Grid.Column="3" Name ="Combobox_ScrewColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="Screw Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="3" Grid.Column="3" Name ="Combobox_ScrewColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=ScrewColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -701,8 +715,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="Anchor Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="3" Grid.Column="3" Name ="Combobox_AnchorColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="Anchor Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="4" Grid.Column="3" Name ="Combobox_AnchorColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=AnchorColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -715,8 +729,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="Washer Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="4" Grid.Column="3" Name ="Combobox_WasherColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="Washer Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="5" Grid.Column="3" Name ="Combobox_WasherColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=WasherColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -729,8 +743,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="5" Grid.Column="2" Text="Nut Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="5" Grid.Column="3" Name ="Combobox_NutColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="6" Grid.Column="2" Text="Nut Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="6" Grid.Column="3" Name ="Combobox_NutColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=NutColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -743,8 +757,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="6" Grid.Column="2" Text="Reinforcement Top x-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="6" Grid.Column="3" Name ="Combobox_LongReinTop_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="7" Grid.Column="2" Text="Reinforcement Top x-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="7" Grid.Column="3" Name ="Combobox_LongReinTop_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                         VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -756,8 +770,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="7" Grid.Column="2" Text="Reinforcement Top y-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="7" Grid.Column="3" Name ="Combobox_LongReinTop_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="8" Grid.Column="2" Text="Reinforcement Top y-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="8" Grid.Column="3" Name ="Combobox_LongReinTop_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                 VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinTop_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -769,8 +783,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         
-                        <TextBlock Grid.Row="8" Grid.Column="2" Text="Reinforcement Bottom x-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="8" Grid.Column="3" Name ="Combobox_LongReinBottom_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="9" Grid.Column="2" Text="Reinforcement Bottom x-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="9" Grid.Column="3" Name ="Combobox_LongReinBottom_x_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
         VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_x_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -782,8 +796,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="9" Grid.Column="2" Text="Reinforcement Bottom y-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="9" Grid.Column="3" Name ="Combobox_LongReinBottom_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="10" Grid.Column="2" Text="Reinforcement Bottom y-direction Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="10" Grid.Column="3" Name ="Combobox_LongReinBottom_y_Color" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
         VerticalAlignment="Top" ItemsSource="{Binding Path=ColorList}" SelectedIndex="{Binding Path=LongReinBottom_y_ColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>

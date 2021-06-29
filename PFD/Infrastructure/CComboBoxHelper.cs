@@ -331,21 +331,21 @@ namespace PFD
             }
         }
 
-        private static List<CComboColor> m_ColorListWithTransparent = null;
-        public static List<CComboColor> ColorListWithTransparent
-        {
-            get
-            {
-                if (m_ColorListWithTransparent == null)
-                {
-                    List<CComboColor> colors = new List<CComboColor>(ColorDict.Values);
-                    colors.Insert(0, new CComboColor("Transparent", null));
-                    m_ColorListWithTransparent = colors;
-                }
+        //private static List<CComboColor> m_ColorListWithTransparent = null;
+        //public static List<CComboColor> ColorListWithTransparent
+        //{
+        //    get
+        //    {
+        //        if (m_ColorListWithTransparent == null)
+        //        {
+        //            List<CComboColor> colors = new List<CComboColor>(ColorDict.Values);
+        //            colors.Insert(0, new CComboColor("Transparent", null));
+        //            m_ColorListWithTransparent = colors;
+        //        }
 
-                return m_ColorListWithTransparent;
-            }
-        }
+        //        return m_ColorListWithTransparent;
+        //    }
+        //}
 
 
         public static string GetColorName(Color color)
@@ -371,21 +371,21 @@ namespace PFD
             // return -1; // Exception
             throw new Exception("The provided Color was not found.");
         }
-        public static int GetColorIndexWithTransparent(Color? color)
-        {
-            for (int i = 0; i < ColorListWithTransparent.Count; i++)
-            {
-                if (color.HasValue)
-                {
-                    if (ColorListWithTransparent[i].Name == GetColorName(color.Value))
-                        return i;
-                }
-                else return 0;
-            }
+        //public static int GetColorIndexWithTransparent(Color? color)
+        //{
+        //    for (int i = 0; i < ColorListWithTransparent.Count; i++)
+        //    {
+        //        if (color.HasValue)
+        //        {
+        //            if (ColorListWithTransparent[i].Name == GetColorName(color.Value))
+        //                return i;
+        //        }
+        //        else return 0;
+        //    }
 
-            // return -1; // Exception
-            throw new Exception("The provided Color was not found.");
-        }
+        //    // return -1; // Exception
+        //    throw new Exception("The provided Color was not found.");
+        //}
 
         public static void FillComboboxValues(string sDBName, string sTableName, string sColumnName, ComboBox combobox)
         {
