@@ -1355,6 +1355,9 @@ namespace PFD
             set
             {
                 MViewIndex = value;
+
+                _displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_ModelView = MViewIndex;
+
                 if (MSynchronizeGUI) NotifyPropertyChanged("ViewIndex");
             }
         }
@@ -1369,6 +1372,9 @@ namespace PFD
             set
             {
                 MViewModelMemberFilterIndex = value;
+
+                _displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_ViewModelMembers = MViewModelMemberFilterIndex;
+
                 if (MSynchronizeGUI) NotifyPropertyChanged("ViewModelMemberFilterIndex");
             }
         }
