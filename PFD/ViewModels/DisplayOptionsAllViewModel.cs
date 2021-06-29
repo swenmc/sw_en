@@ -820,7 +820,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
             // Defaultne hodnoty pre vsetky pohlady
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_TransformScreenLines3DToCylinders3D = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].CO_TransformScreenLines3DToCylinders3D = true;  // BUG 860
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayMembers = false;
@@ -828,6 +828,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFoundations = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFloorSlab = false;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowLocalMembersAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladding = true; // V Defaulte chceme mat vsetko na true
@@ -841,7 +842,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoors = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWindows = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWireFrameModel = true; // BUG 860
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayCladdingWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayFibreglassWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayDoorsWireFrame = true;
@@ -889,17 +890,6 @@ namespace PFD
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations]);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].CO_TransformScreenLines3DToCylinders3D = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayMembers = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayJoints = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFoundations = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayFloorSlab = false;
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].ShowLocalMembersAxis = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].ShowDimensions = false;
-
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladding = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLeftWall = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingRightWall = false;
@@ -917,7 +907,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayDoorsWireFrame = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayWindowsWireFrame = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingDescription = true; // BUG 860
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingID = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingPrefix = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayCladdingLengthWidth = true;
