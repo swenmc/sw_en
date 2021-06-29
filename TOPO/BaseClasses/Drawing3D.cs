@@ -3841,6 +3841,11 @@ namespace BaseClasses
                                 up = Vector3D.Multiply(-1, viewHorizontalVector) * fTextBlockVerticalSizeFactor;
                             }
                         }
+                        
+                        Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
+
+                        // Transformujeme suradnice riadiaceho bodu z LCS do GCS
+                        pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
 
                         //hack pre croos bracing
                         if (model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof || model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy)
@@ -3848,13 +3853,10 @@ namespace BaseClasses
                             over = new Vector3D(0, 1, 0);
                             up = new Vector3D(-1, 0, 0);
 
-                            pTextPositionInLCS.Z = Math.Abs(pTextPositionInLCS.Z);
+                            pTextPositionInGCS.X = (model.m_arrMembers[i].NodeStart.X + model.m_arrMembers[i].NodeEnd.X) * 0.6;
+                            pTextPositionInGCS.Y = (model.m_arrMembers[i].NodeStart.Y + model.m_arrMembers[i].NodeEnd.Y) * 0.6;
+                            pTextPositionInGCS.Z = (model.m_arrMembers[i].NodeStart.Z + model.m_arrMembers[i].NodeEnd.Z) * 0.6 + model.m_arrMembers[i].CrScStart.h / 1000;
                         }
-
-                        Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
-
-                        // Transformujeme suradnice riadiaceho bodu z LCS do GCS
-                        pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
 
                         // Create text
                         textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPositionInGCS, over, up, descriptionTextWidthScaleFactor);
