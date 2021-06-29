@@ -499,6 +499,11 @@ namespace PFD
                 UC_Joints ucJ = Joint_Input.Content as UC_Joints;
                 ucJ.Redraw();
             }
+            if (Footing_Input.Content != null)
+            {
+                UC_FootingInput ucF = Footing_Input.Content as UC_FootingInput;
+                ucF.Redraw();
+            }
         }
 
         private void Calculate_Click(object sender, RoutedEventArgs e)

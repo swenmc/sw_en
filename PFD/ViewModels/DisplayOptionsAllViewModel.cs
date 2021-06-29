@@ -75,6 +75,7 @@ namespace PFD
             for (int i = 0; i < newVM.DisplayOptionsList.Count; i++)
             {
                 DisplayOptionsList[i].SetViewModel(newVM.DisplayOptionsList[i]);
+                DisplayOptionsList[i].PropertyChanged -= DisplayOptionsAllViewModel_PropertyChanged;
                 DisplayOptionsList[i].PropertyChanged += DisplayOptionsAllViewModel_PropertyChanged;
             }
 
@@ -96,6 +97,15 @@ namespace PFD
             }
 
             InitViewModelsDefaults();
+            WireEvents();
+        }
+
+        private void WireEvents()
+        {
+            foreach (DisplayOptionsViewModel vm in m_DisplayOptionsList)
+            {
+                vm.PropertyChanged += DisplayOptionsAllViewModel_PropertyChanged;
+            }
         }
 
         private void InitViewModelsDefaults()

@@ -409,7 +409,11 @@ namespace PFD
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //CFootingInputVM vm = this.DataContext as CFootingInputVM;
+            Redraw();            
+        }
+
+        public void Redraw()
+        {
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             CSlab floorSlab = vm.GetFloorSlab();
