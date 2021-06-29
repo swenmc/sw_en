@@ -6193,7 +6193,6 @@ namespace BaseClasses
             return gm3D;
         }
 
-
         //tato metoda bude deprecated lebo rusime display options pre Export
         public static float GetSizeIn3D(float maxModelLength, float sizeFactorGUI, float sizeFactorExport, DisplayOptions displayOptions)
         {
