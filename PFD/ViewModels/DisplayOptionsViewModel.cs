@@ -393,6 +393,7 @@ namespace PFD
 
         
 
+
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -4276,27 +4277,254 @@ namespace PFD
             }
         }
 
-        public EPageSizes LY_ViewsPageSize { get => m_LY_ViewsPageSize; set => m_LY_ViewsPageSize = value; }
-        public EImagesQuality LY_ExportImagesQuality { get => m_LY_ExportImagesQuality; set => m_LY_ExportImagesQuality = value; }
-        public bool CO_IsExport { get => m_CO_IsExport; set => m_CO_IsExport = value; }
-        public bool CO_SameScaleForViews { get => m_CO_SameScaleForViews; set => m_CO_SameScaleForViews = value; }
-        public bool CO_TransformScreenLines3DToCylinders3D { get => m_CO_bTransformScreenLines3DToCylinders3D; set => m_CO_bTransformScreenLines3DToCylinders3D = value; }
-        //public float CO_DisplayIn3DRatio { get => m_CO_DisplayIn3DRatio; set => m_CO_DisplayIn3DRatio = value; }
-        public int CO_RotateModelX { get => m_CO_RotateModelX; set => m_CO_RotateModelX = value; }
-        public int CO_RotateModelY { get => m_CO_RotateModelY; set => m_CO_RotateModelY = value; }
-        public int CO_RotateModelZ { get => m_CO_RotateModelZ; set => m_CO_RotateModelZ = value; }
-        public int CO_ModelView { get => m_CO_ModelView; set => m_CO_ModelView = value; }
-        public int CO_ViewModelMembers { get => m_CO_ViewModelMembers; set => m_CO_ViewModelMembers = value; }
-        public int CO_ViewCladding { get => m_CO_ViewCladding; set => m_CO_ViewCladding = value; }
-        public bool CO_UseOrtographicCamera { get => m_CO_bUseOrtographicCamera; set => m_CO_bUseOrtographicCamera = value; }
-        public double CO_OrtographicCameraWidth { get => m_CO_OrtographicCameraWidth; set => m_CO_OrtographicCameraWidth = value; }
-        public bool CO_CreateHorizontalGridlines { get => m_CO_bCreateHorizontalGridlines; set => m_CO_bCreateHorizontalGridlines = value; }
-        public bool CO_CreateVerticalGridlinesFront { get => m_CO_bCreateVerticalGridlinesFront; set => m_CO_bCreateVerticalGridlinesFront = value; }
-        public bool CO_CreateVerticalGridlinesBack { get => m_CO_bCreateVerticalGridlinesBack; set => m_CO_bCreateVerticalGridlinesBack = value; }
-        public bool CO_CreateVerticalGridlinesLeft { get => m_CO_bCreateVerticalGridlinesLeft; set => m_CO_bCreateVerticalGridlinesLeft = value; }
-        public bool CO_CreateVerticalGridlinesRight { get => m_CO_bCreateVerticalGridlinesRight; set => m_CO_bCreateVerticalGridlinesRight = value; }
+        public EPageSizes LY_ViewsPageSize
+        {
+            get
+            {
+                return m_LY_ViewsPageSize;
+            }
 
-        
+            set
+            {
+                m_LY_ViewsPageSize = value;
+            }
+        }
+
+        public EImagesQuality LY_ExportImagesQuality
+        {
+            get
+            {
+                return m_LY_ExportImagesQuality;
+            }
+
+            set
+            {
+                m_LY_ExportImagesQuality = value;
+            }
+        }
+
+        public bool CO_IsExport
+        {
+            get
+            {
+                return m_CO_IsExport;
+            }
+
+            set
+            {
+                m_CO_IsExport = value;
+            }
+        }
+
+        public bool CO_SameScaleForViews
+        {
+            get
+            {
+                return m_CO_SameScaleForViews;
+            }
+
+            set
+            {
+                m_CO_SameScaleForViews = value;
+            }
+        }
+
+        public bool CO_TransformScreenLines3DToCylinders3D
+        {
+            get
+            {
+                return m_CO_bTransformScreenLines3DToCylinders3D;
+            }
+
+            set
+            {
+                m_CO_bTransformScreenLines3DToCylinders3D = value;
+            }
+        }
+
+        public float CO_DisplayIn3DRatio
+        {
+            get
+            {
+                return m_CO_DisplayIn3DRatio;
+            }
+
+            set
+            {
+                m_CO_DisplayIn3DRatio = value;
+            }
+        }
+
+        public int CO_RotateModelX
+        {
+            get
+            {
+                return m_CO_RotateModelX;
+            }
+
+            set
+            {
+                m_CO_RotateModelX = value;
+            }
+        }
+
+        public int CO_RotateModelY
+        {
+            get
+            {
+                return m_CO_RotateModelY;
+            }
+
+            set
+            {
+                m_CO_RotateModelY = value;
+            }
+        }
+
+        public int CO_RotateModelZ
+        {
+            get
+            {
+                return m_CO_RotateModelZ;
+            }
+
+            set
+            {
+                m_CO_RotateModelZ = value;
+            }
+        }
+
+        public int CO_ModelView
+        {
+            get
+            {
+                return m_CO_ModelView;
+            }
+
+            set
+            {
+                m_CO_ModelView = value;
+            }
+        }
+
+        public int CO_ViewModelMembers
+        {
+            get
+            {
+                return m_CO_ViewModelMembers;
+            }
+
+            set
+            {
+                m_CO_ViewModelMembers = value;
+            }
+        }
+
+        public int CO_ViewCladding
+        {
+            get
+            {
+                return m_CO_ViewCladding;
+            }
+
+            set
+            {
+                m_CO_ViewCladding = value;
+            }
+        }
+
+        public bool CO_UseOrtographicCamera
+        {
+            get
+            {
+                return m_CO_bUseOrtographicCamera;
+            }
+
+            set
+            {
+                m_CO_bUseOrtographicCamera = value;
+            }
+        }
+
+        public double CO_OrtographicCameraWidth
+        {
+            get
+            {
+                return m_CO_OrtographicCameraWidth;
+            }
+
+            set
+            {
+                m_CO_OrtographicCameraWidth = value;
+            }
+        }
+
+        public bool CO_CreateHorizontalGridlines
+        {
+            get
+            {
+                return m_CO_bCreateHorizontalGridlines;
+            }
+
+            set
+            {
+                m_CO_bCreateHorizontalGridlines = value;
+            }
+        }
+
+        public bool CO_CreateVerticalGridlinesFront
+        {
+            get
+            {
+                return m_CO_bCreateVerticalGridlinesFront;
+            }
+
+            set
+            {
+                m_CO_bCreateVerticalGridlinesFront = value;
+            }
+        }
+
+        public bool CO_CreateVerticalGridlinesBack
+        {
+            get
+            {
+                return m_CO_bCreateVerticalGridlinesBack;
+            }
+
+            set
+            {
+                m_CO_bCreateVerticalGridlinesBack = value;
+            }
+        }
+
+        public bool CO_CreateVerticalGridlinesLeft
+        {
+            get
+            {
+                return m_CO_bCreateVerticalGridlinesLeft;
+            }
+
+            set
+            {
+                m_CO_bCreateVerticalGridlinesLeft = value;
+            }
+        }
+
+        public bool CO_CreateVerticalGridlinesRight
+        {
+            get
+            {
+                return m_CO_bCreateVerticalGridlinesRight;
+            }
+
+            set
+            {
+                m_CO_bCreateVerticalGridlinesRight = value;
+            }
+        }
+
+
 
         #endregion Properties
 
