@@ -3848,14 +3848,32 @@ namespace BaseClasses
                         pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
 
                         //hack pre croos bracing
+                        // Popis pre roof bracing v GCS
+                        // TODO - dopracovat pre LCS ak je prut v rovine XY alebo ak priemet do tejto roviny vyrazne prevazuje ostatne dva
                         if (model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof || model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy)
                         {
                             over = new Vector3D(0, 1, 0);
                             up = new Vector3D(-1, 0, 0);
 
-                            pTextPositionInGCS.X = (model.m_arrMembers[i].NodeStart.X + model.m_arrMembers[i].NodeEnd.X) * 0.6;
-                            pTextPositionInGCS.Y = (model.m_arrMembers[i].NodeStart.Y + model.m_arrMembers[i].NodeEnd.Y) * 0.6;
-                            pTextPositionInGCS.Z = (model.m_arrMembers[i].NodeStart.Z + model.m_arrMembers[i].NodeEnd.Z) * 0.6 + model.m_arrMembers[i].CrScStart.h / 1000;
+                            double dOffset_GC_X = 0;
+                            double dOffset_GC_Y = 0;
+
+                            dOffset_GC_X = -2 * model.m_arrMembers[i].CrScStart.h; // Vzdy nad prut - GCS posun v smere -X
+
+                            double dFactor = Math.Abs(model.m_arrMembers[i].Delta_Y) / model.m_arrMembers[i].FLength; // Faktor posunu v smere Y podla naklonenia pruta od voci ose Y v rovine XY
+
+                            if (model.m_arrMembers[i].Delta_Y > 0)
+                                dOffset_GC_Y = 10 * dFactor * model.m_arrMembers[i].CrScStart.h; // Napravo od bodu
+                            else
+                            {
+                                double textwidth = tb.Text.Length * fTextBlockVerticalSize * descriptionTextWidthScaleFactor;
+                                dOffset_GC_Y = -10 * dFactor * model.m_arrMembers[i].CrScStart.h - 0.5 * textwidth; // Nalavo od bodu - 0.5 * dlzka textbloku
+                            }
+
+                            // Martin
+                            pTextPositionInGCS.X = model.m_arrMembers[i].NodeStart.X + 0.5 * (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X) + dOffset_GC_X;
+                            pTextPositionInGCS.Y = model.m_arrMembers[i].NodeStart.Y + 0.5 * (model.m_arrMembers[i].NodeEnd.Y - model.m_arrMembers[i].NodeStart.Y) + dOffset_GC_Y;
+                            pTextPositionInGCS.Z = model.m_arrMembers[i].NodeStart.Z + 0.5 * (model.m_arrMembers[i].NodeEnd.Z - model.m_arrMembers[i].NodeStart.Z) + 2 * model.m_arrMembers[i].CrScStart.h; // dvojnásobok vysky aby nokolidoval popis s cross-section
                         }
 
                         // Create text
