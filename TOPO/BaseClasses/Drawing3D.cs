@@ -3847,6 +3847,8 @@ namespace BaseClasses
                         {
                             over = new Vector3D(0, 1, 0);
                             up = new Vector3D(-1, 0, 0);
+
+                            pTextPositionInLCS.Z = Math.Abs(pTextPositionInLCS.Z);
                         }
 
                         Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
