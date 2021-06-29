@@ -5751,15 +5751,50 @@ namespace BaseClasses
                 CMember m = jointModel.m_arrMembers[i];
                 m.WireFramePoints.Clear();
 
-                GeometryModel3D gm3d = membersModel.Children[i] as GeometryModel3D;
-                MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
-
-                if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
+                if (membersModel.Children[i] is GeometryModel3D)
                 {
-                    foreach (int n in m.CrScStart.WireFrameIndices)
-                    {
-                        m.WireFramePoints.Add(mesh.Positions[n]);
-                    }
+                    GeometryModel3D gm3d = membersModel.Children[i] as GeometryModel3D;
+                    AddMemberWireFramePoints(m, gm3d);
+                }
+                else if (membersModel.Children[i] is Model3DGroup)
+                {                    
+                    Model3DGroup m3D = membersModel.Children[i] as Model3DGroup;
+                    AddMemberWireFramePoints(m, m3D);                    
+                }
+            }
+        }
+
+        private static void AddMemberWireFramePoints(CMember m, GeometryModel3D gm3d)
+        {
+            MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
+
+            if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
+            {
+                foreach (int n in m.CrScStart.WireFrameIndices)
+                {
+                    m.WireFramePoints.Add(mesh.Positions[n]);
+                }
+            }
+        }
+        private static void AddMemberWireFramePoints(CMember m, Model3DGroup m3D)
+        {
+            List<Point3D> meshPositions = new List<Point3D>();
+            foreach (Model3D item in m3D.Children)
+            {
+                if (item is GeometryModel3D)
+                {
+                    GeometryModel3D gm3d = item as GeometryModel3D;
+                    
+                    MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
+                    meshPositions.AddRange(mesh.Positions);                    
+                }
+            }
+
+            if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
+            {
+                foreach (int n in m.CrScStart.WireFrameIndices)
+                {
+                    m.WireFramePoints.Add(meshPositions[n]);
                 }
             }
         }
