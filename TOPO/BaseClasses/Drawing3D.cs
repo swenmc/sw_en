@@ -5763,8 +5763,7 @@ namespace BaseClasses
                 }
             }
         }
-
-
+        
         private static void AddMemberWireFramePoints(CMember m, GeometryModel3D gm3d)
         {
             MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
