@@ -310,7 +310,7 @@ namespace EXPIMP
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            gfx.DrawString(("3D scene ").ToString(), fontBold, XBrushes.Black, 20, 20);
+            gfx.DrawString(("3D scene ").ToString().ToUpper(), fontBold, XBrushes.Black, 20, 20);
 
             DrawTitleBlock(gfx, data.ProjectInfo, page, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
@@ -417,8 +417,28 @@ namespace EXPIMP
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-                DrawTitleBlock(gfx, data.ProjectInfo, page,((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
-                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)viewMembers).GetFriendlyName() });
+                string viewGroupName = "";
+                string hyphenSymbol = "";
+                int iTitleRow1_Coordinate_y = 0;
+                int iTitleRow2_Coordinate_y = 20;
+                bool bDrawViewFGroupName = false;
+
+                if ((EPDFPageContentType)viewMembers == EPDFPageContentType.Front_Elevation ||
+                    (EPDFPageContentType)viewMembers == EPDFPageContentType.Back_Elevation ||
+                    (EPDFPageContentType)viewMembers == EPDFPageContentType.Left_Elevation ||
+                    (EPDFPageContentType)viewMembers == EPDFPageContentType.Right_Elevation ||
+                    (EPDFPageContentType)viewMembers == EPDFPageContentType.Roof_Layout ||
+                    (EPDFPageContentType)viewMembers == EPDFPageContentType.Middle_Frame)
+                {
+                    bDrawViewFGroupName = true;
+                    viewGroupName = "Frame Views";
+                    hyphenSymbol = "-";
+                    iTitleRow1_Coordinate_y += 20;
+                    iTitleRow2_Coordinate_y += 20;
+                }
+
+                DrawTitleBlock(gfx, data.ProjectInfo, page, viewGroupName + hyphenSymbol + ((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
+                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", viewGroupName + hyphenSymbol + ((EPDFPageContentType)viewMembers).GetFriendlyName() });
 
                 opts.CO_ModelView = GetView(viewMembers);
                 opts.CO_ViewModelMembers = (int)viewMembers;
@@ -454,8 +474,9 @@ namespace EXPIMP
                 //System.Diagnostics.Trace.WriteLine("DrawModelViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-                gfx.DrawString($"{("Frame Views").ToUpper()}", fontBold, XBrushes.Black, 20, 20);
-                gfx.DrawString($"{((EPDFPageContentType)viewMembers).GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, 40);
+                if(bDrawViewFGroupName)
+                    gfx.DrawString($"{viewGroupName.ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow1_Coordinate_y);
+                gfx.DrawString($"{((EPDFPageContentType)viewMembers).GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow2_Coordinate_y);
 
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -513,11 +534,30 @@ namespace EXPIMP
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-                //to pretypovanie na EPDFPageContentType sa mi vobec nepaci, to je nejake divne
-                DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
-                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
+                string viewGroupName = "";
+                string hyphenSymbol = "";
+                int iTitleRow1_Coordinate_y = 0;
+                int iTitleRow2_Coordinate_y = 20;
+                bool bDrawViewFGroupName = false;
 
-                opts.CO_ModelView = GetView(view);                
+                if ((EPDFPageContentType)view == EPDFPageContentType.Front_Elevation ||
+                    (EPDFPageContentType)view == EPDFPageContentType.Back_Elevation ||
+                    (EPDFPageContentType)view == EPDFPageContentType.Left_Elevation ||
+                    (EPDFPageContentType)view == EPDFPageContentType.Right_Elevation ||
+                    (EPDFPageContentType)view == EPDFPageContentType.Roof_Layout)
+                {
+                    bDrawViewFGroupName = true;
+                    viewGroupName = "Cladding Views";
+                    hyphenSymbol = "-";
+                    iTitleRow1_Coordinate_y += 20;
+                    iTitleRow2_Coordinate_y += 20;
+                }
+
+                //to pretypovanie na EPDFPageContentType sa mi vobec nepaci, to je nejake divne
+                DrawTitleBlock(gfx, data.ProjectInfo, page, viewGroupName + hyphenSymbol + ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
+                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", viewGroupName + hyphenSymbol + ((EPDFPageContentType)view).GetFriendlyName() });
+
+                opts.CO_ModelView = GetView(view);
                 opts.CO_ViewModelMembers = (int)view;
                 opts.CO_ViewCladding = (int)view;
 
@@ -536,8 +576,9 @@ namespace EXPIMP
                 //System.Diagnostics.Trace.WriteLine("DrawCladdingViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-                gfx.DrawString($"{("Cladding Views").ToUpper()}", fontBold, XBrushes.Black, 20, 20);
-                gfx.DrawString($"{((EPDFPageContentType)view).GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, 40);
+                if (bDrawViewFGroupName)
+                    gfx.DrawString($"{viewGroupName.ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow1_Coordinate_y);
+                gfx.DrawString($"{((EPDFPageContentType)view).GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow2_Coordinate_y);
 
                 //System.Diagnostics.Trace.WriteLine("DrawCladdingViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
 
