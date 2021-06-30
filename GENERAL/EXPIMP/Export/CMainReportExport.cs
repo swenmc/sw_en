@@ -310,7 +310,7 @@ namespace EXPIMP
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
+            gfx.DrawString(("3D scene ").ToString(), fontBold, XBrushes.Black, 20, 20);
 
             DrawTitleBlock(gfx, data.ProjectInfo, page, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
@@ -454,7 +454,8 @@ namespace EXPIMP
                 //System.Diagnostics.Trace.WriteLine("DrawModelViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-                gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
+                gfx.DrawString($"{("Frame Views").ToUpper()}", fontBold, XBrushes.Black, 20, 20);
+                gfx.DrawString($"{((EPDFPageContentType)viewMembers).GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, 40);
 
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -529,7 +530,8 @@ namespace EXPIMP
                 //System.Diagnostics.Trace.WriteLine("DrawCladdingViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-                gfx.DrawString($"{(view).ToString()}:", fontBold, XBrushes.Black, 20, 20);
+                gfx.DrawString($"{("Cladding Views").ToUpper()}", fontBold, XBrushes.Black, 20, 20);
+                gfx.DrawString($"{((EPDFPageContentType)view).GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, 40);
 
                 //System.Diagnostics.Trace.WriteLine("DrawCladdingViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
 
