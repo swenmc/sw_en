@@ -496,7 +496,12 @@ namespace EXPIMP
 
             foreach (EViewCladdingFilters view in list_views)
             {
-                if(view == EViewCladdingFilters.CLADDING_ROOF) opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Roof);
+                if (view == EViewCladdingFilters.CLADDING_ROOF)
+                {
+                    opts = GetModelViewsDisplayOptions(data, EDisplayOptionsTypes.Layouts_CW_Roof);
+                    opts.LY_ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
+                    opts.LY_ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
+                }
 
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + view.ToString());
@@ -512,7 +517,8 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
-                opts.CO_ModelView = GetView(view);
+                opts.CO_ModelView = GetView(view);                
+                opts.CO_ViewModelMembers = (int)view;
                 opts.CO_ViewCladding = (int)view;
 
                 ChangeDisplayOptionsAcordingToSideView(view, ref opts);

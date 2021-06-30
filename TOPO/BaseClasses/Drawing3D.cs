@@ -157,6 +157,7 @@ namespace BaseClasses
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
                 //System.Diagnostics.Trace.WriteLine("After DrawDimensionsToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
+                //DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
                 DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
                 //System.Diagnostics.Trace.WriteLine("After DrawGridlinesToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -5965,42 +5966,50 @@ namespace BaseClasses
                 //_model.m_arrControlJoints = model.m_arrControlJoints;
             }
 
-            if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_FRONT)
+            if (sDisplayOptions.CO_ViewCladding != (int)EViewCladdingFilters.All)
             {
-                CCladding cl = new CCladding();
-                cl.listOfCladdingSheetsFrontWall = ModelHelper.GetCladdingSheets_Front(model);
+                CCladding cl = ModelHelper.GetCladdingBasedOnView(model, (EViewCladdingFilters)sDisplayOptions.CO_ViewCladding);
                 cl.SetCladdingWireframePoints();
-                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
+                _model.m_arrGOCladding = new List<CCladding>() { cl };
             }
-            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
-            {
-                CCladding cl = new CCladding();
-                cl.listOfCladdingSheetsBackWall = ModelHelper.GetCladdingSheets_Back(model);
-                cl.SetCladdingWireframePoints();
-                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            }
-            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
-            {
-                CCladding cl = new CCladding();
-                cl.listOfCladdingSheetsLeftWall = ModelHelper.GetCladdingSheets_Left(model);
-                cl.SetCladdingWireframePoints();
-                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            }
-            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
-            {
-                CCladding cl = new CCladding();
-                cl.listOfCladdingSheetsRightWall = ModelHelper.GetCladdingSheets_Right(model);
-                cl.SetCladdingWireframePoints();
-                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            }
-            else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
-            {
-                CCladding cl = new CCladding();
-                cl.listOfCladdingSheetsRoofRight = ModelHelper.GetCladdingSheets_Roof_Right(model);
-                cl.listOfCladdingSheetsRoofLeft = ModelHelper.GetCladdingSheets_Roof_Left(model);
-                cl.SetCladdingWireframePoints();
-                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            }
+            
+
+            //if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_FRONT)
+            //{
+            //    CCladding cl = new CCladding();
+            //    cl.listOfCladdingSheetsFrontWall = ModelHelper.GetCladdingSheets_Front(model);
+            //    cl.SetCladdingWireframePoints();
+            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
+            //}
+            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
+            //{
+            //    CCladding cl = new CCladding();
+            //    cl.listOfCladdingSheetsBackWall = ModelHelper.GetCladdingSheets_Back(model);
+            //    cl.SetCladdingWireframePoints();
+            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
+            //}
+            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
+            //{
+            //    CCladding cl = new CCladding();
+            //    cl.listOfCladdingSheetsLeftWall = ModelHelper.GetCladdingSheets_Left(model);
+            //    cl.SetCladdingWireframePoints();
+            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
+            //}
+            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
+            //{
+            //    CCladding cl = new CCladding();
+            //    cl.listOfCladdingSheetsRightWall = ModelHelper.GetCladdingSheets_Right(model);
+            //    cl.SetCladdingWireframePoints();
+            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
+            //}
+            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
+            //{
+            //    CCladding cl = new CCladding();
+            //    cl.listOfCladdingSheetsRoofRight = ModelHelper.GetCladdingSheets_Roof_Right(model);
+            //    cl.listOfCladdingSheetsRoofLeft = ModelHelper.GetCladdingSheets_Roof_Left(model);
+            //    cl.SetCladdingWireframePoints();
+            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
+            //}
 
             return _model;
         }
