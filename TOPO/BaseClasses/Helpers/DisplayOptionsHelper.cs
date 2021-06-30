@@ -174,5 +174,11 @@ namespace BaseClasses.Helpers
 
             return opts;
         }
+
+
+        public static bool AreConnectorsDisplayed(DisplayOptions opts)
+        {
+            return opts.bDisplayConnectors || (opts.bDisplayWireFrameModel && opts.bDisplayJointsWireFrame && opts.bDisplayPlatesWireFrame && opts.bDisplayConnectorsWireFrame);
+        }
     }
 }

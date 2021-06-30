@@ -1867,14 +1867,14 @@ namespace BaseClasses
                                     else plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
                                     cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
 
-                                    if (opts.bDisplayPlates)
+                                    if (DisplayOptionsHelper.AreConnectorsDisplayed(opts))
                                     {
                                         // Add plates
                                         JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
                                     }
 
                                     //temp refaktoring 5.2.2020 - bug 522
-                                    if (opts.bDisplayConnectors)
+                                    if (DisplayOptionsHelper.AreConnectorsDisplayed(opts)) //874
                                     {
                                         // Add plate anchors - only base plates
                                         if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CConCom_Plate_B_basic)
@@ -1924,7 +1924,7 @@ namespace BaseClasses
                                                     plateConnectorsModelGroup.Children.Add(anchorModelObjectsModelGroup); // Skupinu objektov na anchor pridame do skupiny anchors (connectors)
                                                 }
                                                 plateConnectorsModelGroup.Transform = plateGeom.Transform;
-                                                if (opts.bDisplayConnectors)
+                                                if (opts.bDisplayConnectors)  // alebo DisplayOptionsHelper.AreConnectorsDisplayed(opts)
                                                 {
                                                     JointModelGroup.Children.Add(plateConnectorsModelGroup);
                                                 }
@@ -1934,7 +1934,7 @@ namespace BaseClasses
                                     } //end display connectors
 
                                     //temp refaktoring 5.2.2020 - bug 522
-                                    if (opts.bDisplayConnectors)
+                                    if (DisplayOptionsHelper.AreConnectorsDisplayed(opts)) //874
                                     {
                                         // Add plate screws
                                         if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement != null &&
@@ -1962,7 +1962,7 @@ namespace BaseClasses
                         // Connectors
                         bool bUseAdditionalConnectors = true; // Spojovacie prvky, ktore nie su viazane na plechy (plates), napr. spoj pomocou screws priamo medzi nosnikmi bez plechu (plate) (teda spoj U001 - tiahla - bracing pripojene priamo k prutom main frame)
 
-                        if (bUseAdditionalConnectors && opts.bDisplayConnectors && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
+                        if (bUseAdditionalConnectors && DisplayOptionsHelper.AreConnectorsDisplayed(opts) && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
                         {
                             foreach (CConnectorGroup connectorGR in cmodel.m_arrConnectionJoints[i].ConnectorGroups)
                             {
@@ -2040,6 +2040,8 @@ namespace BaseClasses
             }
             return JointsModel3DGroup;
         }
+
+
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Loading objects model 3d group
