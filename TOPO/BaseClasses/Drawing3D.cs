@@ -26,6 +26,8 @@ namespace BaseClasses
         public static float fModel_Length_Z = 0;
         public static Transform3DGroup centerModelTransGr = null;
 
+        public static List<CGridLine> listOfGridlines = null;
+
         public const float PageSizeRatio = 1.41275f;
 
         #region DrawToTrackPort methods
@@ -697,7 +699,7 @@ namespace BaseClasses
             float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, sDisplayOptions.GridlinesSize, sDisplayOptions);
 
             // Create gridlines
-            List<CGridLine> listOfGridlines = new List<CGridLine>();
+            listOfGridlines = new List<CGridLine>();
 
             // Labels - Y-direction (edge and main frames)
             List<string> labelsY = null;
@@ -1568,6 +1570,41 @@ namespace BaseClasses
                 fMin_Z = Math.Min(fMin_Z, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.Z));
             }
 
+            // BUG 848
+            // Zohladnit gridlines do rozmerov modelu
+
+            // Toto je len nastrel k diskusii :-)
+            if (opts.bDisplayGridlines && listOfGridlines != null && listOfGridlines.Count >= 2)
+            {
+                // To Ondrej - lepsie by bolo asi vybrat len prvu "vertikalnu" a prvu "horizontalnu" gridline (pripadne prvu a poslednu) v ramci pohladu na vykres - označenie (A) a (1)
+                // V Elevations zobrazujeme len "vertikalne" gridlines
+
+                // Overit ci su positions definovane v LCS alebo su v GCS !!!!
+                // Ak nie su v GCS treba pouzit gl_modelGroup.Transform
+
+                // TO Ondrej - este lepsie ako pracovat s celymi gl_modelGroup by bolo napriklad len pouzit properties z gridline ako su
+                // gl.PointMarkObjectCenter_LCS, gl.PointLineStart_LCS, gl.PointLineEnd_LCS
+                // Tie transformovat do GCS a pouzit len ich suradnice pre urcenie velkosti modelu vratane gridlines
+
+                // Zakomentovane - asi sa to cykli
+                //foreach (CGridLine gl in listOfGridlines)
+                //{
+                //    Model3DGroup gl_modelGroup = gl.GetGridLineModel(opts.GridLineColor);
+                //
+                //    foreach (GeometryModel3D gm in gl_modelGroup.Children)
+                //    {
+                //        MeshGeometry3D mesh3D = (MeshGeometry3D)gm.Geometry;
+                //
+                //        fMax_X = Math.Max(fMax_X, (float)mesh3D.Positions.Max(p => p.X));
+                //        fMin_X = Math.Min(fMin_X, (float)mesh3D.Positions.Min(p => p.X));
+                //        fMax_Y = Math.Max(fMax_Y, (float)mesh3D.Positions.Max(p => p.Y));
+                //        fMin_Y = Math.Min(fMin_Y, (float)mesh3D.Positions.Min(p => p.Y));
+                //        fMax_Z = Math.Max(fMax_Z, (float)mesh3D.Positions.Max(p => p.Z));
+                //        fMin_Z = Math.Min(fMin_Z, (float)mesh3D.Positions.Min(p => p.Z));
+                //    }
+                //}
+            }
+
             if (fMax_X == float.MinValue ||
             fMin_X == float.MaxValue ||
             fMax_Y == float.MinValue ||
@@ -1618,7 +1655,8 @@ namespace BaseClasses
             //});
             return allFoundationPoints;
         }
-
+        /*
+        // TO Ondrej - zakomentoval som tuto funkciu lebo sa nepouziva, mozno ju mozeme aj zmazat
         public static void CalculateModelSizes(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
@@ -1662,7 +1700,7 @@ namespace BaseClasses
                 throw new Exception("Exception - no definition nodes or points");
             }
         }
-
+        */
         #endregion
 
         #region Create Model3D methods
