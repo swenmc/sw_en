@@ -4602,7 +4602,7 @@ namespace BaseClasses
         //omg a toto je co? Naco to je, co to robi. :-)
         private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z, float maxLen)
         {
-            if (sDisplayOptions.CO_SameScaleForViews)
+            if (!sDisplayOptions.CO_SameScaleForViews)
             {
                 if (sDisplayOptions.CO_ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
                 {
