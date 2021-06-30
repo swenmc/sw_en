@@ -66,7 +66,7 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData, exportOpts);
+            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData, exportOpts);
 
             if(exportOpts.ExportModel3D)
                 DrawModel3D(s_document, modelData, exportOpts);
@@ -90,7 +90,7 @@ namespace EXPIMP
             if (exportOpts.ExportStandardDetails && modelData.HasCladding) 
                 DrawStandardDetails(s_document, modelData, exportOpts);
 
-            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+            //AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             string fileName = GetReportPDFName();
             // Save the s_document...
@@ -511,7 +511,8 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
-                opts.CO_ModelView = GetView(view);
+                opts.CO_ModelView = GetView(view);                
+                opts.CO_ViewModelMembers = (int)view;
                 opts.CO_ViewCladding = (int)view;
 
                 ChangeDisplayOptionsAcordingToSideView(view, ref opts);

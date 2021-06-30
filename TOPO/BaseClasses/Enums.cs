@@ -781,7 +781,8 @@ namespace BaseClasses
     }
 
     public enum EViewCladdingFilters
-    {        
+    {
+        All = 0,
         CLADDING_FRONT = 1,
         CLADDING_BACK = 2,
         CLADDING_LEFT = 3,

@@ -156,33 +156,66 @@ namespace BaseClasses.Helpers
             return members.ToArray();
         }
 
-        // TO Ondrej - ako to budeme robit ???
-        // Vyrobil som samostatne funkcie pre strany cladding
-        // IN WORK
-        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Front(CModel model)
+        public static CCladding GetCladdingBasedOnView(CModel model, EViewCladdingFilters view)
         {
-            return model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall;
+            CCladding source = model.m_arrGOCladding[0];
+            CCladding cladding = source.Clone();
+            cladding.Clear();
+            if (view == EViewCladdingFilters.CLADDING_FRONT)
+            {
+                cladding.listOfCladdingSheetsFrontWall = source.listOfCladdingSheetsFrontWall;
+                cladding.listOfFibreGlassSheetsWallFront = source.listOfFibreGlassSheetsWallFront;
+            }
+            else if (view == EViewCladdingFilters.CLADDING_BACK)
+            {
+                cladding.listOfCladdingSheetsBackWall = source.listOfCladdingSheetsBackWall;
+                cladding.listOfFibreGlassSheetsWallBack = source.listOfFibreGlassSheetsWallBack;
+            }
+            else if (view == EViewCladdingFilters.CLADDING_LEFT)
+            {
+                cladding.listOfCladdingSheetsLeftWall = source.listOfCladdingSheetsLeftWall;
+                cladding.listOfFibreGlassSheetsWallLeft = source.listOfFibreGlassSheetsWallLeft;
+            }
+            else if (view == EViewCladdingFilters.CLADDING_RIGHT)
+            {
+                cladding.listOfCladdingSheetsRightWall = source.listOfCladdingSheetsRightWall;
+                cladding.listOfFibreGlassSheetsWallRight = source.listOfFibreGlassSheetsWallRight;
+            }
+            else if (view == EViewCladdingFilters.CLADDING_ROOF)
+            {
+                cladding.listOfCladdingSheetsRoofLeft = source.listOfCladdingSheetsRoofLeft;
+                cladding.listOfFibreGlassSheetsRoofLeft = source.listOfFibreGlassSheetsRoofLeft;
+                cladding.listOfCladdingSheetsRoofRight = source.listOfCladdingSheetsRoofRight;
+                cladding.listOfFibreGlassSheetsRoofRight = source.listOfFibreGlassSheetsRoofRight;
+            }
+
+            return cladding;
         }
-        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Back(CModel model)
-        {
-            return model.m_arrGOCladding[0].listOfCladdingSheetsBackWall;
-        }
-        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Left(CModel model)
-        {
-            return model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall;
-        }
-        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Right(CModel model)
-        {
-            return model.m_arrGOCladding[0].listOfCladdingSheetsRightWall;
-        }
-        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof_Right(CModel model)
-        {
-            return model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight;
-        }
-        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof_Left(CModel model)
-        {
-            return model.m_arrGOCladding[0].listOfCladdingSheetsRoofLeft;
-        }
+
+        //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Front(CModel model)
+        //{
+        //    return model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall;
+        //}
+        //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Back(CModel model)
+        //{
+        //    return model.m_arrGOCladding[0].listOfCladdingSheetsBackWall;
+        //}
+        //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Left(CModel model)
+        //{
+        //    return model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall;
+        //}
+        //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Right(CModel model)
+        //{
+        //    return model.m_arrGOCladding[0].listOfCladdingSheetsRightWall;
+        //}
+        //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof_Right(CModel model)
+        //{
+        //    return model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight;
+        //}
+        //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof_Left(CModel model)
+        //{
+        //    return model.m_arrGOCladding[0].listOfCladdingSheetsRoofLeft;
+        //}
 
         public static CNode[] GetColumnsViewNodes(CModel model)
         {
