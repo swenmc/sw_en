@@ -16,8 +16,8 @@ namespace BaseClasses.GraphObj
     //To Mato - nechavame stale strasne vela komentovaneho kodu, mam chut to vsetko pomazat
     public class CCladding : CEntity3D
     {
-        EModelType_FS eModelType;
-        BuildingGeometryDataInput sBuildingGeomInputData;
+        public EModelType_FS eModelType;
+        public BuildingGeometryDataInput sBuildingGeomInputData;
         System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopyCollection;
         System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidthCollection;
         System.Collections.ObjectModel.ObservableCollection<FibreglassProperties> fibreglassSheetCollection;
