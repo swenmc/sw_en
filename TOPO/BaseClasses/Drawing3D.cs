@@ -158,7 +158,7 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After DrawDimensionsToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
                 //DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
-                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
+                DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
                 //System.Diagnostics.Trace.WriteLine("After DrawGridlinesToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
