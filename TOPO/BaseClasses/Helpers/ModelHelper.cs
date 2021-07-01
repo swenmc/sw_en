@@ -159,6 +159,8 @@ namespace BaseClasses.Helpers
         public static CCladding GetCladdingBasedOnView(CModel model, EViewCladdingFilters view)
         {
             CCladding source = model.m_arrGOCladding[0];
+            source.fibreglassSheetCollection = null; //dufam,ze takto nezrusim v povodnom tie FibreglassProperties
+
             CCladding cladding = source.Clone(); // To Ondrej - sme si isti ze toto Clone funguje spravne pre vsetky properties objektov ktore su v cladding ???
             cladding.Clear();
             if (view == EViewCladdingFilters.CLADDING_FRONT)
