@@ -693,5 +693,10 @@ namespace BaseClasses
 
             return true; //all params same => objects equal
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
