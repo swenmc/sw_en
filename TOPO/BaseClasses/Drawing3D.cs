@@ -5957,12 +5957,6 @@ namespace BaseClasses
             }
             else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
-                // Ak vyberiem filter pre foundations, chcem aby sa automaticky nastavilo v display options zobrazenie foundations
-                sDisplayOptions.bDisplayFoundations = true;
-                sDisplayOptions.bDisplayReinforcementBars = true;
-                sDisplayOptions.bDisplayFloorSlab = true;
-                sDisplayOptions.bDisplayFoundationsDescription = true;
-
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
@@ -5970,23 +5964,10 @@ namespace BaseClasses
             }
             else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
-                // Ak vyberiem filter pre floor slabs, chcem aby sa automaticky nastavilo v display options zobrazenie slabs
-                sDisplayOptions.bDisplayFloorSlab = true;
-                sDisplayOptions.bDisplaySlabRebates = true;
-                sDisplayOptions.bDisplaySawCuts = true;
-                sDisplayOptions.bDisplayControlJoints = true;
-
-                sDisplayOptions.bDisplayFloorSlabDescription = true;
-                sDisplayOptions.bDisplaySawCutsDescription = true;
-                sDisplayOptions.bDisplayControlJointsDescription = true;
-
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
                 _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
-
-                //_model.m_arrSawCuts = model.m_arrSawCuts;
-                //_model.m_arrControlJoints = model.m_arrControlJoints;
             }
 
             if (sDisplayOptions.CO_ViewCladding != (int)EViewCladdingFilters.All)
@@ -5995,44 +5976,6 @@ namespace BaseClasses
                 cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl };
             }
-            
-
-            //if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_FRONT)
-            //{
-            //    CCladding cl = new CCladding();
-            //    cl.listOfCladdingSheetsFrontWall = ModelHelper.GetCladdingSheets_Front(model);
-            //    cl.SetCladdingWireframePoints();
-            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            //}
-            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
-            //{
-            //    CCladding cl = new CCladding();
-            //    cl.listOfCladdingSheetsBackWall = ModelHelper.GetCladdingSheets_Back(model);
-            //    cl.SetCladdingWireframePoints();
-            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            //}
-            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
-            //{
-            //    CCladding cl = new CCladding();
-            //    cl.listOfCladdingSheetsLeftWall = ModelHelper.GetCladdingSheets_Left(model);
-            //    cl.SetCladdingWireframePoints();
-            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            //}
-            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
-            //{
-            //    CCladding cl = new CCladding();
-            //    cl.listOfCladdingSheetsRightWall = ModelHelper.GetCladdingSheets_Right(model);
-            //    cl.SetCladdingWireframePoints();
-            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            //}
-            //else if (sDisplayOptions.CO_ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
-            //{
-            //    CCladding cl = new CCladding();
-            //    cl.listOfCladdingSheetsRoofRight = ModelHelper.GetCladdingSheets_Roof_Right(model);
-            //    cl.listOfCladdingSheetsRoofLeft = ModelHelper.GetCladdingSheets_Roof_Left(model);
-            //    cl.SetCladdingWireframePoints();
-            //    _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
-            //}
 
             return _model;
         }
@@ -6040,6 +5983,12 @@ namespace BaseClasses
         public static CModel GetModelWithoutCanopies(CModel model)
         {
             CModel _model = new CModel();
+
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------
+            // TO Ondrej - tu treba doriesit, co vsetko sa ma z povodneho hlavneho modelu prednastavit
+            // TO Ondrej - doplnil som zakladne parametre, ktore mi prisli dolezite
+
+            _model.eKitset = model.eKitset;
             _model.L1_Bays = model.L1_Bays;
             _model.fL_tot_centerline = model.fL_tot_centerline;
             _model.fW_frame_centerline = model.fW_frame_centerline;
@@ -6051,6 +6000,22 @@ namespace BaseClasses
             _model.fDist_BackColumns = model.fDist_BackColumns;
             _model.fBottomGirtPosition = model.fBottomGirtPosition;
             _model.iOneRafterPurlinNo = model.iOneRafterPurlinNo;
+
+            _model.fL_tot_overall = model.fL_tot_overall;
+            _model.fW_frame_overall = model.fW_frame_overall;
+            _model.fH1_frame_overall = model.fH1_frame_overall;
+            _model.fH2_frame_overall = model.fH2_frame_overall;
+
+            _model.m_sProjectName = model.m_sProjectName;
+            _model.m_sConstObjectName = model.m_sConstObjectName;
+            _model.m_sFileName = model.m_sFileName;
+
+            _model.m_eSLN = model.m_eSLN;
+            _model.m_eNDOF = model.m_eNDOF;
+            _model.m_eGCS = model.m_eGCS;
+
+            _model.m_arrMat = model.m_arrMat;
+            _model.m_arrCrSc = model.m_arrCrSc;
 
             _model.m_arrMembers = ModelHelper.GetMembersIgnoreCanopies(model);
             _model.m_arrNodes = ModelHelper.GetNodesFromMembers(_model.m_arrMembers).ToArray();

@@ -24,7 +24,9 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         #region private fields
-        #region general
+
+        // Zoradene podla poradia a tabov v GUI
+        // General
         private bool m_LightDirectional;
         private bool m_LightPoint;
         private bool m_LightSpot;
@@ -33,23 +35,14 @@ namespace PFD
         private bool m_MaterialDiffuse;
         private bool m_MaterialEmissive;
 
-        //Color display options
-        private bool m_ColorsAccordingToMembersPrefix;
-        private bool m_ColorsAccordingToMembersPosition;
-        private bool m_ColorsAccordingToSections;
-
-        private bool m_DisplayDistinguishedColorMember;
-        //private bool m_DisplayTransparentModelMember;
-
         private bool MShowGlobalAxis;
         private bool MShowLocalMembersAxis;
-        private bool MIsEnabledLocalMembersAxis;
         private bool MShowSurfaceLoadsAxis;
+
+        private bool MIsEnabledLocalMembersAxis;
         private bool MIsEnabledSurfaceLoadsAxis;
-        #endregion general
 
-        // TODO - upravit poradie properties podla GUI
-
+        // Objects
         private bool m_DisplayMembers;
         private bool m_DisplayJoints;
         private bool m_DisplayPlates;
@@ -61,26 +54,6 @@ namespace PFD
         private bool m_DisplaySawCuts;
         private bool m_DisplayControlJoints;
         private bool m_DisplayNodalSupports;
-        private bool m_DisplayMembersCenterLines;
-        private bool m_DisplaySolidModel;
-        private bool m_DisplayWireFrameModel;
-
-        private bool m_DisplayMembersWireFrame;
-        private bool m_DisplayJointsWireFrame;
-        private bool m_DisplayPlatesWireFrame;
-        private bool m_DisplayConnectorsWireFrame;
-        private bool m_DisplayNodesWireFrame;
-        private bool m_DisplayFoundationsWireFrame;
-        private bool m_DisplayReinforcementBarsWireFrame;
-        private bool m_DisplayFloorSlabWireFrame;
-        private bool m_DisplayCladdingWireFrame;
-        private bool m_DisplayFibreglassWireFrame;
-        private bool m_DisplayDoorsWireFrame;
-        private bool m_DisplayWindowsWireFrame;
-
-        private bool m_DoorsSimpleSolidModel;
-        private bool m_DoorsSimpleWireframe;
-        private bool m_WindowOutlineOnly;
 
         private bool m_DisplayCladding;
         private bool m_DisplayCladdingLeftWall;
@@ -92,13 +65,28 @@ namespace PFD
         private bool m_DisplayDoors;
         private bool m_DisplayWindows;
 
-        private bool m_ColoredCenterlines;
+        private bool m_DisplayMembersCenterLines;
+        private bool m_DisplaySolidModel;
 
-        // Labels and axes
-        private bool MShowLoadsLabels;
-        private bool MShowLoadsLabelsUnits;
+        private bool m_DisplayWireFrameModel;
+        private bool m_DisplayMembersWireFrame;
+        private bool m_DisplayJointsWireFrame;
+        private bool m_DisplayPlatesWireFrame;
+        private bool m_DisplayConnectorsWireFrame;
+        //private bool m_DisplayNodesWireFrame;
+        private bool m_DisplayFoundationsWireFrame;
+        private bool m_DisplayReinforcementBarsWireFrame;
+        private bool m_DisplayFloorSlabWireFrame;
+        //private bool m_DisplaySlabRebateWireFrame;
+        private bool m_DisplayCladdingWireFrame;
+        private bool m_DisplayFibreglassWireFrame;
+        private bool m_DisplayDoorsWireFrame;
+        private bool m_DisplayWindowsWireFrame;
 
-        // Member description options
+        private bool m_DoorsSimpleSolidModel;
+        private bool m_DoorsSimpleWireframe;
+        private bool m_WindowOutlineOnly;
+
         private bool MShowMemberDescription;
         private bool MShowMemberID;
         private bool MShowMemberPrefix;
@@ -106,6 +94,7 @@ namespace PFD
         private bool MShowMemberRealLength;
         private bool MShowMemberRealLengthInMM;
         private bool MShowMemberRealLengthUnit;
+
         private bool MShowNodesDescription;
 
         private bool MShowFoundationsDescription;
@@ -151,137 +140,178 @@ namespace PFD
         private float m_WireFrameLineThickness;
 
         [NonSerialized]
+        private Color m_NodeColor;
+        private int m_NodeColorIndex;
+
+        [NonSerialized]
+        private Color m_NodeDescriptionTextColor;
+        private int m_NodeDescriptionTextColorIndex;
+
+        [NonSerialized]
+        private Color m_MemberDescriptionTextColor;
+        private int m_MemberDescriptionTextColorIndex;
+
+        [NonSerialized]
+        private Color m_DimensionTextColor;
+        private int m_DimensionTextColorIndex;
+
+        [NonSerialized]
+        private Color m_DimensionLineColor;
+        private int m_DimensionLineColorIndex;
+
+        [NonSerialized]
+        private Color m_GridLineLabelTextColor;
+        private int m_GridLineLabelTextColorIndex;
+
+        [NonSerialized]
+        private Color m_GridLineColor;
+        private int m_GridLineColorIndex;
+        private int m_GridLinePatternType;
+
+        [NonSerialized]
+        private Color m_SectionSymbolLabelTextColor;
+        private int m_SectionSymbolLabelTextColorIndex;
+
+        [NonSerialized]
+        private Color m_SectionSymbolColor;
+        private int m_SectionSymbolColorIndex;
+
+        [NonSerialized]
+        private Color m_DetailSymbolLabelTextColor = Colors.LightPink;
+        private int m_DetailSymbolLabelTextColorIndex;
+
+        [NonSerialized]
+        private Color? m_DetailSymbolLabelBackColor; // TO Ondrej - toto by som prerobil mame to tak preto ze transparent povazujeme za null, ja by som pridal opacity a tym by sa to zrusilo 
+        private int m_DetailSymbolLabelBackColorIndex;
+
+        [NonSerialized]
+        private Color m_DetailSymbolColor;
+        private int m_DetailSymbolColorIndex;
+
+        [NonSerialized]
+        private Color m_SawCutTextColor;
+        private int m_SawCutTextColorIndex;
+
+        [NonSerialized]
+        private Color m_SawCutLineColor;
+        private int m_SawCutLineColorIndex;
+        private int m_SawCutLinePatternType;
+
+        [NonSerialized]
+        private Color m_ControlJointTextColor;
+        private int m_ControlJointTextColorIndex;
+
+        [NonSerialized]
+        private Color m_ControlJointLineColor;
+        private int m_ControlJointLineColorIndex;
+        private int m_ControlJointLinePatternType;
+
+        [NonSerialized]
+        private Color m_FoundationTextColor;
+        private int m_FoundationTextColorIndex;
+
+        [NonSerialized]
+        private Color m_FloorSlabTextColor;
+        private int m_FloorSlabTextColorIndex;
+
+        [NonSerialized]
+        private Color m_FoundationColor;
+        private int m_FoundationColorIndex;
+
+        [NonSerialized]
+        private Color m_FloorSlabColor;
+        private int m_FloorSlabColorIndex;
+
+        [NonSerialized]
+        private Color m_SlabRebateColor;
+        private int m_SlabRebateColorIndex;
+
+        [NonSerialized]
         private Color m_MemberCenterlineColor;
         private int m_MemberCenterlineColorIndex;
         private float m_MemberCenterlineThickness;
 
         [NonSerialized]
-        private Color m_NodeColor;
-        private int m_NodeColorIndex;
-        [NonSerialized]
-        private Color m_NodeDescriptionTextColor = Colors.Cyan;
-        private int m_NodeDescriptionTextColorIndex;
-        [NonSerialized]
-        private Color m_MemberDescriptionTextColor = Colors.Beige;
-        private int m_MemberDescriptionTextColorIndex;
-        [NonSerialized]
-        private Color m_DimensionTextColor = Colors.LightGreen;
-        private int m_DimensionTextColorIndex;
-        [NonSerialized]
-        private Color m_DimensionLineColor = Colors.LightGreen;
-        private int m_DimensionLineColorIndex;
-
-        [NonSerialized]
-        private Color m_GridLineLabelTextColor = Colors.Coral;
-        private int m_GridLineLabelTextColorIndex;
-        [NonSerialized]
-        private Color m_GridLineColor = Colors.Coral;
-        private int m_GridLineColorIndex;
-        private int m_GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
-
-        [NonSerialized]
-        private Color m_SectionSymbolLabelTextColor = Colors.Cyan;
-        private int m_SectionSymbolLabelTextColorIndex;
-        [NonSerialized]
-        private Color m_SectionSymbolColor = Colors.Cyan;
-        private int m_SectionSymbolColorIndex;
-
-        [NonSerialized]
-        private Color m_DetailSymbolLabelTextColor = Colors.LightPink;
-
-        [NonSerialized]
-        private Color? m_DetailSymbolLabelBackColor = Colors.White;
-        private int m_DetailSymbolLabelTextColorIndex;
-        private int m_DetailSymbolLabelBackColorIndex;
-        [NonSerialized]
-        private Color m_DetailSymbolColor = Colors.LightPink;
-        private int m_DetailSymbolColorIndex;
-
-
-        [NonSerialized]
-        private Color m_SawCutTextColor = Colors.Goldenrod;
-        private int m_SawCutTextColorIndex;
-        [NonSerialized]
-        private Color m_SawCutLineColor = Colors.Goldenrod;
-        private int m_SawCutLineColorIndex;
-        private int m_SawCutLinePatternType = (int)ELinePatternType.DOTTED;
-
-        [NonSerialized]
-        private Color m_ControlJointTextColor = Colors.BlueViolet;
-        private int m_ControlJointTextColorIndex;
-        [NonSerialized]
-        private Color m_ControlJointLineColor = Colors.BlueViolet;
-        private int m_ControlJointLineColorIndex;
-        private int m_ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
-
-        [NonSerialized]
-        private Color m_FoundationTextColor = Colors.HotPink;
-        private int m_FoundationTextColorIndex;
-        [NonSerialized]
-        private Color m_FloorSlabTextColor = Colors.HotPink;
-        private int m_FloorSlabTextColorIndex;
-
-        [NonSerialized]
-        private Color m_FoundationColor = Colors.DarkGray;
-        private int m_FoundationColorIndex;
-        [NonSerialized]
-        private Color m_FloorSlabColor = Colors.LightGray;
-        private int m_FloorSlabColorIndex;
-        [NonSerialized]
-        private Color m_SlabRebateColor = Colors.OrangeRed;
-        private int m_SlabRebateColorIndex;
-
-        [NonSerialized]
-        private Color m_CladdingTextColor = Colors.OrangeRed;
+        private Color m_CladdingTextColor;
         private int m_CladdingTextColorIndex;
+
         [NonSerialized]
-        private Color m_FibreglassTextColor = Colors.Indigo;
+        private Color m_FibreglassTextColor;
         private int m_FibreglassTextColorIndex;
+
         [NonSerialized]
-        private Color m_DoorTextColor = Colors.Coral;
+        private Color m_DoorTextColor;
         private int m_DoorTextColorIndex;
+
         [NonSerialized]
-        private Color m_WindowTextColor = Colors.Cyan;
+        private Color m_WindowTextColor;
         private int m_WindowTextColorIndex;
 
-        private int m_PlateColorIndex;
         [NonSerialized]
-        private Color m_PlateColor = Colors.Gray;
-
-        private int m_ScrewColorIndex;
-        [NonSerialized]
-        private Color m_ScrewColor = Colors.Blue;
-
-        private int m_AnchorColorIndex;
-        [NonSerialized]
-        private Color m_AnchorColor = Colors.LightGoldenrodYellow;
-
-        private int m_WasherColorIndex;
-        [NonSerialized]
-        private Color m_WasherColor = Colors.LightGreen;
-
-        private int m_NutColorIndex;
-        [NonSerialized]
-        private Color m_NutColor = Colors.LightPink;
-
+        private Color m_BackgroundColor;
         private int m_BackgroundColorIndex;
-        [NonSerialized]
-        private Color m_BackgroundColor = Colors.Black;
 
-        private int m_LongReinTop_x_ColorIndex;
-        private int m_LongReinTop_y_ColorIndex;
-        private int m_LongReinBottom_x_ColorIndex;
-        private int m_LongReinBottom_y_ColorIndex;
+        [NonSerialized]
+        private Color m_PlateColor;
+        private int m_PlateColorIndex;
+
+        [NonSerialized]
+        private Color m_ScrewColor;
+        private int m_ScrewColorIndex;
+
+        [NonSerialized]
+        private Color m_AnchorColor;
+        private int m_AnchorColorIndex;
+
+        [NonSerialized]
+        private Color m_WasherColor;
+        private int m_WasherColorIndex;
+
+        [NonSerialized]
+        private Color m_NutColor;
+        private int m_NutColorIndex;
+
         [NonSerialized]
         private Color m_LongReinTop_x_Color;
+        private int m_LongReinTop_x_ColorIndex;
+
         [NonSerialized]
         private Color m_LongReinTop_y_Color;
+        private int m_LongReinTop_y_ColorIndex;
+
         [NonSerialized]
         private Color m_LongReinBottom_x_Color;
+        private int m_LongReinBottom_x_ColorIndex;
+
         [NonSerialized]
         private Color m_LongReinBottom_y_Color;
+        private int m_LongReinBottom_y_ColorIndex;
 
-        //To Mato: naco sa to tu inicializovalo, nato je konstruktor
+        private bool m_ColorsAccordingToMembersPrefix;
+        private bool m_ColorsAccordingToMembersPosition;
+
+        private bool m_ColorsAccordingToSections;
+
+        private bool m_DisplayDistinguishedColorMember;
+        private bool m_ColoredCenterlines;
+
+        private bool m_CladdingSheetColoursByID;
+        private bool m_UseDifColorForSheetWithOverlap;
+
+        [NonSerialized]
+        private Color m_CladdingSheetColor;
+        private int m_CladdingSheetColorIndex;
+
+        [NonSerialized]
+        private Color m_FibreglassSheetColor;
+        private int m_FibreglassSheetColorIndex;
+
+        private bool m_UseTextures;
+        private bool m_UseTexturesMembers;
+        private bool m_UseTexturesPlates;
+        private bool m_UseTexturesCladding;
+
+        // Opacity
         private float m_MemberSolidModelOpacity;
         private float m_PlateSolidModelOpacity;
         private float m_ScrewSolidModelOpacity;
@@ -299,44 +329,7 @@ namespace PFD
         private float m_WindowPanelOpacity;
         private float m_FibreglassOpacity;
 
-        private float m_FloorSlabTextSize;
-        private float m_GridlinesSize;
-        private float m_GridLineLabelSize;
-        private float m_SectionSymbolsSize;
-        private float m_SectionSymbolLabelSize;
-        private float m_DetailSymbolSize;
-        private float m_DetailSymbolLabelSize;
-        private float m_MembersDescriptionSize;
-        private float m_NodesDescriptionSize;
-        private float m_SawCutTextSize;
-        private float m_ControlJointTextSize;
-        private float m_FoundationTextSize;
-        private float m_DimensionsTextSize;
-        private float m_DimensionsLineRadius;
-        private float m_DimensionsScale;
-        private float m_DescriptionTextWidthScaleFactor;
-        private float m_CladdingDescriptionSize;
-        private float m_FibreglassDescriptionSize;
-        private float m_DoorDescriptionSize;
-        private float m_WindowDescriptionSize;
-
-        private bool m_CladdingSheetColoursByID;
-
-        private bool m_UseDifColorForSheetWithOverlap;
-        private int m_CladdingSheetColorIndex;
-        [NonSerialized]
-        private Color m_CladdingSheetColor = Colors.Yellow;
-        private int m_FibreglassSheetColorIndex;
-        [NonSerialized]
-        private Color m_FibreglassSheetColor = Colors.OrangeRed;
-
-        private bool m_UseTextures;
-        private bool m_UseTexturesMembers;
-        private bool m_UseTexturesPlates;
-        private bool m_UseTexturesCladding;
-
-        #region Loads
-        // Load Case - display options
+        // Loads
         private bool MShowLoads;
         private bool MShowNodalLoads;
         private bool MShowLoadsOnMembers;
@@ -347,10 +340,43 @@ namespace PFD
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
 
-
+        private bool MShowLoadsLabels;
+        private bool MShowLoadsLabelsUnits;
 
         private float m_LoadSizeScaleIn3D;
-        #endregion Loads
+
+        // Texts and Symbols
+        private float m_FloorSlabTextSize;
+
+        private float m_GridlinesSize;
+        private float m_GridLineLabelSize;
+
+        private float m_SectionSymbolsSize;
+        private float m_SectionSymbolLabelSize;
+
+        private float m_DetailSymbolSize;
+        private float m_DetailSymbolLabelSize;
+
+        private float m_MembersDescriptionSize;
+
+        private float m_NodesDescriptionSize;
+
+        private float m_SawCutTextSize;
+
+        private float m_ControlJointTextSize;
+
+        private float m_FoundationTextSize;
+
+        private float m_DimensionsTextSize;
+        private float m_DimensionsLineRadius;
+        private float m_DimensionsScale;
+
+        private float m_DescriptionTextWidthScaleFactor;
+
+        private float m_CladdingDescriptionSize;
+        private float m_FibreglassDescriptionSize;
+        private float m_DoorDescriptionSize;
+        private float m_WindowDescriptionSize;
 
         #endregion private fields
 
@@ -2706,6 +2732,7 @@ namespace PFD
             }
         }
 
+        /*
         public bool DisplayNodesWireFrame
         {
             get
@@ -2719,6 +2746,7 @@ namespace PFD
                 NotifyPropertyChanged("DisplayNodesWireFrame");
             }
         }
+        */
 
         public bool DisplayFoundationsWireFrame
         {

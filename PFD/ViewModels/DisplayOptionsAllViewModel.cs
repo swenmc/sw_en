@@ -136,9 +136,6 @@ namespace PFD
 
             //-----------------------------------------------------------
 
-            // IN WORK 17.6.2021
-            // TODO - 701
-
             #region GUI
             #region 3D SCENE
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LightAmbient = true;
@@ -679,7 +676,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FoundationTextSize = 1.5f / 100f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsTextSize = 1.5f / 100f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsLineRadius = 1f / 1500f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsScale = 2f / 10f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsScale = 1.5f / 10f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DescriptionTextWidthScaleFactor = 0.3f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CladdingDescriptionSize = 1.5f / 100f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FibreglassDescriptionSize = 1.5f / 100f;
@@ -792,7 +789,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFoundationsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFloorSlabWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].CO_TransformScreenLines3DToCylinders3D = true;
-            //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFoundations = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayReinforcementBars = false;
