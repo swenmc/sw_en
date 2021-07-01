@@ -4658,8 +4658,16 @@ namespace BaseClasses
             }
             else
             {
+                float fMaximumEnabledModelWidth = 100; // Limit nastaveny v GUI pre Width
+                float fMaximumEnabledModelLength = 300; // Limit nastaveny v GUI pre Length
+
+                float fFactor_X = 1.5f + 0.6f * fModel_Length_X / fMaximumEnabledModelWidth; // Smer X
+                float fFactor_Y = 1.5f + 0.3f * fModel_Length_Y / fMaximumEnabledModelLength; // Smer Y
+
+                float fMaximumFactor = 1.8f; // Maximalny faktor
+
                 sDisplayOptions.CO_OrtographicCameraWidth = maxLen;
-                sDisplayOptions.CO_OrtographicCameraWidth *= 1.6;
+                sDisplayOptions.CO_OrtographicCameraWidth *= Math.Min(Math.Max(fFactor_X, fFactor_Y), fMaximumFactor); // 1.6;
             }
         }
         //  Lights
