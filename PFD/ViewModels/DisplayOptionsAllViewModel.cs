@@ -176,19 +176,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.WhiteSmoke);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].MemberCenterlineThickness = 2;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].NodeDescriptionTextFontSize = 12;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].MemberDescriptionTextFontSize = 12;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DimensionTextFontSize = 12;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].GridLineLabelTextFontSize = 30;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].SectionSymbolLabelTextFontSize = 30;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DetailSymbolLabelTextFontSize = 30;
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].SawCutTextFontSize = 12;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ControlJointTextFontSize = 12;
-
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FoundationTextFontSize = 12;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FloorSlabTextFontSize = 12;
-
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].NodeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Beige);
@@ -627,44 +614,35 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
             //-----------------------------------------------------------
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].MemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGreen);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionTextFontSize = 14;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkBlue);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].GridLineLabelTextFontSize = 30;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].GridLineLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].GridLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SawCutTextFontSize = 14;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SawCutTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SawCutLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SawCutLinePatternType = (int)ELinePatternType.DOTTED;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ControlJointTextFontSize = 14;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ControlJointTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ControlJointLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SectionSymbolLabelTextFontSize = 30;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SectionSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SectionSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SectionSymbolLinePatternType = ELinePatternType.DASHDOTTED;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelTextFontSize = 30;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndex(Colors.White); // To Ondrej Toto asi nefunguje ??? // BUG 860
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             //DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FoundationTextFontSize = 14;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FoundationTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FloorSlabTextFontSize = 14;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FloorSlabTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
@@ -685,6 +663,28 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FloorSlabSolidModelOpacity = 0;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SlabRebateSolidModelOpacity = 0;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ReinforcementBarSolidModelOpacity = 1;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].GridlinesSize = 1f / 20f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].GridLineLabelSize = 1f / 40f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SectionSymbolsSize = 1f / 20f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SectionSymbolLabelSize = 1f / 40f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolSize = 1f / 20f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DetailSymbolLabelSize = 1 / 40f;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FloorSlabTextSize = 1.5f / 20f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].MembersDescriptionSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].NodesDescriptionSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SawCutTextSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ControlJointTextSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FoundationTextSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsTextSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsLineRadius = 1f / 1500f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DimensionsScale = 2f / 10f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DescriptionTextWidthScaleFactor = 0.3f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CladdingDescriptionSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FibreglassDescriptionSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DoorDescriptionSize = 1.5f / 100f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].WindowDescriptionSize = 1.5f / 100f;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CO_IsExport = true;
 

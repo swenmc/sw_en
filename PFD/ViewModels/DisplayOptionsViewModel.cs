@@ -48,6 +48,7 @@ namespace PFD
         private bool MIsEnabledSurfaceLoadsAxis;
         #endregion general
 
+        // TODO - upravit poradie properties podla GUI
 
         private bool m_DisplayMembers;
         private bool m_DisplayJoints;
@@ -153,19 +154,6 @@ namespace PFD
         private Color m_MemberCenterlineColor;
         private int m_MemberCenterlineColorIndex;
         private float m_MemberCenterlineThickness;
-
-        private float m_NodeDescriptionTextFontSize;
-        private float m_MemberDescriptionTextFontSize;
-        private float m_DimensionTextFontSize;
-        private float m_GridLineLabelTextFontSize;
-        private float m_SectionSymbolLabelTextFontSize;
-        private float m_DetailSymbolLabelTextFontSize;
-
-        private float m_SawCutTextFontSize;
-        private float m_ControlJointTextFontSize;
-
-        private float m_FoundationTextFontSize;
-        private float m_FloorSlabTextFontSize;
 
         [NonSerialized]
         private Color m_NodeColor;
@@ -1068,146 +1056,6 @@ namespace PFD
             {
                 m_MemberCenterlineThickness = value;
                 NotifyPropertyChanged("MemberCenterlineThickness");
-            }
-        }
-
-        public float NodeDescriptionTextFontSize
-        {
-            get
-            {
-                return m_NodeDescriptionTextFontSize;
-            }
-
-            set
-            {
-                m_NodeDescriptionTextFontSize = value;
-                NotifyPropertyChanged("NodeDescriptionTextFontSize");
-            }
-        }
-
-        public float MemberDescriptionTextFontSize
-        {
-            get
-            {
-                return m_MemberDescriptionTextFontSize;
-            }
-
-            set
-            {
-                m_MemberDescriptionTextFontSize = value;
-                NotifyPropertyChanged("MemberDescriptionTextFontSize");
-            }
-        }
-
-        public float DimensionTextFontSize
-        {
-            get
-            {
-                return m_DimensionTextFontSize;
-            }
-
-            set
-            {
-                m_DimensionTextFontSize = value;
-                NotifyPropertyChanged("DimensionTextFontSize");
-            }
-        }
-
-        public float GridLineLabelTextFontSize
-        {
-            get
-            {
-                return m_GridLineLabelTextFontSize;
-            }
-
-            set
-            {
-                m_GridLineLabelTextFontSize = value;
-                NotifyPropertyChanged("GridLineLabelTextFontSize");
-            }
-        }
-
-        public float SectionSymbolLabelTextFontSize
-        {
-            get
-            {
-                return m_SectionSymbolLabelTextFontSize;
-            }
-
-            set
-            {
-                m_SectionSymbolLabelTextFontSize = value;
-                NotifyPropertyChanged("SectionSymbolLabelTextFontSize");
-            }
-        }
-
-        public float DetailSymbolLabelTextFontSize
-        {
-            get
-            {
-                return m_DetailSymbolLabelTextFontSize;
-            }
-
-            set
-            {
-                m_DetailSymbolLabelTextFontSize = value;
-                NotifyPropertyChanged("DetailSymbolLabelTextFontSize");
-            }
-        }
-
-        public float SawCutTextFontSize
-        {
-            get
-            {
-                return m_SawCutTextFontSize;
-            }
-
-            set
-            {
-                m_SawCutTextFontSize = value;
-                NotifyPropertyChanged("SawCutTextFontSize");
-            }
-        }
-
-        public float ControlJointTextFontSize
-        {
-            get
-            {
-                return m_ControlJointTextFontSize;
-            }
-
-            set
-            {
-                m_ControlJointTextFontSize = value;
-                NotifyPropertyChanged("ControlJointTextFontSize");
-            }
-        }
-
-        public float FoundationTextFontSize
-        {
-            get
-            {
-                return m_FoundationTextFontSize;
-            }
-
-            set
-            {
-                m_FoundationTextFontSize = value;
-                NotifyPropertyChanged("FoundationTextFontSize");
-            }
-        }
-
-        public float FloorSlabTextFontSize
-        {
-            get
-            {
-                return m_FloorSlabTextFontSize;
-            }
-
-            set
-            {
-                m_FloorSlabTextFontSize = value;
-                NotifyPropertyChanged("FloorSlabTextFontSize");
             }
         }
 
@@ -4775,39 +4623,29 @@ namespace PFD
 
             // Texts and Symbols
             FloorSlabTextSize = newVM.FloorSlabTextSize;
-            FloorSlabTextFontSize = newVM.FloorSlabTextFontSize; // Nie je v GetDisplayOptions
 
             GridlinesSize = newVM.GridlinesSize;
             GridLineLabelSize = newVM.GridLineLabelSize;
-            GridLineLabelTextFontSize = newVM.GridLineLabelTextFontSize; // Nie je v GetDisplayOptions
 
             SectionSymbolsSize = newVM.SectionSymbolsSize;
             SectionSymbolLabelSize = newVM.SectionSymbolLabelSize;
-            SectionSymbolLabelTextFontSize = newVM.SectionSymbolLabelTextFontSize; // Nie je v GetDisplayOptions
 
             DetailSymbolSize = newVM.DetailSymbolSize;
             DetailSymbolLabelSize = newVM.DetailSymbolLabelSize;
-            DetailSymbolLabelTextFontSize = newVM.DetailSymbolLabelTextFontSize; // Nie je v GetDisplayOptions
 
             MembersDescriptionSize = newVM.MembersDescriptionSize;
-            MemberDescriptionTextFontSize = newVM.MemberDescriptionTextFontSize; // Nie je v GetDisplayOptions
 
             NodesDescriptionSize = newVM.NodesDescriptionSize;
-            NodeDescriptionTextFontSize = newVM.NodeDescriptionTextFontSize; // Nie je v GetDisplayOptions
 
             SawCutTextSize = newVM.SawCutTextSize;
-            SawCutTextFontSize = newVM.SawCutTextFontSize; // Nie je v GetDisplayOptions
 
             ControlJointTextSize = newVM.ControlJointTextSize;
-            ControlJointTextFontSize = newVM.ControlJointTextFontSize; // Nie je v GetDisplayOptions
 
             FoundationTextSize = newVM.FoundationTextSize;
-            FoundationTextFontSize = newVM.FoundationTextFontSize; // Nie je v GetDisplayOptions
 
             DimensionsTextSize = newVM.DimensionsTextSize;
             DimensionsLineRadius = newVM.DimensionsLineRadius;
             DimensionsScale = newVM.DimensionsScale;
-            DimensionTextFontSize = newVM.DimensionTextFontSize; // Nie je v GetDisplayOptions
 
             DescriptionTextWidthScaleFactor = newVM.DescriptionTextWidthScaleFactor;
 
