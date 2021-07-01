@@ -178,7 +178,8 @@ namespace BaseClasses.Helpers
 
         public static bool AreConnectorsDisplayed(DisplayOptions opts)
         {
-            return opts.bDisplayConnectors || (opts.bDisplayWireFrameModel && opts.bDisplayJointsWireFrame && opts.bDisplayPlatesWireFrame && opts.bDisplayConnectorsWireFrame);
+            //return opts.bDisplayConnectors || (opts.bDisplayWireFrameModel && opts.bDisplayJointsWireFrame && opts.bDisplayPlatesWireFrame && opts.bDisplayConnectorsWireFrame);
+            return opts.bDisplayConnectors || (opts.bDisplayWireFrameModel && opts.bDisplayJointsWireFrame && opts.bDisplayConnectorsWireFrame);
         }
     }
 }
