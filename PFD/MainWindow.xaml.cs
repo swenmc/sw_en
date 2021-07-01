@@ -525,6 +525,7 @@ namespace PFD
             // Clear results of previous calculation
             //DeleteCalculationResults();
 
+            // Bug 859 - presunut mimo tuto funkciu
             // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();
             SetCrossSectionValuesFromDatabase();
