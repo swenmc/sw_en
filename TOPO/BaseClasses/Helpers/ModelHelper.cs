@@ -159,7 +159,7 @@ namespace BaseClasses.Helpers
         public static CCladding GetCladdingBasedOnView(CModel model, EViewCladdingFilters view)
         {
             CCladding source = model.m_arrGOCladding[0];
-            CCladding cladding = source.Clone();
+            CCladding cladding = source.Clone(); // To Ondrej - sme si isti ze toto Clone funguje spravne pre vsetky properties objektov ktore su v cladding ???
             cladding.Clear();
             if (view == EViewCladdingFilters.CLADDING_FRONT)
             {
@@ -183,10 +183,19 @@ namespace BaseClasses.Helpers
             }
             else if (view == EViewCladdingFilters.CLADDING_ROOF)
             {
-                cladding.listOfCladdingSheetsRoofLeft = source.listOfCladdingSheetsRoofLeft;
-                cladding.listOfFibreGlassSheetsRoofLeft = source.listOfFibreGlassSheetsRoofLeft;
                 cladding.listOfCladdingSheetsRoofRight = source.listOfCladdingSheetsRoofRight;
                 cladding.listOfFibreGlassSheetsRoofRight = source.listOfFibreGlassSheetsRoofRight;
+
+                if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                {
+                    cladding.listOfCladdingSheetsRoofLeft = source.listOfCladdingSheetsRoofLeft;
+                    cladding.listOfFibreGlassSheetsRoofLeft = source.listOfFibreGlassSheetsRoofLeft;
+                }
+                else
+                {
+                    cladding.listOfCladdingSheetsRoofLeft = null;
+                    cladding.listOfFibreGlassSheetsRoofLeft = null;
+                }
             }
 
             return cladding;

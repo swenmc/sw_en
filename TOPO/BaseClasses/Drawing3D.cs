@@ -5873,6 +5873,12 @@ namespace BaseClasses
         public static CModel GetModelAccordingToView(CModel model, DisplayOptions sDisplayOptions)
         {
             CModel _model = new CModel();
+
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------
+            // TO Ondrej - tu treba doriesit, co vsetko sa ma z povodneho hlavneho modelu prednastavit
+            // TO Ondrej - doplnil som zakladne parametre, ktore mi prisli dolezite
+
+            _model.eKitset = model.eKitset;
             _model.L1_Bays = model.L1_Bays;
             _model.fL_tot_centerline = model.fL_tot_centerline;
             _model.fW_frame_centerline = model.fW_frame_centerline;
@@ -5884,6 +5890,23 @@ namespace BaseClasses
             _model.fDist_BackColumns = model.fDist_BackColumns;
             _model.fBottomGirtPosition = model.fBottomGirtPosition;
             _model.iOneRafterPurlinNo = model.iOneRafterPurlinNo;
+
+            _model.fL_tot_overall = model.fL_tot_overall;
+            _model.fW_frame_overall = model.fW_frame_overall;
+            _model.fH1_frame_overall = model.fH1_frame_overall;
+            _model.fH2_frame_overall = model.fH2_frame_overall;
+
+            _model.m_sProjectName = model.m_sProjectName;
+            _model.m_sConstObjectName = model.m_sConstObjectName;
+            _model.m_sFileName = model.m_sFileName;
+
+            _model.m_eSLN = model.m_eSLN;
+            _model.m_eNDOF = model.m_eNDOF;
+            _model.m_eGCS = model.m_eGCS;
+
+            _model.m_arrMat = model.m_arrMat;
+            _model.m_arrCrSc = model.m_arrCrSc;
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
             if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
