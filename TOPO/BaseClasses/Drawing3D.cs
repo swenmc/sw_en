@@ -4659,7 +4659,7 @@ namespace BaseClasses
             else
             {
                 sDisplayOptions.CO_OrtographicCameraWidth = maxLen;
-                sDisplayOptions.CO_OrtographicCameraWidth *= 1.5;
+                sDisplayOptions.CO_OrtographicCameraWidth *= 1.6;
             }
         }
         //  Lights
