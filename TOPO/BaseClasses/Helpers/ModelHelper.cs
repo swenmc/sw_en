@@ -203,6 +203,30 @@ namespace BaseClasses.Helpers
             return cladding;
         }
 
+        public static List<CStructure_Door> GetDoorsForViewCladding(CModel model, EViewCladdingFilters view)
+        {
+            if (model == null) return null;
+            if (model.m_arrGOStrDoors == null) return null;
+
+            if (view == EViewCladdingFilters.CLADDING_FRONT)
+            {
+                return model.m_arrGOStrDoors.Where(d => d.Side == "Front").ToList();
+            }
+            else if (view == EViewCladdingFilters.CLADDING_BACK)
+            {
+                return model.m_arrGOStrDoors.Where(d => d.Side == "Back").ToList();
+            }
+            else if (view == EViewCladdingFilters.CLADDING_LEFT)
+            {
+                return model.m_arrGOStrDoors.Where(d => d.Side == "Left").ToList();
+            }
+            else if (view == EViewCladdingFilters.CLADDING_RIGHT)
+            {
+                return model.m_arrGOStrDoors.Where(d => d.Side == "Right").ToList();
+            }            
+            else return null;
+        }
+
         //public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Front(CModel model)
         //{
         //    return model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall;
