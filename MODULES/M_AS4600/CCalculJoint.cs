@@ -55,6 +55,11 @@ namespace M_AS4600
                 return;
             }
 
+            if (!joint_temp.BIsGenerated || !joint_temp.BIsSelectedForDesign)
+            {
+                return; // Bug 859 - Joint is not generated or is not selected for design
+            }
+
             bIsDebugging = bIsDebugging_temp;
             joint = joint_temp;
             foundationCalcSettings = calcSettingsFoundation;
@@ -138,6 +143,11 @@ namespace M_AS4600
                     throw new Exception("Invalid component thickness. Check thickness of plate.");
                 }
 
+                if (((CMat_03_00)plate.m_Mat).m_ft_interval == null || ((CMat_03_00)plate.m_Mat).m_ff_yk == null)
+                {
+                    throw new Exception("Invalid component material. Check material properties.");
+                }
+
                 ff_yk_1_plate = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness((float)ft_1_plate);
                 ff_uk_1_plate = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness((float)ft_1_plate);
             }
@@ -163,6 +173,9 @@ namespace M_AS4600
 
             if (crsc_mainMember.m_Mat is CMat_03_00) // Material is Steel
             {
+                if (((CMat_03_00)crsc_mainMember.m_Mat).m_ft_interval == null || ((CMat_03_00)crsc_mainMember.m_Mat).m_ff_yk == null)
+                    throw new Exception("Invalid component material.");
+
                 ff_yk_2_MainMember = ((CMat_03_00)crsc_mainMember.m_Mat).Get_f_yk_by_thickness(ft_2_crscmainMember);
                 ff_uk_2_MainMember = ((CMat_03_00)crsc_mainMember.m_Mat).Get_f_uk_by_thickness(ft_2_crscmainMember);
             }
@@ -178,6 +191,9 @@ namespace M_AS4600
 
                 if (crsc_secMember.m_Mat is CMat_03_00) // Material is Steel
                 {
+                    if (((CMat_03_00)crsc_secMember.m_Mat).m_ft_interval == null || ((CMat_03_00)crsc_secMember.m_Mat).m_ff_yk == null)
+                        throw new Exception("Invalid component material.");
+
                     ff_yk_2_SecondaryMember = ((CMat_03_00)crsc_secMember.m_Mat).Get_f_yk_by_thickness(ft_2_crscsecMember);
                     ff_uk_2_SecondaryMember = ((CMat_03_00)crsc_secMember.m_Mat).Get_f_uk_by_thickness(ft_2_crscsecMember);
                 }
@@ -716,6 +732,10 @@ namespace M_AS4600
 
                         // Plate 1
                         designDetails.ft_1_Plate1 = plate1.Ft;
+
+                        if (((CMat_03_00)plate.m_Mat).m_ft_interval == null || ((CMat_03_00)plate.m_Mat).m_ff_yk == null)
+                            throw new Exception("Invalid component material.");
+
                         designDetails.ff_yk_1_Plate1 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plate1.Ft);
                         designDetails.ff_uk_1_Plate1 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plate1.Ft);
 
@@ -773,6 +793,10 @@ namespace M_AS4600
                     {
                         CConCom_Plate_M plateM = (CConCom_Plate_M)joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1];
                         designDetails.ft_1_Plate2 = plateM.Ft;
+
+                        if (((CMat_03_00)plate.m_Mat).m_ft_interval == null || ((CMat_03_00)plate.m_Mat).m_ff_yk == null)
+                            throw new Exception("Invalid component material.");
+
                         designDetails.ff_yk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plateM.Ft);
                         designDetails.ff_uk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plateM.Ft);
 
@@ -852,6 +876,10 @@ namespace M_AS4600
 
                     // Plate 1
                     designDetails.ft_1_Plate1 = plate1.Ft;
+
+                    if (((CMat_03_00)plate.m_Mat).m_ft_interval == null || ((CMat_03_00)plate.m_Mat).m_ff_yk == null)
+                        throw new Exception("Invalid component material.");
+
                     designDetails.ff_yk_1_Plate1 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plate1.Ft);
                     designDetails.ff_uk_1_Plate1 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plate1.Ft);
 
@@ -901,6 +929,10 @@ namespace M_AS4600
 
                     // Plate 2
                     designDetails.ft_1_Plate2 = plate2.Ft;
+
+                    if (((CMat_03_00)plate.m_Mat).m_ft_interval == null || ((CMat_03_00)plate.m_Mat).m_ff_yk == null)
+                        throw new Exception("Invalid component material.");
+
                     designDetails.ff_yk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plate2.Ft);
                     designDetails.ff_uk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plate2.Ft);
 

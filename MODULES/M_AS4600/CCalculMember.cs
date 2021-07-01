@@ -768,6 +768,9 @@ namespace M_AS4600
             // Set material properties
             if (cs.m_Mat is CMat_03_00) // Material is Steel
             {
+                if(((CMat_03_00)cs.m_Mat).m_ft_interval == null || ((CMat_03_00)cs.m_Mat).m_ff_yk == null)
+                    throw new Exception("Invalid component material.");
+
                 ff_y = ((CMat_03_00)cs.m_Mat).Get_f_yk_by_thickness(ft);
                 ff_u = ((CMat_03_00)cs.m_Mat).Get_f_uk_by_thickness(ft);
             }
