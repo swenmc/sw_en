@@ -5975,6 +5975,9 @@ namespace BaseClasses
                 CCladding cl = ModelHelper.GetCladdingBasedOnView(model, (EViewCladdingFilters)sDisplayOptions.CO_ViewCladding);
                 cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl };
+
+                _model.m_arrGOStrDoors = ModelHelper.GetDoorsForViewCladding(model, (EViewCladdingFilters)sDisplayOptions.CO_ViewCladding);
+                _model.m_arrGOStrWindows = ModelHelper.GetWindowsForViewCladding(model, (EViewCladdingFilters)sDisplayOptions.CO_ViewCladding);
             }
 
             return _model;

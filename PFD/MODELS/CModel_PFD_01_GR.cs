@@ -1790,7 +1790,7 @@ namespace PFD
                         if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Right")
                             pControlEdgePoint.X = rightEdge;
                     }
-                    bool isLeftOrBack = _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Left" || _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Back";
+                    //bool isLeftOrBack = _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Left" || _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Back";
 
                     BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
                        pControlEdgePoint, _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness, fPanelThickness, fRotationZDegrees, true, 0f,
@@ -1799,7 +1799,8 @@ namespace PFD
                        _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].CoatingColor.Name,
                        vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FlashingOpacity,
                        vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DoorPanelOpacity,
-                       _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door", isLeftOrBack, vm.GetDisplayOptions(EDisplayOptionsTypes.GUI_3D_Scene));
+                       _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door",
+                       _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide, vm.GetDisplayOptions(EDisplayOptionsTypes.GUI_3D_Scene));
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
@@ -1844,14 +1845,16 @@ namespace PFD
                         if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Right")
                             pControlEdgePoint.X = rightEdge;
                     }
-                    bool isLeftOrBack = _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Left" || _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Back";
+                    //bool isLeftOrBack = _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Left" || _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Back";
 
                     BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
                        pControlEdgePoint, _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
                        windowFlashingColor, Colors.LightBlue,
                        vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].FlashingOpacity,
                        vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].WindowPanelOpacity,
-                       fPanelThickness, fRotationZDegrees, true, 0f, isLeftOrBack, vm.GetDisplayOptions(EDisplayOptionsTypes.GUI_3D_Scene));
+                       fPanelThickness, fRotationZDegrees, true, 0f,
+                       _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide,
+                       vm.GetDisplayOptions(EDisplayOptionsTypes.GUI_3D_Scene));
 
                     m_arrGOStrWindows.Add(window_temp);
                 }

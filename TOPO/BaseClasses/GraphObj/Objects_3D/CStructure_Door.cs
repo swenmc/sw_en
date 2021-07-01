@@ -27,7 +27,8 @@ namespace BaseClasses.GraphObj
         private DiffuseMaterial m_Material_1 = null;
         private DiffuseMaterial m_Material_2 = null;
         private bool m_isRollerDoor;
-        private bool m_LeftOrBack;
+        //private bool m_LeftOrBack;
+        private string m_Side;
 
         public float m_fDim1;
         public float m_fDim2;
@@ -89,6 +90,19 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public string Side
+        {
+            get
+            {
+                return m_Side;
+            }
+
+            set
+            {
+                m_Side = value;
+            }
+        }
+
         //public int iVectorOverFactor_LCS;
         //public int iVectorUpFactor_LCS;
 
@@ -106,7 +120,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, DisplayOptions opts)
+            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, string side, DisplayOptions opts)
         {
             // TODO je tu ako parameter cela struktura DisplayOptions, takze sa mozu odstranit jednotlive samostatne parametre ako opacity, color
 
@@ -125,7 +139,8 @@ namespace BaseClasses.GraphObj
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
             IsRollerDoor = isRollerDoor;
-            m_LeftOrBack = LeftOrBack;
+            //m_LeftOrBack = LeftOrBack;
+            Side = side;
 
             m_volColor_1 = doorFlashingColor;
 
@@ -363,7 +378,7 @@ namespace BaseClasses.GraphObj
             //iVectorUpFactor_LCS = 1;
 
             float fOffsetFromPlane = -0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
-            if (m_LeftOrBack) fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;
+            if (Side == "Left" || Side == "Back") fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;
             
             PointText = new Point3D()
             {

@@ -33,7 +33,8 @@ namespace BaseClasses.GraphObj
         private float fGThickness;
         private float fRotationZDegrees;
 
-        private bool m_LeftOrBack;
+        //private bool m_LeftOrBack;
+        private string m_Side;
 
         public int SegmentNum
         {
@@ -74,6 +75,19 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public string Side
+        {
+            get
+            {
+                return m_Side;
+            }
+
+            set
+            {
+                m_Side = value;
+            }
+        }
+
         //public int iVectorOverFactor_LCS;
         //public int iVectorUpFactor_LCS;
 
@@ -111,7 +125,7 @@ namespace BaseClasses.GraphObj
         // Constructor 5
         public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
             Color windowFlashingColor, Color windowPanelColor, float fFlashingOpacity, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, 
-            float fTime, bool leftOrBack, DisplayOptions opts)
+            float fTime, string side, DisplayOptions opts)
         {
             // TODO je tu ako parameter cela struktura DisplayOptions, takze sa mozu odstranit jednotlive samostatne parametre ako opacity, color
             ID = iW_ID;
@@ -141,7 +155,8 @@ namespace BaseClasses.GraphObj
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
-            m_LeftOrBack = leftOrBack;
+            //m_LeftOrBack = leftOrBack;
+            Side = side;
 
             SetTextPointInLCS();
 
@@ -395,7 +410,7 @@ namespace BaseClasses.GraphObj
             //iVectorUpFactor_LCS = 1;
 
             float fOffsetFromPlane = - 0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
-            if (m_LeftOrBack) fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;
+            if (Side == "Left" || Side == "Back") fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;
 
             PointText = new Point3D()
             {
