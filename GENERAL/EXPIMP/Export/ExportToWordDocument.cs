@@ -920,7 +920,6 @@ namespace EXPIMP
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             DisplayOptions opts = GetDisplayOptions(view, data);
-            opts.LY_ViewsPageSize = EPageSizes.A4;
 
             string sParagraphName;
             string sImageName;
@@ -930,37 +929,37 @@ namespace EXPIMP
             {
                 sParagraphName = "[3DModelImage_MemberCenterlines_Front]";
                 sImageName = "ViewPort2.png";
-                sTitle = "Front";
+                sTitle = "Front View";
             }
             else if (view == EModelViews.BACK)
             {
                 sParagraphName = "[3DModelImage_MemberCenterlines_Back]";
                 sImageName = "ViewPort3.png";
-                sTitle = "Back";
+                sTitle = "Back View";
             }
             else if (view == EModelViews.LEFT)
             {
                 sParagraphName = "[3DModelImage_MemberCenterlines_Left]";
                 sImageName = "ViewPort4.png";
-                sTitle = "Left";
+                sTitle = "Left View";
             }
             else if (view == EModelViews.RIGHT)
             {
                 sParagraphName = "[3DModelImage_MemberCenterlines_Right]";
                 sImageName = "ViewPort5.png";
-                sTitle = "Right";
+                sTitle = "Right View";
             }
             else if (view == EModelViews.TOP)
             {
                 sParagraphName = "[3DModelImage_MemberCenterlines_Top]";
                 sImageName = "ViewPort6.png";
-                sTitle = "Top";
+                sTitle = "Top View";
             }
             else
-            {                
+            {
                 sParagraphName = "[3DModelImage_MemberSolidModel]";
                 sImageName = "ViewPort1.png";
-                sTitle = "";
+                sTitle = "Isometric View";
             }
 
             CModel filteredModel = null;

@@ -340,7 +340,7 @@ namespace PFD
             #endregion GUI
             #region REPORT
             #region 3D SCENE
-
+            // Solid model
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].LY_ViewsPageSize = EPageSizes.A4;
@@ -348,13 +348,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_UseOrtographicCamera = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_IsExport = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplayMembersCenterLines = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplaySolidModel = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplayMembersCenterLines = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].DisplaySolidModel = true;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowLocalMembersAxis = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberRealLength = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberRealLengthInMM = false;
@@ -364,6 +364,8 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_TransformScreenLines3DToCylinders3D = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowDimensions = false;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
 
@@ -388,8 +390,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowMemberID = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberDescriptionTextColor = Colors.Black;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberCenterlineColor = Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowDimensions = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ColoredCenterlines = false;
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
@@ -405,8 +412,13 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowMemberID = true;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberDescriptionTextColor = Colors.Black;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberCenterlineColor = Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowDimensions = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ColoredCenterlines = false;
             #endregion ROOF
 
             #endregion FRAME VIEWS
@@ -439,6 +451,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayPlatesWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayConnectorsWireFrame = true;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black); // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             #endregion JOINTS
@@ -470,6 +483,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayPlatesWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayConnectorsWireFrame = true;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black); // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             // Foundations
