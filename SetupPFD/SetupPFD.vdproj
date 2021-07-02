@@ -213,18 +213,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0CA1FF1880FAB8AF855D13724ED8AE01"
-        "OwnerKey" = "8:_AAA7106DEB87BA045D58312910CFD3D8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0CA1FF1880FAB8AF855D13724ED8AE01"
-        "OwnerKey" = "8:_EDDBDD4FED71410C83EF17FC8D85C7B7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0CC39A8D59B84CDFA10C4DC849EA0B5A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1059,12 +1047,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4ECE4EE7CAA343D6BEACF88AAB08FEFB"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_4FA73BA9F0B64CF6931A948D0E17A10F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1180,12 +1162,6 @@
         "Entry"
         {
         "MsmKey" = "8:_550ADC6BFD544D5588F2E9EBAD21863C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_559F9DE563124E4FB55A05921D91CCAD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1491,12 +1467,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_66A39982144F4E618B8A4E4C00465DB8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_66E650F7D26B4148B7DD9655DFAF84D6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1576,12 +1546,6 @@
         "Entry"
         {
         "MsmKey" = "8:_6D73A81BD6804D4B9C43DCDB1E829169"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6E64BF3DD98D4D0FA81FD55FFF9FA255"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1726,12 +1690,6 @@
         "Entry"
         {
         "MsmKey" = "8:_7B82F4EA0C904363BD36069F2D0F54C7"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7D4CFFAEF9D74F40844C836DC0210A5F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2283,6 +2241,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A8BE76290E23AC3E48CC04886AD08122"
+        "OwnerKey" = "8:_EDDBDD4FED71410C83EF17FC8D85C7B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A8BE76290E23AC3E48CC04886AD08122"
+        "OwnerKey" = "8:_AAA7106DEB87BA045D58312910CFD3D8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A9E06EF043934336A225D99E5E8E4BC7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2500,12 +2470,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B8ABBAD1C4034B36B230F98FA9498B11"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B91978D5E2124292A8363C7ABD6D97BC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3447,18 +3411,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E1D4E2F8D25374F042B6A82F640D31A3"
-        "OwnerKey" = "8:_6E64BF3DD98D4D0FA81FD55FFF9FA255"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E1D4E2F8D25374F042B6A82F640D31A3"
-        "OwnerKey" = "8:_4ECE4EE7CAA343D6BEACF88AAB08FEFB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E2D4F636CC1E4D41990488263DF9F3A9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3707,6 +3659,18 @@
         {
         "MsmKey" = "8:_F70E5ABE245A9D7412C985CE9A8B2BA9"
         "OwnerKey" = "8:_D8EAE2D86A68B8BB0E98D902A4548954"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F70E5ABE245A9D7412C985CE9A8B2BA9"
+        "OwnerKey" = "8:_EDDBDD4FED71410C83EF17FC8D85C7B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F70E5ABE245A9D7412C985CE9A8B2BA9"
+        "OwnerKey" = "8:_AAA7106DEB87BA045D58312910CFD3D8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -4084,24 +4048,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EDDBDD4FED71410C83EF17FC8D85C7B7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_59D0448CA34E4A1EA83C6E553E39CB79"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6BAD34BDBFBA483085AB344AEF032EAD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_FED21DD6239C4078ABAF7D68C4AABEB5"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4150,6 +4096,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EDDBDD4FED71410C83EF17FC8D85C7B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E84791B241C74349ABFAA2AF107EB5A6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4186,12 +4138,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0CA1FF1880FAB8AF855D13724ED8AE01"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A8BE76290E23AC3E48CC04886AD08122"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4199,12 +4145,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_69E518479A6FD874BC8E8E46A65025E1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E1D4E2F8D25374F042B6A82F640D31A3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -4504,7 +4444,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6E64BF3DD98D4D0FA81FD55FFF9FA255"
+        "OwnerKey" = "8:_6BAD34BDBFBA483085AB344AEF032EAD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -4523,6 +4463,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_61AD3D1F671FCDBDC8A4B6A54E82C6CD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_59D0448CA34E4A1EA83C6E553E39CB79"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -4547,12 +4493,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_56E08CF2C9774A58BFF899E7A1FB2BA2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4ECE4EE7CAA343D6BEACF88AAB08FEFB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -5615,37 +5555,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0CA1FF1880FAB8AF855D13724ED8AE01"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_0CA1FF1880FAB8AF855D13724ED8AE01"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Net.Http.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0CC39A8D59B84CDFA10C4DC849EA0B5A"
@@ -8027,37 +7936,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4ECE4EE7CAA343D6BEACF88AAB08FEFB"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:vshost32, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_4ECE4EE7CAA343D6BEACF88AAB08FEFB"
-                    {
-                    "Name" = "8:PFD.vshost.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4FA73BA9F0B64CF6931A948D0E17A10F"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_Permanent Green.jpg"
@@ -8306,26 +8184,6 @@
             "TargetName" = "8:SD_03_ridge.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_559F9DE563124E4FB55A05921D91CCAD"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe.manifest"
-            "TargetName" = "8:PFD.vshost.exe.manifest"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -9281,26 +9139,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66A39982144F4E618B8A4E4C00465DB8"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe.config"
-            "TargetName" = "8:PFD.vshost.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66E650F7D26B4148B7DD9655DFAF84D6"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\DATABASE\\Resources\\MDBWashers.db3"
@@ -9600,37 +9438,6 @@
             "TargetName" = "8:Purlindek_Azure.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6E64BF3DD98D4D0FA81FD55FFF9FA255"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:vshost32, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_6E64BF3DD98D4D0FA81FD55FFF9FA255"
-                    {
-                    "Name" = "8:PFD.vshost.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10064,26 +9871,6 @@
             "TargetName" = "8:Purlindek_Zinc.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7D4CFFAEF9D74F40844C836DC0210A5F"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe.config"
-            "TargetName" = "8:PFD.vshost.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -12370,26 +12157,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B91978D5E2124292A8363C7ABD6D97BC"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe.manifest"
-            "TargetName" = "8:PFD.vshost.exe.manifest"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B94C3B2C8A2349629F7B607211B6B8B3"
             {
             "AssemblyRegister" = "3:1"
@@ -14294,37 +14061,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1D4E2F8D25374F042B6A82F640D31A3"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.HostingProcess.Utilities.Sync, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E1D4E2F8D25374F042B6A82F640D31A3"
-                    {
-                    "Name" = "8:Microsoft.VisualStudio.HostingProcess.Utilities.Sync.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.VisualStudio.HostingProcess.Utilities.Sync.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2D4F636CC1E4D41990488263DF9F3A9"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\crsc63020s2_3D.png"
@@ -16017,7 +15753,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Engenius"
         "ProductCode" = "8:{96E69912-E7CA-4751-8C65-4A16703CBA5F}"
-        "PackageCode" = "8:{147D0372-5EEF-445A-8E59-4F2FE2C5CA81}"
+        "PackageCode" = "8:{A16F1DB6-568A-44BF-B679-AA19DA7A494A}"
         "UpgradeCode" = "8:{7B086C1E-CAC4-47F9-8F32-5C70F03D83AA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

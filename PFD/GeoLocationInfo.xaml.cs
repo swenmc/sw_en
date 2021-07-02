@@ -49,7 +49,14 @@ namespace PFD
 
             try
             {
-                client = new HttpClient();
+                //na firemnej sieti dotazy neprechadzali cez proxy, to moze byt dost problem ked nevieme odkial pojdu dotazy na API
+                var handler = new HttpClientHandler();
+                handler.DefaultProxyCredentials = System.Net.CredentialCache.DefaultCredentials;
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                //System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+                client = new HttpClient(handler, true);
+                //client = new HttpClient();
                 RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 ShowGeoResponseData(m_data.items.FirstOrDefault());
@@ -60,7 +67,13 @@ namespace PFD
 
             try
             {
-                clientRouting = new HttpClient();
+                var handler = new HttpClientHandler();
+                handler.DefaultProxyCredentials = System.Net.CredentialCache.DefaultCredentials;
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+                clientRouting = new HttpClient(handler, true);
+                //clientRouting = new HttpClient();
+
                 RunAsyncRouting().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 ShowRoutingResponseData(m_routing);
