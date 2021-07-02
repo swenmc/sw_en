@@ -342,7 +342,6 @@ namespace PFD
             #region 3D SCENE
             // Solid model
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].LY_ViewsPageSize = EPageSizes.A4;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_UseOrtographicCamera = false;
@@ -369,6 +368,8 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].MembersDescriptionSize = 1f / 60f;
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateHorizontalGridlines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesFront = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesBack = false;
@@ -378,7 +379,6 @@ namespace PFD
             #region FRAME VIEWS
             #region ELEVATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].LY_ViewsPageSize = EPageSizes.A4;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].CO_UseOrtographicCamera = true;
@@ -392,15 +392,20 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ShowDimensions = true;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ColoredCenterlines = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 30f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionsScale = 1f / 5f;
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 60f;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].LY_ViewsPageSize = EPageSizes.A4;
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].CO_UseOrtographicCamera = true;
@@ -414,11 +419,17 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ShowDimensions = true;
 
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ColoredCenterlines = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 30f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionsScale = 1f / 5f;
             #endregion ROOF
 
             #endregion FRAME VIEWS
