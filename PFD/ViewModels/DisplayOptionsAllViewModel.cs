@@ -401,8 +401,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].ColoredCenterlines = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 30f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionsScale = 1f / 5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].MembersDescriptionSize = 1f / 15f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DescriptionTextWidthScaleFactor = 0.5f;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionsTextSize = 1f / 15f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionsLineRadius = 1f / 300f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Elevations].DimensionsScale = 0.8f;
             #endregion ELEVATIONS
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene]);
@@ -428,8 +432,12 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].ColoredCenterlines = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 30f;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionsScale = 1f / 5f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].MembersDescriptionSize = 1f / 15f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DescriptionTextWidthScaleFactor = 0.5f;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionsTextSize = 1f / 15f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionsLineRadius = 1f / 300f;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_FW_Roof].DimensionsScale = 0.8f;
             #endregion ROOF
 
             #endregion FRAME VIEWS
