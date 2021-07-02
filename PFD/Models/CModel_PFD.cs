@@ -3790,6 +3790,8 @@ namespace PFD
                 //m_arrCrSc[EMemberType_FS_Position.CrossBracingRoofCanopy].CSColor = Colors.LightSeaGreen;
             }
 
+
+
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 

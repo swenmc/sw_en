@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.Helpers;
 using CRSC;
 using MATERIAL;
 using System;
@@ -57,7 +58,8 @@ namespace PFD
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat[0] = new CMat_03_00(0, "G550‡", 200e+9f, 0.3f);
+            //m_arrMat[0] = new CMat_03_00(0, "G550‡", 200e+9f, 0.3f);
+            m_arrMat[0] = MaterialFactory.GetMaterial("G550‡");
 
             // Cross-sections
             // TODO - add to cross-section parameters

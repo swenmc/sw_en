@@ -1937,7 +1937,7 @@ namespace PFD
             string section = MembersSectionsDict[EMemberType_FS_Position.DoorFrame];
             CrScProperties prop = CSectionManager.GetSectionProperties(section);
 
-            CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorFrame];
+            CComponentPrefixes compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorFrame];
             cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                 compPref.ComponentName, section, prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForDoorOrWindowFrame, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorFrame);
