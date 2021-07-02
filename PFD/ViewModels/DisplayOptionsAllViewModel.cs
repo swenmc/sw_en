@@ -353,8 +353,8 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowLocalMembersAxis = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = false;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberDescription = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberID = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberPrefix = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberRealLength = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].ShowMemberRealLengthInMM = false;
@@ -364,6 +364,8 @@ namespace PFD
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_TransformScreenLines3DToCylinders3D = true;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateHorizontalGridlines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_3D_Scene].CO_CreateVerticalGridlinesFront = false;
