@@ -521,17 +521,6 @@ namespace PFD
                 return;
             }
 
-            //DateTime start = DateTime.Now;
-            // Clear results of previous calculation
-            //DeleteCalculationResults();
-
-            // Bug 859 - presunut mimo tuto funkciu
-            // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
-            SetMaterialValuesFromDatabase();
-            SetCrossSectionValuesFromDatabase();
-
-            //System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
-
             vm.GenerateMemberLoadsIfNotGenerated();
 
             Solver solver = new Solver(vm._solverOptionsVM.UseFEMSolverCalculationForSimpleBeam);
@@ -541,8 +530,7 @@ namespace PFD
             solver.ShowDialog();
 
             vm.ModelCalculatedResultsValid = true;
-            SetUIElementsVisibility();
-            // TODO - implementovat vypocet
+            SetUIElementsVisibility();            
         }
 
         private CPFDLoadInput SetLoadInput()
