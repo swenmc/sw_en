@@ -28,44 +28,44 @@ namespace BaseClasses.Helpers
             // Ja ich tu mam 1 - 3
 
             // Defaultne koty - zakladne rozmery
-            if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.All)
+            if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.All)
             {
                 // Basic dimension - GUI input
                 DrawDimensionsAll(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.LEFT)
             {
                 DrawDimensionsLEFT(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.RIGHT)
             {
                 DrawDimensionsRIGHT(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.FRONT)
             {
                 DrawDimensionsFRONT(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.BACK)
             {
                 DrawDimensionsBACK(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.ROOF)
             {
                 DrawDimensionsROOF(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.COLUMNS)
             {
                 DrawDimensionsCOLUMNS(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
                 DrawDimensionsMIDDLE(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
                 DrawDimensionsFOUNDATIONS(_trackport, model, sDisplayOptions, gr);
             }
-            else if (sDisplayOptions.CO_ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            else if (sDisplayOptions.CO_ModelFilter == (int)EViewModelMemberFilters.FLOOR)
             {
                 DrawDimensionsFLOOR(_trackport, model, sDisplayOptions, gr);
             }

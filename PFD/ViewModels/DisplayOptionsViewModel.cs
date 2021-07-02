@@ -393,8 +393,8 @@ namespace PFD
         private int m_CO_RotateModelX;
         private int m_CO_RotateModelY;
         private int m_CO_RotateModelZ;
-        private int m_CO_ModelView;
-        private int m_CO_ViewModelMembers;
+        private int m_CO_View;
+        private int m_CO_ModelFilter;
         private int m_CO_ViewCladding;
         private bool m_CO_bUseOrtographicCamera;
         private double m_CO_OrtographicCameraWidth;
@@ -4279,29 +4279,29 @@ namespace PFD
             }
         }
 
-        public int CO_ModelView
+        public int CO_View
         {
             get
             {
-                return m_CO_ModelView;
+                return m_CO_View;
             }
 
             set
             {
-                m_CO_ModelView = value;
+                m_CO_View = value;
             }
         }
 
-        public int CO_ViewModelMembers
+        public int CO_ModelFilter
         {
             get
             {
-                return m_CO_ViewModelMembers;
+                return m_CO_ModelFilter;
             }
 
             set
             {
-                m_CO_ViewModelMembers = value;
+                m_CO_ModelFilter = value;
             }
         }
 
@@ -4693,8 +4693,8 @@ namespace PFD
             LY_ViewsPageSize = newVM.LY_ViewsPageSize;
             LY_ExportImagesQuality = newVM.LY_ExportImagesQuality;
 
-            CO_ModelView = newVM.CO_ModelView;
-            CO_ViewModelMembers = newVM.CO_ViewModelMembers;
+            CO_View = newVM.CO_View;
+            CO_ModelFilter = newVM.CO_ModelFilter;
             CO_IsExport = newVM.CO_IsExport;
             CO_SameScaleForViews = newVM.CO_SameScaleForViews;
             CO_TransformScreenLines3DToCylinders3D = newVM.CO_TransformScreenLines3DToCylinders3D;

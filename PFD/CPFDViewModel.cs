@@ -101,7 +101,7 @@ namespace PFD
         private List<string> m_KitsetTypes;
 
         private int MViewIndex;
-        private int MViewModelMemberFilterIndex;
+        private int MModelFilterIndex;
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -1356,26 +1356,26 @@ namespace PFD
             {
                 MViewIndex = value;
 
-                _displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_ModelView = MViewIndex;
+                _displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_View = MViewIndex;
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("ViewIndex");
             }
         }
 
-        public int ViewModelMemberFilterIndex
+        public int ModelFilterIndex
         {
             get
             {
-                return MViewModelMemberFilterIndex;
+                return MModelFilterIndex;
             }
 
             set
             {
-                MViewModelMemberFilterIndex = value;
+                MModelFilterIndex = value;
 
-                _displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_ViewModelMembers = MViewModelMemberFilterIndex;
+                _displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].CO_ModelFilter = MModelFilterIndex;
 
-                if (MSynchronizeGUI) NotifyPropertyChanged("ViewModelMemberFilterIndex");
+                if (MSynchronizeGUI) NotifyPropertyChanged("ModelFilterIndex");
             }
         }
 
@@ -2362,7 +2362,7 @@ namespace PFD
 
             RecreateModel = true;
             ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
-            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
+            ModelFilterIndex = (int)EViewModelMemberFilters.All;
             TransformScreenLines3DToCylinders3D = false;
 
             //BracingEverySecondRowOfGirts = true;
@@ -3452,8 +3452,8 @@ namespace PFD
             sDisplayOptions.WindowDescriptionSize = do_vm.WindowDescriptionSize;
 
             // Properties defined only in source code (CO - code only)
-            sDisplayOptions.CO_ModelView = do_vm.CO_ModelView;
-            sDisplayOptions.CO_ViewModelMembers = do_vm.CO_ViewModelMembers;
+            sDisplayOptions.CO_View = do_vm.CO_View;
+            sDisplayOptions.CO_ModelFilter = do_vm.CO_ModelFilter;
             sDisplayOptions.CO_IsExport = do_vm.CO_IsExport;
             sDisplayOptions.CO_SameScaleForViews = do_vm.CO_SameScaleForViews;
             sDisplayOptions.CO_bTransformScreenLines3DToCylinders3D = do_vm.CO_TransformScreenLines3DToCylinders3D;

@@ -298,7 +298,7 @@ namespace EXPIMP
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
             DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_3D_Scene];
-            opts.CO_ModelView = GetViewIndex(data, exportOpts); //851
+            opts.CO_View = GetViewIndex(data, exportOpts); //851
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
@@ -440,8 +440,8 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, viewGroupName + hyphenSymbol + ((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", viewGroupName + hyphenSymbol + ((EPDFPageContentType)viewMembers).GetFriendlyName() });
 
-                opts.CO_ModelView = GetView(viewMembers);
-                opts.CO_ViewModelMembers = (int)viewMembers;
+                opts.CO_View = GetView(viewMembers);
+                opts.CO_ModelFilter = (int)viewMembers;
                 ChangeDisplayOptionsAcordingToSideView(viewMembers, ref opts);
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
@@ -557,8 +557,8 @@ namespace EXPIMP
                 DrawTitleBlock(gfx, data.ProjectInfo, page, viewGroupName + hyphenSymbol + ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", viewGroupName + hyphenSymbol + ((EPDFPageContentType)view).GetFriendlyName() });
 
-                opts.CO_ModelView = GetView(view);
-                opts.CO_ViewModelMembers = (int)view;
+                opts.CO_View = GetView(view);
+                opts.CO_ModelFilter = (int)view;
                 opts.CO_ViewCladding = (int)view;
 
                 ChangeDisplayOptionsAcordingToSideView(view, ref opts);
@@ -1490,7 +1490,7 @@ namespace EXPIMP
 
             // Preview - izometricky pohlad na konstrukciu
             DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene];
-            opts.CO_ModelView = GetViewIndex(data, exportOpts); //851            
+            opts.CO_View = GetViewIndex(data, exportOpts); //851            
 
             CModel filteredModel = null;
             Trackport3D trackport = null;

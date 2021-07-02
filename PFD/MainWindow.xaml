@@ -259,7 +259,7 @@
 
                         <TextBlock Grid.Row="16" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ModelFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     </Grid>
                 </ScrollViewer>
             </TabItem>

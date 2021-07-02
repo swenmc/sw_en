@@ -920,6 +920,8 @@ namespace EXPIMP
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             DisplayOptions opts = GetDisplayOptions(view, data);
+            opts.CO_View = (int)view;
+            opts.CO_ModelFilter = (int)filter; // Bug 880 - nastavime filter
 
             string sParagraphName;
             string sImageName;

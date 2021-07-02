@@ -273,8 +273,8 @@ namespace BaseClasses
         public EImagesQuality LY_ExportImagesQuality;
 
         // Properties defined only in source code (CO - code only)
-        public int CO_ModelView;
-        public int CO_ViewModelMembers;
+        public int CO_View;
+        public int CO_ModelFilter;
         public bool CO_IsExport;
         public bool CO_SameScaleForViews;
         public bool CO_bTransformScreenLines3DToCylinders3D;
