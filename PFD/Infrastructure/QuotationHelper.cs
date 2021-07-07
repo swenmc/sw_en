@@ -25,6 +25,9 @@ namespace PFD
         // Bez jednotiek
         public static ColumnProperties colProp_Prefix = new ColumnProperties(typeof(String), "Prefix", "Prefix", 7.5f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Name = new ColumnProperties(typeof(String), "Name", "Name", 10f, null, AlignmentX.Left);
+        //toto treba nejako obabrat lebo niekde je potrebna ina sirka pre stlpec name
+        //public static ColumnProperties colProp_Name2 = new ColumnProperties(typeof(String), "Name2", "Name", 22.5f, null, AlignmentX.Left);
+
         public static ColumnProperties colProp_Item = new ColumnProperties(typeof(String), "Item", "Item", 10f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Component = new ColumnProperties(typeof(String), "Component", "Component", 15f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Size = new ColumnProperties(typeof(String), "Size", "Size", 10f, null, AlignmentX.Left);
@@ -63,12 +66,13 @@ namespace PFD
         public static ColumnProperties colProp_TotalArea_m2 = new ColumnProperties(typeof(Decimal), "TotalArea_m2", "Total Area", 10f, "[m²]", AlignmentX.Right);
         public static ColumnProperties colProp_TotalMass = new ColumnProperties(typeof(String), "TotalMass", "Total Mass", 10f, "[kg]", AlignmentX.Right);
         public static ColumnProperties colProp_TotalPrice_NZD = new ColumnProperties(typeof(String), "TotalPrice_NZD", "Price", 0f, "[NZD]", AlignmentX.Right);
-        public static ColumnProperties colProp_Note = new ColumnProperties(typeof(String), "Note", "Note", 20f, "[-]", AlignmentX.Left);
+        public static ColumnProperties colProp_Note = new ColumnProperties(typeof(String), "Note", "Note", 22.5f, "[-]", AlignmentX.Left);
 
         static List<ColumnProperties> colPropList = new List<ColumnProperties>()
         {
                 colProp_Prefix,
                 colProp_Name,
+                //colProp_Name2,
                 colProp_Component,
                 colProp_Size,
                 colProp_Description,
@@ -164,6 +168,7 @@ namespace PFD
 
         private static void SetColumnProperties(DataTable dt, ColumnProperties properties)
         {
+            
             // Set Column Caption
             dt.Columns[properties.ColumnName].Caption = properties.Caption;
 
@@ -171,7 +176,16 @@ namespace PFD
             if (properties.EP_Unit != null && properties.EP_Unit.Length > 1)
                 dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Unit, properties.EP_Unit);
 
-            dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, properties.EP_Width);
+            //toto je skaredy fix pre 884
+            if ((dt.TableName == "CladdingAccessories_Items_Length" || dt.TableName == "CladdingAccessories_Items_Piece") && properties.ColumnName == "Name")
+            {
+                dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, 22.5f);
+            }
+            else
+            {
+                dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, properties.EP_Width);
+            }
+
             dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Align, properties.EP_Alignment);
         }
 
