@@ -41,6 +41,7 @@
             <TreeViewItem Header="Layouts" IsExpanded="True" Focusable="False">
                 <TreeViewItem Name="twiLayouts_3D_scene" Header="3D scene"></TreeViewItem>
                 <TreeViewItem Header="Frame Views" IsExpanded="True"  Focusable="False">
+                    <TreeViewItem Name="twiLayouts_FW_3D_scene" Header="3D scene"></TreeViewItem>
                     <TreeViewItem Name="twiLayouts_FW_Elevations" Header="Elevations"></TreeViewItem>
                     <TreeViewItem Name="twiLayouts_FW_Roof" Header="Roof"></TreeViewItem>
                     <TreeViewItem Name="twiLayouts_FW_Frames" Header="Frames"></TreeViewItem>
@@ -49,6 +50,7 @@
                     <TreeViewItem Name="twiLayouts_FW_Floor" Header="Floor"></TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Header="Cladding Views" IsExpanded="True" Focusable="False">
+                    <TreeViewItem Name="twiLayouts_CW_3D_scene" Header="3D scene"></TreeViewItem>
                     <TreeViewItem Name="twiLayouts_CW_Elevations" Header="Elevations"></TreeViewItem>
                     <TreeViewItem Name="twiLayouts_CW_Roof" Header="Roof"></TreeViewItem>
                 </TreeViewItem>

@@ -42,6 +42,7 @@
             <TreeViewItem Header="Layouts" IsExpanded="True"  Focusable="False">
                 <TreeViewItem Name="twiSourceLayouts_3D_scene" Header="3D scene"></TreeViewItem>
                 <TreeViewItem Header="Frame Views" IsExpanded="True"  Focusable="False">
+                    <TreeViewItem Name="twiSourceLayouts_FW_3D_scene" Header="3D scene"></TreeViewItem>
                     <TreeViewItem Name="twiSourceLayouts_FW_Elevations" Header="Elevations"></TreeViewItem>
                     <TreeViewItem Name="twiSourceLayouts_FW_Roof" Header="Roof"></TreeViewItem>
                     <TreeViewItem Name="twiSourceLayouts_FW_Frames" Header="Frames"></TreeViewItem>
@@ -50,6 +51,7 @@
                     <TreeViewItem Name="twiSourceLayouts_FW_Floor" Header="Floor"></TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Header="Cladding Views" IsExpanded="True"  Focusable="False">
+                    <TreeViewItem Name="twiSourceLayouts_CW_3D_scene" Header="3D scene"></TreeViewItem>
                     <TreeViewItem Name="twiSourceLayouts_CW_Elevations" Header="Elevations"></TreeViewItem>
                     <TreeViewItem Name="twiSourceLayouts_CW_Roof" Header="Roof"></TreeViewItem>
                 </TreeViewItem>
@@ -117,6 +119,11 @@
                     </TreeViewItem.Header>
                 </TreeViewItem>
                 <TreeViewItem Header="Frame Views" IsExpanded="True"  Focusable="False">
+                    <TreeViewItem Name="twiDestLayouts_FW_3D_scene">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_3D_scene" Content="3D scene"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
                     <TreeViewItem Name="twiDestLayouts_FW_Elevations">
                         <TreeViewItem.Header>
                             <CheckBox Name="chLayouts_FW_Elevations" Content="Elevations"></CheckBox>
@@ -149,6 +156,11 @@
                     </TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Header="Cladding Views" IsExpanded="True"  Focusable="False">
+                    <TreeViewItem Name="twiDestLayouts_CW_3D_scene">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_CW_3D_scene" Content="3D scene"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
                     <TreeViewItem Name="twiDestLayouts_CW_Elevations">
                         <TreeViewItem.Header>
                             <CheckBox Name="chLayouts_CW_Elevations" Content="Elevations"></CheckBox>

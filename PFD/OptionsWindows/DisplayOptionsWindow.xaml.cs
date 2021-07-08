@@ -115,12 +115,14 @@ namespace PFD
                 case "twiReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; Title = "Display Options - Report - Joints"; break;
                 case "twiReport_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Report_Foundations; Title = "Display Options - Report - Foundations"; break;
                 case "twiLayouts_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_3D_Scene; Title = "Display Options - Layouts 3D scene"; break;
+                case "twiLayouts_FW_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_3D_Scene; Title = "Display Options - Layouts - Frame Views - 3D scene"; break;
                 case "twiLayouts_FW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Elevations; Title = "Display Options - Layouts - Frame Views - Elevations"; break;
                 case "twiLayouts_FW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Roof; Title = "Display Options - Layouts - Frame Views - Roof"; break;
                 case "twiLayouts_FW_Frames": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Frames; Title = "Display Options - Layouts - Frame Views - Frames"; break;
                 case "twiLayouts_FW_Columns": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Columns; Title = "Display Options - Layouts - Frame Views - Columns"; break;
                 case "twiLayouts_FW_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Foundations; Title = "Display Options - Layouts - Frame Views - Foundations"; break;
                 case "twiLayouts_FW_Floor": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Floor; Title = "Display Options - Layouts - Frame Views - Floor"; break;
+                case "twiLayouts_CW_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_3D_Scene; Title = "Display Options - Layouts - Cladding Views - 3D scene"; break;
                 case "twiLayouts_CW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Elevations; Title = "Display Options - Layouts - Cladding Views - Elevations"; break;
                 case "twiLayouts_CW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Roof; Title = "Display Options - Layouts - Cladding Views - Roof"; break;
                 case "twiLayouts_Joints": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Joints; Title = "Display Options - Layouts - Joints"; break;
@@ -146,7 +148,8 @@ namespace PFD
         {
             if (!IsLoaded) return;
 
-            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene || optsType == EDisplayOptionsTypes.Report_3D_Scene)
+            if (optsType == EDisplayOptionsTypes.Layouts_3D_Scene || optsType == EDisplayOptionsTypes.Report_3D_Scene 
+                || optsType == EDisplayOptionsTypes.Layouts_FW_3D_Scene || optsType == EDisplayOptionsTypes.Layouts_CW_3D_Scene)
             {
                 chbDisplayWireFrameModel.IsEnabled = false;
                 chbDisplayMembersWireFrame.IsEnabled = false;

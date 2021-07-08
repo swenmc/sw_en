@@ -67,12 +67,14 @@ namespace PFD
                 case "twiSourceReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; selectedSource = "Report - Joints"; break;
                 case "twiSourceReport_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Report_Foundations; selectedSource = "Report - Foundations"; break;
                 case "twiSourceLayouts_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_3D_Scene; selectedSource = "Layouts 3D scene"; break;
+                case "twiSourceLayouts_FW_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_3D_Scene; selectedSource = "Layouts - Frame Views - 3D scene"; break;
                 case "twiSourceLayouts_FW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Elevations; selectedSource = "Layouts - Frame Views - Elevations"; break;
                 case "twiSourceLayouts_FW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Roof; selectedSource = "Layouts - Frame Views - Roof"; break;
                 case "twiSourceLayouts_FW_Frames": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Frames; selectedSource = "Layouts - Frame Views - Frames"; break;
                 case "twiSourceLayouts_FW_Columns": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Columns; selectedSource = "Layouts - Frame Views - Columns"; break;
                 case "twiSourceLayouts_FW_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Foundations; selectedSource = "Layouts - Frame Views - Foundations"; break;
                 case "twiSourceLayouts_FW_Floor": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Floor; selectedSource = "Layouts - Frame Views - Floor"; break;
+                case "twiSourceLayouts_CW_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_3D_Scene; selectedSource = "Layouts - Cladding Views - 3D scene"; break;
                 case "twiSourceLayouts_CW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Elevations; selectedSource = "Layouts - Cladding Views - Elevations"; break;
                 case "twiSourceLayouts_CW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Roof; selectedSource = "Layouts - Cladding Views - Roof"; break;
                 case "twiSourceLayouts_Joints": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Joints; selectedSource = "Layouts - Joints"; break;
@@ -96,12 +98,14 @@ namespace PFD
             if (chReport_Joints.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Report_Joints);
             if (chReport_Foundations.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Report_Foundations);
             if (chLayouts_3D_scene.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_3D_Scene);
+            if (chLayouts_FW_3D_scene.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_3D_Scene);
             if (chLayouts_FW_Elevations.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_Elevations);
             if (chLayouts_FW_Roof.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_Roof);
             if (chLayouts_FW_Frames.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_Frames);
             if (chLayouts_FW_Columns.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_Columns);
             if (chLayouts_FW_Foundations.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_Foundations);
             if (chLayouts_FW_Floor.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_FW_Floor);
+            if (chLayouts_CW_3D_scene.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_CW_3D_Scene);
             if (chLayouts_CW_Elevations.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_CW_Elevations);
             if (chLayouts_CW_Roof.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_CW_Roof);
             if (chLayouts_Joints.IsChecked == true) destIndexes.Add((int)EDisplayOptionsTypes.Layouts_Joints);
@@ -167,6 +171,11 @@ namespace PFD
                 chLayouts_3D_scene.IsChecked = false;
                 chLayouts_3D_scene.IsEnabled = false;
             }
+            else if (optsType == EDisplayOptionsTypes.Layouts_FW_3D_Scene)
+            {
+                chLayouts_FW_3D_scene.IsChecked = false;
+                chLayouts_FW_3D_scene.IsEnabled = false;
+            }
             else if (optsType == EDisplayOptionsTypes.Layouts_FW_Elevations)
             {
                 chLayouts_FW_Elevations.IsChecked = false;
@@ -196,6 +205,11 @@ namespace PFD
             {
                 chLayouts_FW_Floor.IsChecked = false;
                 chLayouts_FW_Floor.IsEnabled = false;
+            }
+            else if (optsType == EDisplayOptionsTypes.Layouts_CW_3D_Scene)
+            {
+                chLayouts_CW_3D_scene.IsChecked = false;
+                chLayouts_CW_3D_scene.IsEnabled = false;
             }
             else if (optsType == EDisplayOptionsTypes.Layouts_CW_Elevations)
             {
@@ -231,12 +245,14 @@ namespace PFD
             chReport_Joints.IsEnabled = true;
             chReport_Foundations.IsEnabled = true;
             chLayouts_3D_scene.IsEnabled = true;
+            chLayouts_FW_3D_scene.IsEnabled = true;
             chLayouts_FW_Elevations.IsEnabled = true;
             chLayouts_FW_Roof.IsEnabled = true;
             chLayouts_FW_Frames.IsEnabled = true;
             chLayouts_FW_Columns.IsEnabled = true;
             chLayouts_FW_Foundations.IsEnabled = true;
             chLayouts_FW_Floor.IsEnabled = true;
+            chLayouts_CW_3D_scene.IsEnabled = true;
             chLayouts_CW_Elevations.IsEnabled = true;
             chLayouts_CW_Roof.IsEnabled = true;
             chLayouts_Joints.IsEnabled = true;
@@ -316,12 +332,14 @@ namespace PFD
                 case "twiSourceReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; Title = "Copying from: Report - Joints"; break;
                 case "twiSourceReport_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Report_Foundations; Title = "Copying from: Report - Foundations"; break;
                 case "twiSourceLayouts_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_3D_Scene; Title = "Copying from: Layouts 3D scene"; break;
+                case "twiSourceLayouts_FW_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_3D_Scene; Title = "Copying from: Layouts - Frame Views - 3D scene"; break;
                 case "twiSourceLayouts_FW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Elevations; Title = "Copying from: Layouts - Frame Views - Elevations"; break;
                 case "twiSourceLayouts_FW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Roof; Title = "Copying from: Layouts - Frame Views - Roof"; break;
                 case "twiSourceLayouts_FW_Frames": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Frames; Title = "Copying from: Layouts - Frame Views - Frames"; break;
                 case "twiSourceLayouts_FW_Columns": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Columns; Title = "Copying from: Layouts - Frame Views - Columns"; break;
                 case "twiSourceLayouts_FW_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Foundations; Title = "Copying from: Layouts - Frame Views - Foundations"; break;
                 case "twiSourceLayouts_FW_Floor": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Floor; Title = "Copying from: Layouts - Frame Views - Floor"; break;
+                case "twiSourceLayouts_CW_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_3D_Scene; Title = "Copying from: Layouts - Cladding Views - 3D scene"; break;
                 case "twiSourceLayouts_CW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Elevations; Title = "Copying from: Layouts - Cladding Views - Elevations"; break;
                 case "twiSourceLayouts_CW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Roof; Title = "Copying from: Layouts - Cladding Views - Roof"; break;
                 case "twiSourceLayouts_Joints": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Joints; Title = "Copying from: Layouts - Joints"; break;
