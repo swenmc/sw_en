@@ -30,12 +30,12 @@ namespace PFD
         double dBuildingNetPrice_WithoutMargin_WithoutGST = 0;
 
         float fTotalAreaOfOpennings = 0;
-        float fRollerDoorTrimmerFlashing_TotalLength = 0;
-        float fRollerDoorLintelFlashing_TotalLength = 0;
-        float fRollerDoorLintelCapFlashing_TotalLength = 0;
-        float fPADoorTrimmerFlashing_TotalLength = 0;
-        float fPADoorLintelFlashing_TotalLength = 0;
-        float fWindowFlashing_TotalLength = 0;
+        //float fRollerDoorTrimmerFlashing_TotalLength = 0;
+        //float fRollerDoorLintelFlashing_TotalLength = 0;
+        //float fRollerDoorLintelCapFlashing_TotalLength = 0;
+        //float fPADoorTrimmerFlashing_TotalLength = 0;
+        //float fPADoorLintelFlashing_TotalLength = 0;
+        //float fWindowFlashing_TotalLength = 0;
 
         CPFDViewModel _pfdVM;
 

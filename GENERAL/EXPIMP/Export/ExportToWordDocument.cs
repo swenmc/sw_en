@@ -1745,7 +1745,7 @@ namespace EXPIMP
             //header
             for (int j = 0; j < columnCount; j++)
             {
-                if (priceColumnsIndexes.Contains(j)) columnSkip++;
+                while (priceColumnsIndexes.Contains(j + columnSkip)) { columnSkip++; }
                 t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j + columnSkip].Caption);
                 t.Rows[0].Cells[j].Paragraphs[0].Bold();
                 if (dt.Columns[j + columnSkip].ExtendedProperties["Unit"] != null)
@@ -1771,7 +1771,7 @@ namespace EXPIMP
                 columnSkip = 0;
                 for (int j = 0; j < columnCount; j++)
                 {
-                    if (priceColumnsIndexes.Contains(j)) columnSkip++;
+                    while (priceColumnsIndexes.Contains(j + columnSkip)) { columnSkip++; }
 
                     if (colorColumn != -1 && colorColumn == j)
                     {

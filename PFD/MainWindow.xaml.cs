@@ -1991,13 +1991,13 @@ namespace PFD
             {
                 dataGrid = uc_quotation.FindName("Datagrid_CladdingAccessories_Items_Length") as DataGrid;
                 dw = dataGrid.ItemsSource as DataView;
-                if (dw != null) tables.Add(dw.Table);
+                if (dw != null) { dw.Table.TableName = "Cladding Accessories"; tables.Add(dw.Table); };
             }
             if (vm._quotationExportOptionsVM.DisplayCladdingAccesories)
             {
                 dataGrid = uc_quotation.FindName("Datagrid_CladdingAccessories_Items_Piece") as DataGrid;
                 dw = dataGrid.ItemsSource as DataView;
-                if (dw != null) tables.Add(dw.Table);
+                if (dw != null) { dw.Table.TableName = " "; tables.Add(dw.Table); };
             }
 
             try

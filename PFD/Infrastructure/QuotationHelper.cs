@@ -66,7 +66,7 @@ namespace PFD
         public static ColumnProperties colProp_TotalArea_m2 = new ColumnProperties(typeof(Decimal), "TotalArea_m2", "Total Area", 10f, "[m²]", AlignmentX.Right);
         public static ColumnProperties colProp_TotalMass = new ColumnProperties(typeof(String), "TotalMass", "Total Mass", 10f, "[kg]", AlignmentX.Right);
         public static ColumnProperties colProp_TotalPrice_NZD = new ColumnProperties(typeof(String), "TotalPrice_NZD", "Price", 0f, "[NZD]", AlignmentX.Right);
-        public static ColumnProperties colProp_Note = new ColumnProperties(typeof(String), "Note", "Note", 22.5f, "[-]", AlignmentX.Left);
+        public static ColumnProperties colProp_Note = new ColumnProperties(typeof(String), "Note", "Note", 20f, "[-]", AlignmentX.Left);
 
         static List<ColumnProperties> colPropList = new List<ColumnProperties>()
         {
@@ -179,7 +179,7 @@ namespace PFD
             //toto je skaredy fix pre 884
             if ((dt.TableName == "CladdingAccessories_Items_Length" || dt.TableName == "CladdingAccessories_Items_Piece") && properties.ColumnName == "Name")
             {
-                dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, 22.5f);
+                dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, 32.5f);
             }
             else
             {
@@ -838,7 +838,7 @@ namespace PFD
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalCladdingSheetsPrice_Table;
 
             // Create Table
-            DataTable table = new DataTable("CladdingSheets");
+            DataTable table = new DataTable("Cladding Sheets");
             // Create Table Rows
             table.Columns.Add(QuotationHelper.colProp_Prefix.ColumnName, QuotationHelper.colProp_Prefix.DataType);
             table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
@@ -970,7 +970,7 @@ namespace PFD
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalFibreglassSheetsPrice_Table;
 
             // Create Table
-            DataTable table = new DataTable("FibreglassSheets");
+            DataTable table = new DataTable("Fibreglass Sheets");
             // Create Table Rows
             table.Columns.Add(QuotationHelper.colProp_Prefix.ColumnName, QuotationHelper.colProp_Prefix.DataType);
             table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
