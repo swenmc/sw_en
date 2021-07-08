@@ -306,8 +306,17 @@ namespace PFD
 
                 for (int i = 1; i <= baysNum; i++)
                 {
-                    CCrossBracingInfo cbi = CrossBracingList.ElementAtOrDefault(i - 1);
-                    if(cbi == null) cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
+                    //CCrossBracingInfo cbi = CrossBracingList.ElementAtOrDefault(i - 1);
+                    //if(cbi == null) cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
+                    CCrossBracingInfo cbi = null;
+                    if (i == 1 || i == baysNum)
+                    {
+                        cbi = new CCrossBracingInfo(i, true, true, true, RoofPositions[2], 2, false, false, RoofPositions);
+                    }
+                    else
+                    {
+                        cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
+                    }
 
                     items.Add(cbi);
                 }
