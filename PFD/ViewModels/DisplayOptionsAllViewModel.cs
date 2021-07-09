@@ -848,6 +848,7 @@ namespace PFD
             #region CLADDING VIEWS
             #region 3D SCENE
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene].DisplayMembers = false; // V Cladding Views nepotrebujeme zobrazovat members
             #endregion 3D SCENE
             #region ELEVATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
