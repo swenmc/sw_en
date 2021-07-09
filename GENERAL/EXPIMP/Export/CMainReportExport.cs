@@ -68,25 +68,34 @@ namespace EXPIMP
 
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData, exportOpts);
 
-            if(exportOpts.ExportModel3D)
-                DrawModel3D(s_document, modelData, exportOpts);
+            // Frame Views
+            if(true /*exportOpts.ExportModel3D_Frames*/) // TODO 864
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts);
 
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
 
+            // Cladding Views
+            if (true /*exportOpts.ExportModel3D_Cladding*/) // TODO 864
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts);
+
             if (exportOpts.ExportModelCladdingLayingSchemeViews)
                 DrawCladdingViews(s_document, modelData, exportOpts);
 
+            // Joints
             if (exportOpts.ExportJointTypes)
                 DrawJointTypes(s_document, modelData, exportOpts);
 
+            // Footing Pads
             if (exportOpts.ExportFootingTypes)
                 DrawFootingTypes(s_document, modelData, exportOpts);
 
+            // Floor Details
             if (exportOpts.ExportFloorDetails)
                 DrawFloorDetails(s_document, modelData, exportOpts);
 
             //To Mato - task 787, neviem ci staci aby bol nejaky cladding a davame vsetko, alebo treba dovnutra a davat obrazky iba ak je to relevantne
+            // Standard Details
             if (exportOpts.ExportStandardDetails && modelData.HasCladding) 
                 DrawStandardDetails(s_document, modelData, exportOpts);
 
@@ -285,7 +294,7 @@ namespace EXPIMP
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>
-        private static void DrawModel3D(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
+        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
@@ -297,7 +306,6 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            DisplayOptions opts = data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_3D_Scene];
             opts.CO_View = GetViewIndex(data, exportOpts); //851
 
             CModel filteredModel = null;
