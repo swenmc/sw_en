@@ -70,7 +70,7 @@ namespace EXPIMP
 
             // Frame Views
             if(exportOpts.ExportFrameView3DScene)
-                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts, "Frame Views");
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts, "Frame Views", GetViewIndex(modelData, exportOpts.FrameViewIndex));
 
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
@@ -78,7 +78,7 @@ namespace EXPIMP
             // Cladding Views
             if (exportOpts.ExportCladdingView3DScene)
             {
-                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts, "Cladding Views");
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts, "Cladding Views", GetViewIndex(modelData, exportOpts.CladdingViewIndex));
             }
 
             if (exportOpts.ExportModelCladdingLayingSchemeViews)
@@ -296,7 +296,7 @@ namespace EXPIMP
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>
-        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts, string viewGroupName)
+        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts, string viewGroupName, int viewIndex)
         {
             XGraphics gfx;
             PdfPage page;
@@ -309,7 +309,7 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            opts.CO_View = GetViewIndex(data, exportOpts); //851
+            opts.CO_View = viewIndex;
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
@@ -321,8 +321,8 @@ namespace EXPIMP
             viewPort.UpdateLayout();
 
             string hyphenSymbol = "-";
-            int iTitleRow1_Coordinate_y = 0;
-            int iTitleRow2_Coordinate_y = 20;
+            int iTitleRow1_Coordinate_y = 20;
+            int iTitleRow2_Coordinate_y = 40;
 
             DrawTitleBlock(gfx, data.ProjectInfo, page, viewGroupName + hyphenSymbol + EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", viewGroupName + hyphenSymbol + EPDFPageContentType.Isometric_View.GetFriendlyName() });
@@ -350,10 +350,10 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static int GetViewIndex(CModelData data, LayoutsExportOptionsViewModel exportOpts)
+        private static int GetViewIndex(CModelData data, int viewIndex)
         {
-            if (exportOpts.ViewIndex == (int)EModelViews.CURRENT) return data.ViewIndex;
-            else return exportOpts.ViewIndex;
+            if (viewIndex == (int)EModelViews.CURRENT) return data.ViewIndex;
+            else return viewIndex;
         }
 
         //private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport, LayoutsExportOptionsViewModel exportOpts)
@@ -1507,7 +1507,7 @@ namespace EXPIMP
 
             // Preview - izometricky pohlad na konstrukciu
             DisplayOptions opts = data.DisplayOptionsDict[(int) EDisplayOptionsTypes.Layouts_3D_Scene];
-            opts.CO_View = GetViewIndex(data, exportOpts); //851            
+            opts.CO_View = GetViewIndex(data, exportOpts.ViewIndex); //851            
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
