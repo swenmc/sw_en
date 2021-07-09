@@ -51,7 +51,7 @@ namespace EXPIMP
         {
             _currrent_transform3D = currrent_transform3D;            
 
-            sheetNo = 1;
+            sheetNo = 0;
             PdfDocument s_document = new PdfDocument();
 
             CProjectInfo projectInfo = modelData.ProjectInfo; // GetProjectInfo();
@@ -69,17 +69,16 @@ namespace EXPIMP
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData, exportOpts);
 
             // Frame Views
-            if(true /*exportOpts.ExportModel3D_Frames*/) // TODO 864
-                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts);
+            if(exportOpts.ExportFrameView3DScene)
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts, "Frame Views");
 
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
 
             // Cladding Views
-            if (true /*exportOpts.ExportModel3D_Cladding*/) // TODO 864
+            if (exportOpts.ExportCladdingView3DScene)
             {
-                sheetNo++;
-                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts);
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts, "Cladding Views");
             }
 
             if (exportOpts.ExportModelCladdingLayingSchemeViews)
@@ -297,7 +296,7 @@ namespace EXPIMP
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>
-        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts)
+        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts, string viewGroupName)
         {
             XGraphics gfx;
             PdfPage page;
@@ -305,6 +304,7 @@ namespace EXPIMP
             page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
             page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
             gfx = XGraphics.FromPdfPage(page);
+            sheetNo++;
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
@@ -319,11 +319,6 @@ namespace EXPIMP
 
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, _currrent_transform3D, width, height);
             viewPort.UpdateLayout();
-
-            string viewGroupName = "Frame Views";
-
-            if (true) // To Ondrej TODO 864 - zistit ci su opts pre frame view - 3D scene alebo cladding view - 3D scene
-                viewGroupName = "Cladding Views";
 
             string hyphenSymbol = "-";
             int iTitleRow1_Coordinate_y = 0;

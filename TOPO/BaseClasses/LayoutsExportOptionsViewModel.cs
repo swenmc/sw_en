@@ -17,6 +17,7 @@ namespace BaseClasses
 
         private bool m_ExportModel3D;
         private bool m_ExportModelViews;
+        private bool m_ExportFrameView3DScene;
         private bool m_ExportModelViewsFront;
         private bool m_ExportModelViewsBack;
         private bool m_ExportModelViewsLeft;
@@ -28,6 +29,7 @@ namespace BaseClasses
         private bool m_ExportModelViewsFloor;
 
         private bool m_ExportModelCladdingLayingSchemeViews;
+        private bool m_ExportCladdingView3DScene;
         private bool m_ExportModelCladdingLayingSchemeViewsFront;
         private bool m_ExportModelCladdingLayingSchemeViewsBack;
         private bool m_ExportModelCladdingLayingSchemeViewsLeft;
@@ -50,6 +52,8 @@ namespace BaseClasses
 
         private List<string> m_ModelViews;
         private int m_ViewIndex;
+        private int m_FrameViewIndex;
+        private int m_CladdingViewIndex;
 
         public bool ExportModel3D
         {
@@ -78,6 +82,7 @@ namespace BaseClasses
                 m_ExportModelViews = value;
                 if (changed)
                 {
+                    ExportFrameView3DScene = m_ExportModelViews;
                     ExportModelViewsFront = m_ExportModelViews;
                     ExportModelViewsBack = m_ExportModelViews;
                     ExportModelViewsLeft = m_ExportModelViews;
@@ -288,6 +293,7 @@ namespace BaseClasses
                 m_ExportModelCladdingLayingSchemeViews = value;
                 if (changed)
                 {
+                    ExportCladdingView3DScene = m_ExportModelCladdingLayingSchemeViews;
                     ExportModelCladdingLayingSchemeViewsFront = m_ExportModelCladdingLayingSchemeViews;
                     ExportModelCladdingLayingSchemeViewsBack = m_ExportModelCladdingLayingSchemeViews;
                     ExportModelCladdingLayingSchemeViewsLeft = m_ExportModelCladdingLayingSchemeViews;
@@ -524,10 +530,67 @@ namespace BaseClasses
             }
         }
 
+        public bool ExportFrameView3DScene
+        {
+            get
+            {
+                return m_ExportFrameView3DScene;
+            }
+
+            set
+            {
+                m_ExportFrameView3DScene = value;
+                NotifyPropertyChanged("ExportFrameView3DScene");
+            }
+        }
+
+        public bool ExportCladdingView3DScene
+        {
+            get
+            {
+                return m_ExportCladdingView3DScene;
+            }
+
+            set
+            {
+                m_ExportCladdingView3DScene = value;
+                NotifyPropertyChanged("ExportCladdingView3DScene");
+            }
+        }
+
+        public int FrameViewIndex
+        {
+            get
+            {
+                return m_FrameViewIndex;
+            }
+
+            set
+            {
+                m_FrameViewIndex = value;
+                NotifyPropertyChanged("FrameViewIndex");
+            }
+        }
+
+        public int CladdingViewIndex
+        {
+            get
+            {
+                return m_CladdingViewIndex;
+            }
+
+            set
+            {
+                m_CladdingViewIndex = value;
+                NotifyPropertyChanged("CladdingViewIndex");
+            }
+        }
+
         public LayoutsExportOptionsViewModel()
         {
             ExportModel3D = true;
             ExportModelViews = true;
+            ExportCladdingView3DScene = true;
             ExportModelViewsFront = true;
             ExportModelViewsBack = true;
             ExportModelViewsLeft = true;
@@ -539,6 +602,7 @@ namespace BaseClasses
             ExportModelViewsFloor = true;
 
             ExportModelCladdingLayingSchemeViews = true;
+            ExportCladdingView3DScene = true;
             ExportModelCladdingLayingSchemeViewsFront = true;
             ExportModelCladdingLayingSchemeViewsBack = true;
             ExportModelCladdingLayingSchemeViewsLeft = true;
@@ -562,6 +626,8 @@ namespace BaseClasses
             ExportImagesQuality = (int)EImagesQuality.Normal;
 
             ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
+            FrameViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
+            CladdingViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
         }
 
         protected void NotifyPropertyChanged(string propertyName)
@@ -576,6 +642,7 @@ namespace BaseClasses
 
             ExportModel3D = vm.ExportModel3D;
             ExportModelViews = vm.ExportModelViews;
+            ExportFrameView3DScene = vm.ExportFrameView3DScene;
             ExportModelViewsFront = vm.ExportModelViewsFront;
             ExportModelViewsBack = vm.ExportModelViewsBack;
             ExportModelViewsLeft = vm.ExportModelViewsLeft;
@@ -587,6 +654,7 @@ namespace BaseClasses
             ExportModelViewsFloor = vm.ExportModelViewsFloor;
 
             ExportModelCladdingLayingSchemeViews = vm.ExportModelCladdingLayingSchemeViews;
+            ExportCladdingView3DScene = vm.ExportCladdingView3DScene;
             ExportModelCladdingLayingSchemeViewsFront = vm.ExportModelCladdingLayingSchemeViewsFront;
             ExportModelCladdingLayingSchemeViewsBack = vm.ExportModelCladdingLayingSchemeViewsBack;
             ExportModelCladdingLayingSchemeViewsLeft = vm.ExportModelCladdingLayingSchemeViewsLeft;
@@ -606,6 +674,8 @@ namespace BaseClasses
             ExportImagesQuality = vm.ExportImagesQuality;
 
             ViewIndex = vm.ViewIndex;
+            FrameViewIndex = vm.FrameViewIndex;
+            CladdingViewIndex = vm.CladdingViewIndex;
         }
     }
 }

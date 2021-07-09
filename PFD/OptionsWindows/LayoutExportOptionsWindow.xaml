@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Layout Export Options" Height="510" Width="550">
+        Title="Layout Export Options" Height="530" Width="650">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">140</System:Double>
@@ -32,16 +32,22 @@
             </Grid.RowDefinitions>
             
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="8">
-                <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
-                
-                <StackPanel Orientation="Horizontal" Margin="20 0 0 5">
-                    <TextBlock Margin="0 0 10 0">View:</TextBlock>
+                                
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <CheckBox Name="chckExportModel3D" Margin="0 0 0 0" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
+                    <TextBlock Margin="20 0 5 0" VerticalAlignment="Top">View:</TextBlock>
                     <ComboBox Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}" 
                          VerticalAlignment="Top" ItemsSource="{Binding Path=ModelViews}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 </StackPanel>
 
                 <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Framing Scheme Views</CheckBox>
 
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
+                    <CheckBox Name="chckExportFSV_3DScene" Margin="0 0 0 0" IsChecked="{Binding ExportFrameView3DScene, UpdateSourceTrigger=PropertyChanged}">3D scene</CheckBox>
+                    <TextBlock Margin="10 0 5 0" VerticalAlignment="Top">View:</TextBlock>
+                    <ComboBox Name ="Combobox_FrameViews3DSceneView" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}" 
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=ModelViews}" SelectedIndex="{Binding Path=FrameViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                </StackPanel>
                 <CheckBox Name="chckExportModelViewsFront" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
                 <CheckBox Name="chckExportModelViewsBack" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
                 <CheckBox Name="chckExportModelViewsLeft" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsLeft, UpdateSourceTrigger=PropertyChanged}">Left</CheckBox>
@@ -54,6 +60,12 @@
 
                 <CheckBox Name="chckExportModelCladdingLayingSchemeViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViews, UpdateSourceTrigger=PropertyChanged}">Cladding Scheme Views</CheckBox>
 
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
+                    <CheckBox Name="chckExportCSV_3DScene" Margin="0 0 0 0" IsChecked="{Binding ExportCladdingView3DScene, UpdateSourceTrigger=PropertyChanged}">3D scene</CheckBox>
+                    <TextBlock Margin="10 0 5 0" VerticalAlignment="Top">View:</TextBlock>
+                    <ComboBox Name ="Combobox_CladdingViews3DSceneView" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}" 
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=ModelViews}" SelectedIndex="{Binding Path=CladdingViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                </StackPanel>
                 <CheckBox Name="chckExportModelCladdingLayingSchemeViewsFront" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
                 <CheckBox Name="chckExportModelCladdingLayingSchemeViewsBack" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
                 <CheckBox Name="chckExportModelCladdingLayingSchemeViewsLeft" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsLeft, UpdateSourceTrigger=PropertyChanged}">Left</CheckBox>
