@@ -30,12 +30,11 @@
                 <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="8">
-                                
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
                     <CheckBox Name="chckExportModel3D" Margin="0 0 0 0" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
-                    <TextBlock Margin="20 0 5 0" VerticalAlignment="Top">View:</TextBlock>
+                    <TextBlock Margin="30 0 5 0" VerticalAlignment="Top">View:</TextBlock>
                     <ComboBox Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}" 
                          VerticalAlignment="Top" ItemsSource="{Binding Path=ModelViews}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 </StackPanel>
@@ -77,7 +76,6 @@
                 <CheckBox Name="chckExportFloorDetails" Margin="0 0 0 5" IsChecked="{Binding ExportFloorDetails, UpdateSourceTrigger=PropertyChanged}">Floor Details</CheckBox>
                 <CheckBox Name="chckExportStandardDetails" Margin="0 0 0 5" IsChecked="{Binding ExportStandardDetails, UpdateSourceTrigger=PropertyChanged}">Standard Details</CheckBox>                
             </StackPanel>
-            
             <TextBlock Grid.Row="0" Grid.Column="1">Page Size:</TextBlock>
             <ComboBox Grid.Row="0" Grid.Column="2" Name ="Combobox_PageSize" HorizontalAlignment="Left" 
                       Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
