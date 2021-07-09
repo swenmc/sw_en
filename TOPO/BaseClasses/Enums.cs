@@ -873,6 +873,7 @@ namespace BaseClasses
         Report_Foundations = 8,
 
         Layouts_3D_Scene = 9,
+
         Layouts_FW_3D_Scene = 10,
         Layouts_FW_Elevations = 11,
         Layouts_FW_Roof = 12,
@@ -880,9 +881,11 @@ namespace BaseClasses
         Layouts_FW_Columns = 14,
         Layouts_FW_Foundations = 15,
         Layouts_FW_Floor = 16,
+
         Layouts_CW_3D_Scene = 17,
         Layouts_CW_Elevations = 18,
         Layouts_CW_Roof = 19,
+
         Layouts_Joints = 20,
         Layouts_Foundations = 21
     }

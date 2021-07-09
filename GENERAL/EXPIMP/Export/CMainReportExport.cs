@@ -317,11 +317,22 @@ namespace EXPIMP
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, _currrent_transform3D, width, height);
             viewPort.UpdateLayout();
 
-            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            gfx.DrawString(("3D scene ").ToString().ToUpper(), fontBold, XBrushes.Black, 20, 20);
+            string viewGroupName = "Frame Views";
 
-            DrawTitleBlock(gfx, data.ProjectInfo, page, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
-            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
+            if (true) // To Ondrej TODO 864 - zistit ci su opts pre frame view - 3D scene alebo cladding view - 3D scene
+                viewGroupName = "Cladding Views";
+
+            string hyphenSymbol = "-";
+            int iTitleRow1_Coordinate_y = 0;
+            int iTitleRow2_Coordinate_y = 20;
+
+            DrawTitleBlock(gfx, data.ProjectInfo, page, viewGroupName + hyphenSymbol + EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", viewGroupName + hyphenSymbol + EPDFPageContentType.Isometric_View.GetFriendlyName() });
+
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+
+            gfx.DrawString($"{viewGroupName.ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow1_Coordinate_y);
+            gfx.DrawString($"{EPDFPageContentType.Isometric_View.GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow2_Coordinate_y);
 
             int legendImgWidth = 100;
             int legendTextWidth = 80;
@@ -641,7 +652,7 @@ namespace EXPIMP
         }
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data, EViewModelMemberFilters view)
         {
-            if (view == EViewModelMemberFilters.All) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_3D_Scene];
+            if (view == EViewModelMemberFilters.All) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene];
             else if (view == EViewModelMemberFilters.FRONT) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
             else if (view == EViewModelMemberFilters.BACK) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
             else if (view == EViewModelMemberFilters.LEFT) return data.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
