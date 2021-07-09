@@ -332,9 +332,15 @@ namespace EXPIMP
             gfx.DrawString($"{viewGroupName.ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow1_Coordinate_y);
             gfx.DrawString($"{EPDFPageContentType.Isometric_View.GetFriendlyName().ToUpper()}", fontBold, XBrushes.Black, 20, iTitleRow2_Coordinate_y);
 
-            int legendImgWidth = 100;
-            int legendTextWidth = 80;
-            DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth, legendImgWidth);
+            int legendImgWidth = 50; // Default je bez legendy - polovicny rozmer - ak je rozmer nulovy tak obrazok zasahuje do rozpisky
+            int legendTextWidth = 40; // Default je bez legendy - polovicny rozmer- ak je rozmer nulovy tak obrazok zasahuje do rozpisky
+
+            if (viewGroupName == "Frame Views") // Legenda len pre Frame Views
+            {
+                legendImgWidth = 100;
+                legendTextWidth = 80;
+                DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth, legendImgWidth);
+            }
 
             XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
 
