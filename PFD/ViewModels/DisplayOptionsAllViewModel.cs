@@ -737,7 +737,6 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowSectionSymbols = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ShowDetailSymbols = true;
             #endregion ELEVATIONS
-            // TODO Pre nasledujuce options Frame Views treba doplnit vsade to co je pre elevations
             #region ROOF
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].CO_CreateHorizontalGridlines = true;
@@ -847,6 +846,9 @@ namespace PFD
             #endregion FLOOR
             #endregion FRAME VIEWS
             #region CLADDING VIEWS
+            #region 3D SCENE
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene]);
+            #endregion 3D SCENE
             #region ELEVATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations]);
 
