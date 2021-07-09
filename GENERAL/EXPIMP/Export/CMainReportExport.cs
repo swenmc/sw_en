@@ -77,7 +77,10 @@ namespace EXPIMP
 
             // Cladding Views
             if (true /*exportOpts.ExportModel3D_Cladding*/) // TODO 864
+            {
+                sheetNo++;
                 DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts);
+            }
 
             if (exportOpts.ExportModelCladdingLayingSchemeViews)
                 DrawCladdingViews(s_document, modelData, exportOpts);
