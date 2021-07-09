@@ -585,6 +585,18 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene].CO_CreateVerticalGridlinesRight = false;
             #endregion 3D SCENE
             #region FRAME VIEWS
+            #region 3D SCENE
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_3D_Scene]);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayCladding = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayCladdingLeftWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayCladdingRightWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayCladdingFrontWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayCladdingBackWall = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayCladdingRoof = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayDoors = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayWindows = false;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene].DisplayFibreglass = false;
+            #endregion 3D SCENE
             #region ELEVATIONS
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].SetViewModel_CODE(DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene]);
 
