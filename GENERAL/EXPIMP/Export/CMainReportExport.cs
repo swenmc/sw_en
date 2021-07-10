@@ -70,7 +70,8 @@ namespace EXPIMP
 
             // Frame Views
             if(exportOpts.ExportFrameView3DScene)
-                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts, "Frame Views", GetViewIndex(modelData, exportOpts.FrameViewIndex));
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_FW_3D_Scene], exportOpts, "Frame Views", 
+                    GetViewIndex(modelData, exportOpts.FrameViewIndex), GetTransform3DBasedOnViewIndex(exportOpts.FrameViewIndex));
 
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
@@ -78,7 +79,8 @@ namespace EXPIMP
             // Cladding Views
             if (exportOpts.ExportCladdingView3DScene)
             {
-                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts, "Cladding Views", GetViewIndex(modelData, exportOpts.CladdingViewIndex));
+                DrawModel3D(s_document, modelData, modelData.DisplayOptionsDict[(int)EDisplayOptionsTypes.Layouts_CW_3D_Scene], exportOpts, "Cladding Views", 
+                    GetViewIndex(modelData, exportOpts.CladdingViewIndex), GetTransform3DBasedOnViewIndex(exportOpts.CladdingViewIndex));
             }
 
             if (exportOpts.ExportModelCladdingLayingSchemeViews)
@@ -296,7 +298,7 @@ namespace EXPIMP
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>
-        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts, string viewGroupName, int viewIndex)
+        private static void DrawModel3D(PdfDocument s_document, CModelData data, DisplayOptions opts, LayoutsExportOptionsViewModel exportOpts, string viewGroupName, int viewIndex, Transform3D transform3D)
         {
             XGraphics gfx;
             PdfPage page;
@@ -317,7 +319,7 @@ namespace EXPIMP
             double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.LY_ExportImagesQuality);
             double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.LY_ExportImagesQuality);
 
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, _currrent_transform3D, width, height);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, transform3D, width, height);
             viewPort.UpdateLayout();
 
             string hyphenSymbol = "-";
@@ -360,6 +362,10 @@ namespace EXPIMP
         {
             if (viewIndex == (int)EModelViews.CURRENT) return data.ViewIndex;
             else return viewIndex;
+        }
+        private static Transform3D GetTransform3DBasedOnViewIndex(int viewIndex)
+        {
+            return (viewIndex == (int)EModelViews.CURRENT) ? _currrent_transform3D : null;
         }
 
         //private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport, LayoutsExportOptionsViewModel exportOpts)
@@ -1517,7 +1523,7 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, _currrent_transform3D);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, GetTransform3DBasedOnViewIndex(exportOpts.ViewIndex));
             viewPort.UpdateLayout();
 
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));

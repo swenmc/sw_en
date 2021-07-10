@@ -1646,7 +1646,7 @@ namespace PFD
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 //Canvas canvas = ((UC_FootingInput)Footing_Input.Content).Frame2D.Content as Canvas;
 
-                CMainReportExport.ReportAllDataToPDFFile(modelData, vm._layoutsExportOptionsVM, (vm._layoutsExportOptionsVM.ViewIndex == (int)EModelViews.CURRENT ? currrent_transform3D : null));
+                CMainReportExport.ReportAllDataToPDFFile(modelData, vm._layoutsExportOptionsVM, currrent_transform3D);
 
                 //pokusy to dat do vlakien a a potom spojit PDFka do jedneho PDF
                 //temp
