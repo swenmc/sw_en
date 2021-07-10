@@ -1963,7 +1963,7 @@ namespace PFD
                 CrScProperties prop = CSectionManager.GetSectionProperties(section);
 
                 //MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
-                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorTrimmer];
+                CComponentPrefixes compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorTrimmer];
                 cDT = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                     compPref.ComponentName, section, prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForRollerDoorTrimmer, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorTrimmer);
@@ -1978,7 +1978,7 @@ namespace PFD
                 string section = MembersSectionsDict[EMemberType_FS_Position.DoorLintel];
                 CrScProperties prop = CSectionManager.GetSectionProperties(section);
 
-                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorLintel];
+                CComponentPrefixes compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorLintel];
                 cDL = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                     compPref.ComponentName, section, prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForRollerDoorLintel, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorLintel);

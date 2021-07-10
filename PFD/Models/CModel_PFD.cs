@@ -3727,6 +3727,35 @@ namespace PFD
                 m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsBackSide].CSColor = Colors.LightSeaGreen; // 15 Girt Bracing - Back Side
             }
 
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.DoorFrame);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberType_FS_Position.DoorFrame, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberType_FS_Position.DoorFrame, CrScFactory.GetCrSc(cInfo.Section));
+                //m_arrCrSc[EMemberType_FS_Position.DoorFrame].CSColor = Colors.LightSeaGreen;
+            }
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.WindowFrame);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberType_FS_Position.WindowFrame, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberType_FS_Position.WindowFrame, CrScFactory.GetCrSc(cInfo.Section));
+                //m_arrCrSc[EMemberType_FS_Position.WindowFrame].CSColor = Colors.LightSeaGreen;
+            }
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberType_FS_Position.DoorTrimmer, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberType_FS_Position.DoorTrimmer, CrScFactory.GetCrSc(cInfo.Section));
+                //m_arrCrSc[EMemberType_FS_Position.DoorTrimmer].CSColor = Colors.LightSeaGreen;
+            }
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.DoorLintel);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberType_FS_Position.DoorLintel, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberType_FS_Position.DoorLintel, CrScFactory.GetCrSc(cInfo.Section));
+                //m_arrCrSc[EMemberType_FS_Position.DoorLintel].CSColor = Colors.LightSeaGreen;
+            }
+
             CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
             if (ci_CBW != null)
             {
