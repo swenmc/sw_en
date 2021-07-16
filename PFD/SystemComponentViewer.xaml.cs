@@ -47,6 +47,7 @@ namespace PFD
 
         CCrSc_TW crsc;
         public CPlate plate;
+        CFlashing flashing;
         CScrew screw;
         Point3D controlpoint = new Point3D(0, 0, 0);
         System.Windows.Media.Color cComponentColor = Colors.Aquamarine; // Default
@@ -66,6 +67,7 @@ namespace PFD
         float fGamma_rad; // Plate M alebo N uhol medzi hranou prierezu a vonkajsou hranou plechu
         int iNumberofHoles = 0;
 
+        string sFlashingPrefix;
         string sGauge_Screw;
 
         double WindowHeight;
@@ -1091,6 +1093,11 @@ namespace PFD
                         }
                 }
             }
+            else if (vm.ComponentTypeIndex == 2) // Flashing
+            {
+                CFlashingItemProperties prop = CFlashingManager.GetFlashingProperties(vm.ComponentIndex + 1);
+                sFlashingPrefix = prop.Prefix;
+            }
             else //  Screw
             {
                 CTEKScrewProperties prop = CTEKScrewsManager.GetScrewProperties(vm.ComponentIndex + 1);
@@ -1197,6 +1204,10 @@ namespace PFD
                 //DisplayPlate(false);
                 UpdateAndDisplayPlate();
             }
+            else if (vm.ComponentTypeIndex == 2)
+            {
+                DisplayFlashing(false);
+            }
             else
             {
                 DisplayScrew();
@@ -1256,6 +1267,46 @@ namespace PFD
             ChangeDisplaOptionsAccordingToViewModel(vm);
 
             page3D = new Page3Dmodel(plate, sDisplayOptions);
+
+            // Display model in 3D preview frame
+            Frame3D.Content = page3D;
+
+            this.UpdateLayout();
+        }
+
+        private void DisplayFlashing(bool useTransformOptions)
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            // Create 2D page
+            page2D = new Canvas();
+
+            SetFrame2DSize();
+
+            //page2D.RenderSize = new System.Windows.Size(Frame2DWidth, Frame2DHeight);
+
+            if (useTransformOptions)
+            {
+                if (vm.MirrorX) plate.MirrorPlateAboutX();
+                if (vm.MirrorY) plate.MirrorPlateAboutY();
+                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+            }
+
+            Drawing2D.DrawFlashingToCanvas(flashing,
+               Frame2DWidth,
+               Frame2DHeight,
+               ref page2D,
+               vm.DrawPoints2D,
+               vm.DrawOutLine2D,
+               vm.DrawPointNumbers2D,
+               vm.DrawDimensions2D);
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+
+            // ChangeDisplaOptionsAccordingToViewModel(vm);
+
+            page3D = new Page3Dmodel(flashing, sDisplayOptions);
 
             // Display model in 3D preview frame
             Frame3D.Content = page3D;
@@ -1769,6 +1820,11 @@ namespace PFD
                 //if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
                 if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
             }
+            else if (vm.ComponentTypeIndex == 2)
+            {
+                flashing = new CFlashing(sFlashingPrefix, 0.95f, Colors.Crimson); // TODO - editovat dlzku
+                vm.SetComponentProperties(flashing);
+            }
             else
             {
                 screw = new CScrew("TEK", sGauge_Screw);
@@ -1796,7 +1852,7 @@ namespace PFD
             // Spravne by sme CPlate podla mna nemali pre ucely vykreslenia klonovat, ale musime ustrazit, aby sme pri vykresleni alebo exporte
             // nezmenili jej povodne parametre
 
-            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, true, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
+            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, true, vm.DrawPointNumbers2D, true, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
                         vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
             //Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true);
             //Canvas dxfCanvas = new Canvas();

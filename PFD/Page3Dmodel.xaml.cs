@@ -20,7 +20,7 @@ namespace PFD
         //bool bDebugging = false;
         private DisplayOptions sDisplayOptions;
         public Model3DGroup gr = new Model3DGroup();
-        public EGCS eGCS = EGCS.eGCSLeftHanded;        
+        public EGCS eGCS = EGCS.eGCSLeftHanded;
 
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
@@ -28,7 +28,7 @@ namespace PFD
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, model, 1f, sDisplayOptions, loadcase, jointsDict);            
+            Drawing3D.DrawToTrackPort(_trackport, model, 1f, sDisplayOptions, loadcase, jointsDict);
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
@@ -145,7 +145,7 @@ namespace PFD
                     Model3DGroup gr = null;
                     if (sDisplayOptions.bDisplayConnectors) gr = model.CreateGeomModel3DWithConnectors(brushDefault, null);
                     else { gr = new Model3DGroup(); gr.Children.Add(model.CreateGeomModel3D(brushDefault)); }
-                                        
+
                     if (sDisplayOptions.bDisplayNodes)
                     {
                         Model3DGroup nodes3DGroup = null;
@@ -161,7 +161,7 @@ namespace PFD
                     ((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
 
                     Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-                    
+
                     if (sDisplayOptions.bDisplayGlobalAxis)
                     {
                         Model3DGroup lines = null; // linie ako 3D valcove plochy
@@ -171,7 +171,7 @@ namespace PFD
 
                     _trackport.Model = (Model3D)gr;
                 }
-                
+
                 // Component - Wire Frame
                 if (sDisplayOptions.bDisplayWireFrameModel && model != null)
                 {
@@ -183,6 +183,39 @@ namespace PFD
                     // Add Wireframe Lines to the trackport
                     _trackport.ViewPort.Children.Add(wireFrame);
                 }
+            }
+
+            _trackport.SetupScene();
+        }
+        public Page3Dmodel(CFlashing flashing, DisplayOptions sDisplayOptions_temp)
+        {
+            sDisplayOptions = sDisplayOptions_temp;
+
+            InitializeComponent();
+
+            // Default color
+            SolidColorBrush brushDefault = new SolidColorBrush(flashing.FL_Color);
+
+            // Flashing Model
+            Model3DGroup ComponentGeomModel = new Model3DGroup();
+            
+            if (flashing != null)
+            {
+                ComponentGeomModel = flashing.CreateModel3DGroup();
+            
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(flashing);
+                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(pModelGeomCentre, -0.5f, 0.005f, 0.05f);
+            
+                _trackport.PerspectiveCamera.Position = cameraPosition;
+                _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
+            
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
+                {
+                    _trackport.Model = (Model3D)ComponentGeomModel;
+                }
+
+                // Add WireFrame Model
+                if (sDisplayOptions.bDisplayWireFrameModel) Drawing3D.DrawFlashingWireFrame(flashing, _trackport.ViewPort);
             }
 
             _trackport.SetupScene();

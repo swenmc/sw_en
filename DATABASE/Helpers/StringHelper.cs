@@ -64,7 +64,7 @@ namespace DATABASE
             return arrayIDs;
         }
 
-        // Convert string to of numbers (double)
+        // Convert string to array of numbers (double)
         public static double[] ConvertStringArray(string inputText, char delimiterChar)
         {
             if (inputText == "") return null;

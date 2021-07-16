@@ -105,6 +105,7 @@
     <Compile Include="ComboItem.cs" />
     <Compile Include="CProjectInfo.cs" />
     <Compile Include="CProductionInfo.cs" />
+    <Compile Include="GraphObj\Objects_3D\CFlashing.cs" />
     <Compile Include="Helpers\CalculationsHelper.cs" />
     <Compile Include="Helpers\CanopiesHelper.cs" />
     <Compile Include="Model\CCladdingAccessories_Item_Piece.cs" />

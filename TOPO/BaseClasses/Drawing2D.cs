@@ -86,12 +86,17 @@ namespace BaseClasses
                 DrawComponent(
                      bDrawPoints,
                      bDrawOutLine,
+                     true,
                      bDrawPointNumbers,
                      false,
                      false,
                      false,
                      false,
                      bDrawDimensions,
+                     false,
+                     false,
+                     false,
+                     true,
                      false,
                      false,
                      crsc.CrScPointsOut,
@@ -244,12 +249,17 @@ namespace BaseClasses
                 DrawComponent(
                     bDrawPoints,
                     bDrawOutLine,
+                    true,
                     bDrawPointNumbers,
                     bDrawOpenings,
                     bDrawHoles,
                     bDrawHoleCentreSymbols,
                     bDrawDrillingRoute,
                     bDrawDimensions,
+                    true,
+                    true,
+                    true,
+                    true,
                     bDrawMemberOutline,
                     bDrawBendLines,
                     Geom2D.TransformArrayToList(plate.PointsOut2D),
@@ -279,6 +289,7 @@ namespace BaseClasses
         public static Canvas DrawRealPlateToCanvas(CPlate plate,
             bool bDrawPoints,
             bool bDrawOutLine,
+            bool bIsOutlineClosed,
             bool bDrawPointNumbers,
             bool bDrawOpenings,
             bool bDrawHoles,
@@ -425,7 +436,7 @@ namespace BaseClasses
                 DrawComponentPoints(bDrawPoints, canvasPointsOut_Mirror, canvasPointsIn, canvasForImage, "Points");
 
                 // Outlines
-                DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage, "Outlines");
+                DrawOutlines(bDrawOutLine, bIsOutlineClosed, canvasPointsOut, canvasPointsIn, canvasForImage, "Outlines");
 
                 // Definition Point Numbers
                 DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage, "Point numbers");
@@ -448,7 +459,7 @@ namespace BaseClasses
                 }
 
                 // Dimensions
-                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
+                DrawDimensions(bDrawDimensions, true, true, true, true, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
 
                 // Member Outline
                 DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Member outline");
@@ -470,6 +481,102 @@ namespace BaseClasses
             //}
 
             return canvasForImage;
+        }
+
+        public static void DrawFlashingToCanvas(CFlashing flashing, double width, double height, ref Canvas canvasForImage,
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawDimensions)
+        {
+            bDrawDimensions = true; // IN WORK Testovanie
+
+            double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
+            double dPointInOutDistance_x_real = 0;
+            double dPointInOutDistance_y_real = 0;
+
+            // Fill arrays of points
+            if (flashing.PointsOutline != null && flashing.PointsOutline.Count > 2)
+            {
+                CalculateModelLimits(flashing.PointsOutline, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            }
+
+            int scale_unit = 1000; // mm
+            float extraMargin = 0f;
+
+            double fModel_Length_x_real;
+            double fModel_Length_y_real;
+            double fModel_Length_x_page;
+            double fModel_Length_y_page;
+            double dFactor_x;
+            double dFactor_y;
+            double dReal_Model_Zoom_Factor;
+            float fmodelMarginLeft_x;
+            float fmodelMarginTop_y;
+            double dPointInOutDistance_x_page;
+            double dPointInOutDistance_y_page;
+
+            CalculateBasicValue(
+                    fTempMax_X,
+                    fTempMin_X,
+                    fTempMax_Y,
+                    fTempMin_Y,
+                    0.8f,
+                    scale_unit,
+                    width,
+                    height,
+                    extraMargin,
+                    null,
+                    dPointInOutDistance_x_real,
+                    dPointInOutDistance_y_real,
+                    out fModel_Length_x_real,
+                    out fModel_Length_y_real,
+                    out fModel_Length_x_page,
+                    out fModel_Length_y_page,
+                    out dFactor_x,
+                    out dFactor_y,
+                    out dReal_Model_Zoom_Factor,
+                    out fmodelMarginLeft_x,
+                    out fmodelMarginTop_y,
+                    out dPointInOutDistance_x_page,
+                    out dPointInOutDistance_y_page);
+
+            canvasForImage.Children.Clear();
+            if (flashing != null)
+                DrawComponent(
+                     bDrawPoints,
+                     bDrawOutLine,
+                     false,
+                     bDrawPointNumbers,
+                     false,
+                     false,
+                     false,
+                     false,
+                     bDrawDimensions,
+                     false,
+                     false,
+                     false,
+                     true,
+                     false,
+                     false,
+                     flashing.PointsOutline,
+                     null,
+                     null,
+                     null,
+                     null,
+                     null,
+                     flashing.Dimensions,
+                     null,
+                     null,
+                     null,
+                     0,
+                     0,
+                     0,
+                     fmodelMarginLeft_x,
+                     fmodelMarginTop_y,
+                     dReal_Model_Zoom_Factor,
+                     fModel_Length_y_page,
+                     dPointInOutDistance_y_page,
+                     dPointInOutDistance_x_page,
+                     true,
+                     canvasForImage);
         }
 
         public static void DrawFootingPadSideElevationToCanvas(CFoundation pad,
@@ -1385,7 +1492,7 @@ namespace BaseClasses
                 canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 // Dimensions
-                DrawDimensions(opts.bDrawDimensions, canvasDimensions, canvasForImage, opts.DimensionsLinesColor, opts.DimensionsTextColor, opts.DimensionsThickness, "Dimensions");
+                DrawDimensions(opts.bDrawDimensions, true, true, true, true, canvasDimensions, canvasForImage, opts.DimensionsLinesColor, opts.DimensionsTextColor, opts.DimensionsThickness, "Dimensions");
             }
 
             if (opts.bDrawNotes)
@@ -1848,12 +1955,20 @@ namespace BaseClasses
 
         public static void DrawComponent(bool bDrawPoints,
             bool bDrawOutLine,
+            bool bIsOutlineClosed,
+
             bool bDrawPointNumbers,
             bool bDrawOpenings,
             bool bDrawHoles,
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
+
             bool bDrawDimensions,
+            bool bDrawDimensionPrimaryLine,
+            bool bDrawDimensionExtensionLines,
+            bool bDrawDimensionSlopeLines,
+            bool bDrawDimensionText,
+
             bool bDrawMemberOutline,
             bool bDrawBendLines,
             List<Point> PointsOut,
@@ -1935,7 +2050,7 @@ namespace BaseClasses
             DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage, "Points");
 
             // Outlines
-            DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage, "Outlines");
+            DrawOutlines(bDrawOutLine, bIsOutlineClosed, canvasPointsOut, canvasPointsIn, canvasForImage, "Outlines");
 
             // Definition Point Numbers
             DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage);
@@ -1959,7 +2074,7 @@ namespace BaseClasses
             }
 
             // Dimensions
-            DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
+            DrawDimensions(bDrawDimensions, bDrawDimensionPrimaryLine, bDrawDimensionExtensionLines, bDrawDimensionSlopeLines, bDrawDimensionText, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
 
             // Member Outline
             DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Member Outline");
@@ -1967,7 +2082,7 @@ namespace BaseClasses
             // Bend Lines
             DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Bend Lines");
 
-            //Notes
+            // Notes
             if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
         }
 
@@ -2363,12 +2478,12 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawOutlines(bool bDrawOutLine, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage, string name)
+        public static void DrawOutlines(bool bDrawOutLine, bool bIsClosed, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage, string name)
         {
             if (bDrawOutLine)
             {
-                DrawPolyLine(true, PointsOut, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
-                DrawPolyLine(true, PointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
+                DrawPolyLine(bIsClosed, PointsOut, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
+                DrawPolyLine(bIsClosed, PointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
             }
         }
 
@@ -2724,7 +2839,8 @@ namespace BaseClasses
             canvasForImage.Children.Add(myPath);
         }
 
-        public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness, string name = "")
+        public static void DrawDimensions(bool bDrawDimensions, bool bDrawPrimaryLine, bool bDrawExtensionLines, bool bDrawSlopeLines, bool bDrawText, 
+            List<CDimension> Dimensions, Canvas canvasForImage, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness, string name = "")
         {
             if (bDrawDimensions && Dimensions != null && Dimensions.Count > 0)
             {
@@ -2733,7 +2849,7 @@ namespace BaseClasses
                     if (Dimensions[i] is CDimensionLinear)
                     {
                         CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
-                        DrawSimpleLinearDimension(dim, true, canvasForImage, linesColor, textColor, thickness, name);
+                        DrawSimpleLinearDimension(dim, bDrawPrimaryLine, bDrawExtensionLines, bDrawSlopeLines, bDrawText, canvasForImage, linesColor, textColor, thickness, name);
                     }
                     else if (Dimensions[i] is CDimensionArc)
                     {
@@ -3147,7 +3263,7 @@ namespace BaseClasses
         //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
         //}
 
-        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness, string name = "")
+        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawPrimaryLine, bool bDrawExtensionLines, bool bDrawSlopeLines, bool bDrawText, Canvas imageCanvas, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness, string name = "")
         {
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
             double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
@@ -3264,17 +3380,26 @@ namespace BaseClasses
             double textPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
 
             // Draw dimension line
-            DrawLine(lPrimaryLine, linesColor, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid, null, name);
-            // Draw extension line - start
-            DrawLine(lExtensionLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid, null, name);
-            // Draw extension line - end
-            DrawLine(lExtensionLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid, null, name);
-            // Draw slope line - start
-            DrawLine(lSlopeLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid, null, name);
-            // Draw slope line - end
-            DrawLine(lSlopeLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid, null, name);
-            // Draw text            
-            DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, textColor, imageCanvas, name);
+            if(bDrawPrimaryLine)
+               DrawLine(lPrimaryLine, linesColor, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid, null, name);
+
+            if (bDrawExtensionLines)
+            {
+                // Draw extension line - start
+                DrawLine(lExtensionLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid, null, name);
+                // Draw extension line - end
+                DrawLine(lExtensionLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid, null, name);
+            }
+            if (bDrawSlopeLines)
+            {
+                // Draw slope line - start
+                DrawLine(lSlopeLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid, null, name);
+                // Draw slope line - end
+                DrawLine(lSlopeLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid, null, name);
+            }
+            // Draw text
+            if(bDrawText)
+               DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, textColor, imageCanvas, name);
         }
 
         public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)

@@ -70,7 +70,7 @@ namespace PFD
         {
             foreach (CPlate plate in plates)
             {
-                Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true, true);
+                Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true, true, true);
 
                 CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0, GetPlateFileName_DXF(plate.Name, parent_folder));
             }

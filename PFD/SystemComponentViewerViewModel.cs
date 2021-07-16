@@ -64,11 +64,13 @@ namespace PFD
         public bool IsSetFromCode = false;
         
         float fUnitFactor_Length = 1000;
+        float fUnitFactor_Thickness = 1000;
         float fUnitFactor_Area = 1000000;//fUnitFactor_Length * fUnitFactor_Length;
         float fUnitFactor_Volume = 1000000000;//fUnitFactor_Length * fUnitFactor_Length * fUnitFactor_Length;
         float fUnitFactor_Rotation = 180f / MathF.fPI; // Factor from radians to degrees
 
         int iNumberOfDecimalPlaces_Length = 1;
+        int iNumberOfDecimalPlaces_Thickness = 2;
         int iNumberOfDecimalPlaces_Area = 1;
         int iNumberOfDecimalPlaces_Volume = 1;
         int iNumberOfDecimalPlaces_Mass = 1;
@@ -611,7 +613,7 @@ namespace PFD
         public SystemComponentViewerViewModel(CDatabaseComponents dcomponents)
         {
             databaseComponents = dcomponents;
-            MComponentTypes = new List<string>() { "Cross-section", "Plate", "Screw" };
+            MComponentTypes = new List<string>() { "Cross-section", "Plate", "Flashing", "Screw" };
             MComponentSeries = dcomponents.arr_SeriesNames;
             MComponents = dcomponents.arr_Serie_J_Names;
             MScrewArrangements = dcomponents.arr_Serie_J_ScrewArrangement_Names;
@@ -677,6 +679,14 @@ namespace PFD
                 ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
                 // Set default index // TODO - Ondrej, pri zmene typu komponenty alebo serie tu nastavujem index pre screw arrangement, ale neviem ci je to spravne miesto, ak nie tak to presun inam 
                 ScrewArrangementIndex = 0;
+            }
+            else if (ComponentTypeIndex == 2) // Flashing
+            {
+                ComponentSeries = databaseComponents.arr_Serie_Flashing_Names; // Flashings
+
+                Dictionary<string, CFlashingItemProperties> dict = CFlashingManager.LoadFlashingProperties();
+                List<string> arr_Serie_Flashing_Names = dict.Keys.ToList();
+                Components = arr_Serie_Flashing_Names;
             }
             else // Screws
             {
@@ -884,6 +894,13 @@ namespace PFD
                         }
                 }
             }
+            else if(ComponentTypeIndex == 2)
+            {
+                Dictionary<string, CFlashingItemProperties> dict = CFlashingManager.LoadFlashingProperties();
+                List<string> arr_Serie_Flashing_Names = dict.Keys.ToList();
+                Components = arr_Serie_Flashing_Names;
+                ComponentIndex = 0;
+            }
             else // Screws
             {
                 Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.GetTEKScrewPropertiesDict();
@@ -903,7 +920,7 @@ namespace PFD
             List<CComponentParamsView> geometry = new List<CComponentParamsView>();
 
             geometry.Add(new CComponentParamsViewString(CParamsResources.PlateNameS.Name, "", plate.Name, ""));
-            geometry.Add(new CComponentParamsViewString(CParamsResources.PlateThicknessS.Name, CParamsResources.PlateThicknessS.Symbol, (Math.Round(plate.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateThicknessS.Unit));
+            geometry.Add(new CComponentParamsViewString(CParamsResources.PlateThicknessS.Name, CParamsResources.PlateThicknessS.Symbol, (Math.Round(plate.Ft * fUnitFactor_Thickness, iNumberOfDecimalPlaces_Thickness)).ToString(nfi), CParamsResources.PlateThicknessS.Unit));
 
             if (plate is CConCom_Plate_B_basic)
             {
@@ -1284,7 +1301,7 @@ namespace PFD
             geometry.Add(new CComponentParamsViewString("Name", "", crsc.Name_short, ""));
             geometry.Add(new CComponentParamsViewString("Width", "b", (Math.Round(crsc.b * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(new CComponentParamsViewString("Height", "h", (Math.Round(crsc.h * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(new CComponentParamsViewString("Thickness", "t", (Math.Round(crsc.t_min * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsViewString("Thickness", "t", (Math.Round(crsc.t_min * fUnitFactor_Thickness, iNumberOfDecimalPlaces_Thickness)).ToString(nfi), "[mm]"));
 
             ComponentGeometry = geometry;
 
@@ -1309,6 +1326,23 @@ namespace PFD
                 throw new ArgumentException("Cross section name wasn't found in the database or invalid database data.");
             }
         }
+
+        public void SetComponentProperties(CFlashing flashing)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            List<CComponentParamsView> details = new List<CComponentParamsView>();
+            details.Add(new CComponentParamsViewString("Prefix", "", flashing.Name, "[-]"));
+            details.Add(new CComponentParamsViewString("Type", "", flashing.Type_Name, "[-]"));
+            details.Add(new CComponentParamsViewString("Group", "", flashing.Group_Name, "[-]"));
+            details.Add(new CComponentParamsViewString("Total Width", "w", (Math.Round(flashing.Width_total * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Thickness", "t", (Math.Round(flashing.Thickness * fUnitFactor_Thickness, iNumberOfDecimalPlaces_Thickness)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Mass", "m", Math.Round(flashing.Mass_kg_lm, iNumberOfDecimalPlaces_Mass).ToString(nfi), "[kg/m]"));
+
+            ComponentDetails = details;
+        }
+
         public void SetComponentProperties(CScrew screw)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -1320,10 +1354,10 @@ namespace PFD
             details.Add(new CComponentParamsViewString("Shank diameter", "ds", (Math.Round(screw.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Length", "l", (Math.Round(screw.Length * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Head diameter", "dh", (Math.Round(screw.D_h_headdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(new CComponentParamsViewString("Head agon thickness", "tha", (Math.Round(screw.T_ha_headAgonThickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(new CComponentParamsViewString("Head total thickness", "tht", (Math.Round(screw.T_ht_headTotalThickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Head agon thickness", "tha", (Math.Round(screw.T_ha_headAgonThickness * fUnitFactor_Thickness, iNumberOfDecimalPlaces_Thickness)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Head total thickness", "tht", (Math.Round(screw.T_ht_headTotalThickness * fUnitFactor_Thickness, iNumberOfDecimalPlaces_Thickness)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Washer diameter", "dw", (Math.Round(screw.D_w_washerdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(new CComponentParamsViewString("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Thickness, iNumberOfDecimalPlaces_Thickness)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Mass", "m", Math.Round(screw.Mass * 1000, iNumberOfDecimalPlaces_Mass).ToString(nfi), "[g]"));
 
             ComponentDetails = details;

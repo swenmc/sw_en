@@ -85,6 +85,7 @@
     <Compile Include="CBoltNutsManager.cs" />
     <Compile Include="CCladdingAccessoriesManager.cs" />
     <Compile Include="CDownpipesManager.cs" />
+    <Compile Include="CFlashingManager.cs" />
     <Compile Include="CRollerDoorPricesManager.cs" />
     <Compile Include="CPlaneItemManager.cs" />
     <Compile Include="CLengthItemManager.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="DTO\CCladdingAccessories_Item_Length_Properties.cs" />
     <Compile Include="DTO\CCladdingAccessories_Item_Piece_Properties.cs" />
     <Compile Include="DTO\CDownpipeProperties.cs" />
+    <Compile Include="DTO\CFlashingItemProperties.cs" />
     <Compile Include="DTO\CPlaneItemProperties.cs" />
     <Compile Include="DTO\CLengthItemProperties.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />

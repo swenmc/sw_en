@@ -329,5 +329,13 @@ namespace PFD
         {
                "Hex Head Tek"
         };
+
+        // TODO napojit na DB
+        public List<string> arr_Serie_Flashing_Names = new List<string>(3)
+        {
+               "Ridge Flashing",
+               "Barge Flashing",
+               "Roller Door Header Flashing"
+        };
     }
 }

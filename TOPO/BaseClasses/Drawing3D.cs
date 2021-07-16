@@ -1354,6 +1354,18 @@ namespace BaseClasses
 
             return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
         }
+        public static Point3D GetModelCentre(CFlashing flashing)
+        {
+            double fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
+
+            flashing.CalculateFlashingLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+            double fModel_Length_X = fTempMax_X - fTempMin_X;
+            double fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+            double fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+            return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+        }
         public static Point3D GetModelCentreWithoutCrsc(CModel model, DisplayOptions sDisplayOptions, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
         {
             float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
@@ -3451,6 +3463,12 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_FrontSide);
             viewPort.Children.Add(wireFrame_BackSide);
             viewPort.Children.Add(wireFrame_Lateral);
+        }
+
+        // Draw Flashing Wire Frame
+        public static void DrawFlashingWireFrame(CFlashing flashing, Viewport3D viewPort)
+        {
+            viewPort.Children.Add(flashing.CreateWireFrameModel());
         }
 
         public static void DrawLinesToViewport(Viewport3D viewPort, DisplayOptions sDisplayOptions, float fZoomFactor, Color color, float thickness, List<Point3D> points, ref Model3DGroup cylinders)
