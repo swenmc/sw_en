@@ -176,6 +176,7 @@
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBMeshesRC.db3" />
     <Content Include="Resources\MDBSections.db3" />
+    <None Include="Resources\MDBAccessories_FlashingsAndGutters.db3" />
     <None Include="Resources\MDBCladdingAccessories.db3" />
     <None Include="Resources\MDBFibreglass.db3" />
     <None Include="Resources\MDBJoints.db3" />
